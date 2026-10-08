@@ -1,0 +1,445 @@
+{
+ "Assumed Nozzle Style": {
+  "bbox": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ },
+ "Ball Valve Closed Style": {
+  "bbox": [
+   -4.0,
+   -2.7,
+   4.0,
+   2.7
+  ],
+  "att": [
+   [
+    -4.0,
+    0.0
+   ],
+   [
+    4.0,
+    0.0
+   ]
+  ],
+  "scale": 8.0,
+  "from_ang": 0
+ },
+ "Ball Valve Style": {
+  "bbox": [
+   -4.0,
+   -2.7,
+   4.0,
+   2.7
+  ],
+  "att": [
+   [
+    -4.0,
+    0.0
+   ],
+   [
+    4.0,
+    0.0
+   ]
+  ],
+  "scale": 8.0,
+  "from_ang": 0
+ },
+ "Cap Style": {
+  "bbox": [
+   -0.0,
+   -2.5,
+   2.5,
+   2.5
+  ],
+  "att": [
+   [
+    0.0,
+    -0.0
+   ]
+  ],
+  "scale": 40.0,
+  "from_ang": 180
+ },
+ "Check Valve Style": {
+  "bbox": [
+   -4.0,
+   -2.0,
+   4.0,
+   2.0
+  ],
+  "att": [
+   [
+    -4.0,
+    0.0
+   ],
+   [
+    4.0,
+    0.0
+   ]
+  ],
+  "scale": 8.0,
+  "from_ang": 0
+ },
+ "Diaphragm Valve Style": {
+  "bbox": [
+   -4.0,
+   -2.0,
+   4.0,
+   2.0
+  ],
+  "att": [
+   [
+    -4.0,
+    0.0
+   ],
+   [
+    4.0,
+    0.0
+   ]
+  ],
+  "scale": 8.0,
+  "from_ang": 0
+ },
+ "Field Mounted Discrete Hardware Interlock Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [
+   [
+    -5.0,
+    0.0
+   ],
+   [
+    0.0,
+    5.0
+   ],
+   [
+    5.0,
+    0.0
+   ],
+   [
+    0.0,
+    -5.0
+   ]
+  ],
+  "scale": 20.0,
+  "from_ang": 0
+ },
+ "Field Mounted Discrete Instrument Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [
+   [
+    -5.0,
+    0.0
+   ],
+   [
+    0.0,
+    5.0
+   ],
+   [
+    5.0,
+    0.0
+   ],
+   [
+    0.0,
+    -5.0
+   ]
+  ],
+  "scale": 20.0,
+  "from_ang": 0
+ },
+ "Filter Pipe Style": {
+  "bbox": [
+   -4.0,
+   -4.0,
+   4.0,
+   4.0
+  ],
+  "att": [
+   [
+    -4.0,
+    0.0
+   ],
+   [
+    4.0,
+    0.0
+   ]
+  ],
+  "scale": 8.0,
+  "from_ang": 0
+ },
+ "Flow Arrow Style": {
+  "bbox": [
+   0.0,
+   -1.2,
+   4.7,
+   1.2
+  ],
+  "att": [
+   [
+    0.0,
+    0.0
+   ],
+   [
+    4.7,
+    0.0
+   ]
+  ],
+  "scale": 25.0,
+  "from_ang": 0
+ },
+ "Globe Valve Style": {
+  "bbox": [
+   -4.0,
+   -2.0,
+   4.0,
+   2.0
+  ],
+  "att": [
+   [
+    -4.0,
+    0.0
+   ],
+   [
+    4.0,
+    0.0
+   ]
+  ],
+  "scale": 8.0,
+  "from_ang": 0
+ },
+ "Needle Valve Closed Style": {
+  "bbox": [
+   -4.0,
+   -3.9,
+   4.0,
+   2.0
+  ],
+  "att": [
+   [
+    -4.0,
+    0.0
+   ],
+   [
+    4.0,
+    0.0
+   ]
+  ],
+  "scale": 8.0,
+  "from_ang": 0
+ },
+ "Needle Valve Style": {
+  "bbox": [
+   -4.0,
+   -3.9,
+   4.0,
+   2.0
+  ],
+  "att": [
+   [
+    -4.0,
+    0.0
+   ],
+   [
+    4.0,
+    0.0
+   ]
+  ],
+  "scale": 8.0,
+  "from_ang": 0
+ },
+ "Off Page Connector Style": {
+  "bbox": [
+   0.0,
+   -2.5,
+   42.2,
+   2.5
+  ],
+  "att": [
+   [
+    0.0,
+    0.0
+   ],
+   [
+    42.2,
+    0.0
+   ]
+  ],
+  "scale": 25.0,
+  "from_ang": 0
+ },
+ "PressureReducingRegulator Style": {
+  "bbox": [
+   -1.5,
+   0.0,
+   2.2,
+   6.0
+  ],
+  "att": [
+   [
+    0.0,
+    0.0
+   ]
+  ],
+  "scale": 12.0,
+  "from_ang": 0
+ },
+ "Primary Loc Accessible Discrete Instrument Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [
+   [
+    -5.0,
+    0.0
+   ],
+   [
+    0.0,
+    5.0
+   ],
+   [
+    5.0,
+    0.0
+   ],
+   [
+    0.0,
+    -5.0
+   ]
+  ],
+  "scale": 20.0,
+  "from_ang": 0
+ },
+ "Primary Loc Accessible PLC Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [
+   [
+    -5.0,
+    0.0
+   ],
+   [
+    0.0,
+    5.0
+   ],
+   [
+    5.0,
+    0.0
+   ],
+   [
+    0.0,
+    -5.0
+   ]
+  ],
+  "scale": 20.0,
+  "from_ang": 0
+ },
+ "QMZ Battery Limit Style": {
+  "bbox": [
+   -10.0,
+   -3.0,
+   10.0,
+   3.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ },
+ "QMZ Coin Cell Fixture Style": {
+  "bbox": [
+   -42.0,
+   -4.5,
+   1.6,
+   4.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ },
+ "QMZ Condensate Cup Style": {
+  "bbox": [
+   -5.0,
+   -7.0,
+   5.0,
+   7.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ },
+ "QMZ Diaphragm Solenoid Actuator": {
+  "bbox": [
+   -3.0,
+   0.0,
+   6.6,
+   8.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ },
+ "QMZ Electronic Load Style": {
+  "bbox": [
+   -16.0,
+   -8.0,
+   16.0,
+   8.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ },
+ "QMZ Flow Switch Style": {
+  "bbox": [
+   -4.0,
+   -2.5,
+   4.0,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ },
+ "QMZ MFC Style": {
+  "bbox": [
+   -7.0,
+   -3.0,
+   7.0,
+   3.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ },
+ "QMZ Tube Furnace Style": {
+  "bbox": [
+   -45.0,
+   -14.0,
+   45.0,
+   14.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ }
+}

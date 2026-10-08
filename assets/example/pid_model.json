@@ -1,0 +1,1623 @@
+{
+ "meta": {
+  "project": "青木子纽扣电池测试台",
+  "doc": "P&ID 设计模型（唯一数据源）",
+  "rev": "R0",
+  "date": "2026-10-06",
+  "status": "A 版，供审查",
+  "basis": [
+   "技术方案 R8（04_技术方案/_工作底稿/技术方案内容_R8.json）",
+   "成本核算 R1 审核修订版（询价表、控制点位表、参数与数量）",
+   "四件套 R0 baseline.json（仅数值；压力开关/泄压阀/排风/备用自动阀已撤销）",
+   "甲方需求 docx 与补充背景资料"
+  ],
+  "source_codes": {
+   "C": "甲方输入",
+   "U": "设计确认",
+   "E": "工程假设/推荐（待验证）"
+  },
+  "basis_doc": [
+   "《青木子纽扣电池测试台技术方案》R8",
+   "成本核算表 R1（询价表、控制点位表）",
+   "项目分析文件 R0（工艺计算书等）",
+   "甲方技术要求及补充资料"
+  ]
+ },
+ "conventions": {
+  "line_number": "物料代号-主项(2位)+序号(2位)-外径mm-管道等级，例 H2-0101-6-S1（HG/T 20519.2 编排）",
+  "fluid_codes": {
+   "H2": "氢气",
+   "N2": "氮气",
+   "CO": "一氧化碳",
+   "CH4": "甲烷",
+   "CO2": "二氧化碳",
+   "SP": "备用气（未定介质，本期封堵）；HG/T 中 SG 为合成气，故另取 SP",
+   "IN": "驱动用氮气（先导阀气源）",
+   "FG": "混合燃料气（阳极进气）",
+   "AG": "阳极尾气",
+   "DR": "冷凝液排放"
+  },
+  "areas": {
+   "01": "配气",
+   "02": "N2 保护旁路、驱动气与混气",
+   "03": "炉、夹具、尾气与电测",
+   "04": "安全检测与控制"
+  },
+  "pipe_class": {
+   "S1": "316L 无缝管 Φ6×1，双卡套；设计 0.6 MPa(g)/60 ℃；适用 H2/N2/CO/CH4/CO2 冷端低压",
+   "P1": "PU 气管 Φ4，快插；驱动 N2，0.6 MPa(g)/40 ℃"
+  },
+  "tags": {
+   "instrument": "ISA-5.1 字母代号-回路号；回路百位=主项（1 配气，2 旁路/混气，3 炉/夹具/尾气/电测，4 安全）",
+   "equipment": "F 炉，X 测试夹具，JL 电子负载，V 容器",
+   "manual_valve": "HV-回路号（球阀/针阀/排液阀）",
+   "check_valve": "CK-回路号",
+   "filter": "FL-回路号",
+   "regulator": "PCV-回路号（自力式减压阀）"
+  }
+ },
+ "boundary": [
+  {
+   "id": "BL-H2",
+   "dir": "in",
+   "desc": "H₂ 来自甲方气瓶一级减压",
+   "cond": "0.2–0.6 MPa(g)",
+   "by": "甲方",
+   "src": "R8 表5"
+  },
+  {
+   "id": "BL-N2",
+   "dir": "in",
+   "desc": "N₂ 来自甲方气瓶一级减压（兼作驱动气）",
+   "cond": "≥0.45 MPa(g)，≤0.6 MPa(g)；停电时仍能供气",
+   "by": "甲方",
+   "src": "R8 表5"
+  },
+  {
+   "id": "BL-CO",
+   "dir": "in",
+   "desc": "CO 来自甲方气瓶一级减压",
+   "cond": "0.2–0.6 MPa(g)",
+   "by": "甲方",
+   "src": "R8 表5"
+  },
+  {
+   "id": "BL-CH4",
+   "dir": "in",
+   "desc": "CH₄ 来自甲方气瓶一级减压",
+   "cond": "0.2–0.6 MPa(g)",
+   "by": "甲方",
+   "src": "R8 表5"
+  },
+  {
+   "id": "BL-CO2",
+   "dir": "in",
+   "desc": "CO₂ 来自甲方气瓶一级减压",
+   "cond": "0.2–0.6 MPa(g)",
+   "by": "甲方",
+   "src": "R8 表5"
+  },
+  {
+   "id": "BL-SP",
+   "dir": "in",
+   "desc": "备用气入口（本期封堵帽封堵）",
+   "cond": "启用前提供组分、压力及 SDS",
+   "by": "甲方",
+   "src": "R8 表5"
+  },
+  {
+   "id": "BL-AG",
+   "dir": "out",
+   "desc": "阳极尾气至甲方尾气排放/处理接口",
+   "cond": "近常压；不得对夹具形成抽吸负压；含 CO 尾气不得排入室内",
+   "by": "甲方",
+   "src": "R8 表5"
+  },
+  {
+   "id": "BL-DR",
+   "dir": "out",
+   "desc": "冷凝液人工排放至甲方容器",
+   "cond": "间断，≤0.7 g/h",
+   "by": "甲方",
+   "src": "R1 02.15"
+  },
+  {
+   "id": "BL-AIR",
+   "dir": "in",
+   "desc": "阴极侧敞开，环境空气自然供氧（无阴极供气系统）",
+   "cond": "常压",
+   "by": "—",
+   "src": "U/R8"
+  }
+ ],
+ "equipment": [
+  {
+   "tag": "F-301",
+   "class": "Furnace",
+   "symbol": "custom:管式炉",
+   "name": "指定管式炉",
+   "spec": "科晶 OTF-1200X-S-Φ50，额定 1200 ℃，样品 600–900 ℃；AC220 V 约 1.2 kW；自带温控与炉热偶；RS485 Modbus RTU",
+   "by": "我方采购（甲方指定型号）",
+   "src": "C/R1 03.01"
+  },
+  {
+   "tag": "X-301",
+   "class": "TestFixture",
+   "symbol": "custom:纽扣电池夹具",
+   "name": "纽扣电池测试夹具",
+   "spec": "刚玉管玻璃封接；15 mm 电池，有效面积 0.5 cm²；阳极进/出 Φ6；阴极敞开；正常 0–0.3 kPa(g)，耐压按封接样件验证",
+   "by": "我方（沿用自有结构）",
+   "src": "C/U/R1 03.03",
+   "ports": [
+    "AN_IN",
+    "AN_OUT",
+    "CATHODE_OPEN",
+    "E_POS",
+    "E_NEG",
+    "TW"
+   ]
+  },
+  {
+   "tag": "V-301",
+   "class": "Vessel",
+   "symbol": "custom:冷凝收集杯",
+   "name": "尾气冷凝收集杯",
+   "spec": "316L/可视收集杯，≤50 mL；Φ6 进出；底部排液",
+   "by": "我方",
+   "src": "R1 02.15",
+   "ports": [
+    "IN",
+    "OUT",
+    "DRAIN"
+   ]
+  },
+  {
+   "tag": "JL-301",
+   "class": "ElectronicLoad",
+   "symbol": "custom:电子负载",
+   "name": "单向电子负载",
+   "spec": "费思 FT6211A，150 V/30 A/150 W；3 A 档；四线测压；RS232/SCPI，数字 I/O 禁能",
+   "by": "我方",
+   "src": "U/R1 04.01"
+  }
+ ],
+ "inline": [
+  {
+   "tag": "HV-101",
+   "type": "ball_valve",
+   "desc": "H₂ 入口隔离球阀",
+   "spec": "316L，Φ6 卡套，0.6 MPa",
+   "src": "R1 02.05"
+  },
+  {
+   "tag": "FL-101",
+   "type": "filter",
+   "desc": "H₂ 前置过滤器 2 μm",
+   "spec": "316L",
+   "src": "R1 02.02"
+  },
+  {
+   "tag": "PCV-101",
+   "type": "regulator",
+   "desc": "H₂ 二级减压阀（带 PI-101）",
+   "spec": "出口 0.10–0.20 MPa(g) 可调，正常 0.15",
+   "src": "R1 02.01/B0 D09"
+  },
+  {
+   "tag": "XV-101",
+   "type": "on_off_valve",
+   "desc": "H₂ 切断阀",
+   "spec": "316L 气动隔膜阀，PTFE 隔膜，常闭 FC；XY-101 先导电磁阀 24 VDC，N₂ 驱动",
+   "fail": "FC",
+   "src": "U/R1 02.03"
+  },
+  {
+   "tag": "FIC-101",
+   "type": "mfc",
+   "desc": "H₂ 质量流量控制器",
+   "spec": "0–200 sccm（0 ℃/101.325 kPa 干气），≤±1%FS；RS485 Modbus RTU",
+   "src": "C/U/R1 01.01"
+  },
+  {
+   "tag": "CK-101",
+   "type": "check_valve",
+   "desc": "H₂ 低开启压止回阀",
+   "spec": "开启压 ≤1 kPa 目标",
+   "src": "R1 02.04"
+  },
+  {
+   "tag": "HV-102",
+   "type": "ball_valve",
+   "desc": "N₂ 入口隔离球阀",
+   "spec": "316L，Φ6 卡套，0.6 MPa",
+   "src": "R1 02.05"
+  },
+  {
+   "tag": "FL-102",
+   "type": "filter",
+   "desc": "N₂ 前置过滤器 2 μm",
+   "spec": "316L",
+   "src": "R1 02.02"
+  },
+  {
+   "tag": "PCV-102",
+   "type": "regulator",
+   "desc": "N₂ 二级减压阀（带 PI-102）",
+   "spec": "出口 0.10–0.20 MPa(g) 可调",
+   "src": "R1 02.01"
+  },
+  {
+   "tag": "XV-102",
+   "type": "on_off_valve",
+   "desc": "N₂ 切断阀（MFC 支路）",
+   "spec": "同 XV-101；XY-102",
+   "fail": "FC",
+   "src": "R1 02.03/控制点位 DO02"
+  },
+  {
+   "tag": "FIC-102",
+   "type": "mfc",
+   "desc": "N₂ 质量流量控制器",
+   "spec": "0–500 sccm，≤±1%FS；RS485",
+   "src": "C/U/R1 01.02"
+  },
+  {
+   "tag": "CK-102",
+   "type": "check_valve",
+   "desc": "N₂ 低开启压止回阀（兼护旁路）",
+   "spec": "开启压 ≤1 kPa 目标",
+   "src": "R1 02.04"
+  },
+  {
+   "tag": "HV-103",
+   "type": "ball_valve",
+   "desc": "CO 入口隔离球阀",
+   "spec": "316L",
+   "src": "R1 02.05"
+  },
+  {
+   "tag": "FL-103",
+   "type": "filter",
+   "desc": "CO 前置过滤器 2 μm",
+   "spec": "316L",
+   "src": "R1 02.02"
+  },
+  {
+   "tag": "PCV-103",
+   "type": "regulator",
+   "desc": "CO 二级减压阀（带 PI-103）",
+   "spec": "出口 0.10–0.20 MPa(g)",
+   "src": "R1 02.01"
+  },
+  {
+   "tag": "XV-103",
+   "type": "on_off_valve",
+   "desc": "CO 切断阀",
+   "spec": "同 XV-101；XY-103",
+   "fail": "FC",
+   "src": "R1 02.03"
+  },
+  {
+   "tag": "FIC-103",
+   "type": "mfc",
+   "desc": "CO 质量流量控制器",
+   "spec": "0–100 sccm，≤±1%FS；RS485",
+   "src": "C/U/R1 01.03"
+  },
+  {
+   "tag": "CK-103",
+   "type": "check_valve",
+   "desc": "CO 低开启压止回阀",
+   "spec": "",
+   "src": "R1 02.04"
+  },
+  {
+   "tag": "HV-104",
+   "type": "ball_valve",
+   "desc": "CH₄ 入口隔离球阀",
+   "spec": "316L",
+   "src": "R1 02.05"
+  },
+  {
+   "tag": "FL-104",
+   "type": "filter",
+   "desc": "CH₄ 前置过滤器 2 μm",
+   "spec": "316L",
+   "src": "R1 02.02"
+  },
+  {
+   "tag": "PCV-104",
+   "type": "regulator",
+   "desc": "CH₄ 二级减压阀（带 PI-104）",
+   "spec": "出口 0.10–0.20 MPa(g)",
+   "src": "R1 02.01"
+  },
+  {
+   "tag": "XV-104",
+   "type": "on_off_valve",
+   "desc": "CH₄ 切断阀",
+   "spec": "同 XV-101；XY-104",
+   "fail": "FC",
+   "src": "R1 02.03"
+  },
+  {
+   "tag": "FIC-104",
+   "type": "mfc",
+   "desc": "CH₄ 质量流量控制器",
+   "spec": "0–100 sccm，≤±1%FS；RS485",
+   "src": "C/U/R1 01.04"
+  },
+  {
+   "tag": "CK-104",
+   "type": "check_valve",
+   "desc": "CH₄ 低开启压止回阀",
+   "spec": "",
+   "src": "R1 02.04"
+  },
+  {
+   "tag": "HV-105",
+   "type": "ball_valve",
+   "desc": "CO₂ 入口隔离球阀",
+   "spec": "316L",
+   "src": "R1 02.05"
+  },
+  {
+   "tag": "FL-105",
+   "type": "filter",
+   "desc": "CO₂ 前置过滤器 2 μm",
+   "spec": "316L",
+   "src": "R1 02.02"
+  },
+  {
+   "tag": "PCV-105",
+   "type": "regulator",
+   "desc": "CO₂ 二级减压阀（带 PI-105）",
+   "spec": "出口 0.10–0.20 MPa(g)",
+   "src": "R1 02.01"
+  },
+  {
+   "tag": "XV-105",
+   "type": "on_off_valve",
+   "desc": "CO₂ 切断阀",
+   "spec": "同 XV-101；XY-105",
+   "fail": "FC",
+   "src": "R1 02.03"
+  },
+  {
+   "tag": "FIC-105",
+   "type": "mfc",
+   "desc": "CO₂ 质量流量控制器",
+   "spec": "0–100 sccm，≤±1%FS；RS485",
+   "src": "C/U/R1 01.05"
+  },
+  {
+   "tag": "CK-105",
+   "type": "check_valve",
+   "desc": "CO₂ 低开启压止回阀",
+   "spec": "",
+   "src": "R1 02.04"
+  },
+  {
+   "tag": "CAP-106",
+   "type": "cap",
+   "desc": "备用口封堵帽",
+   "spec": "Φ6 卡套封堵帽",
+   "src": "R1 02.14"
+  },
+  {
+   "tag": "HV-106",
+   "type": "ball_valve",
+   "desc": "备用气隔离球阀（本期关闭并挂牌）",
+   "spec": "316L",
+   "src": "R1 02.05",
+   "normally": "NC"
+  },
+  {
+   "tag": "HV-107",
+   "type": "needle_valve",
+   "desc": "备用气限流针阀（本期关闭）",
+   "spec": "316L 精密针阀",
+   "src": "R1 02.06",
+   "normally": "NC"
+  },
+  {
+   "tag": "CK-106",
+   "type": "check_valve",
+   "desc": "备用气止回阀",
+   "spec": "",
+   "src": "R1 02.04"
+  },
+  {
+   "tag": "XV-201",
+   "type": "on_off_valve",
+   "desc": "N₂ 保护旁路阀",
+   "spec": "316L 气动隔膜阀，常开 FO；XY-201 先导电磁阀 24 VDC；试验时得电关闭，失电或驱动气中断打开",
+   "fail": "FO",
+   "src": "U/R1 02.07"
+  },
+  {
+   "tag": "HV-202",
+   "type": "needle_valve",
+   "desc": "N₂ 旁路限流针阀（出厂整定 500 sccm 后锁定）",
+   "spec": "316L/FKM",
+   "src": "R1 02.08/B0 D08"
+  },
+  {
+   "tag": "FSL-201",
+   "type": "flow_switch",
+   "desc": "N₂ 旁路流量开关（流量证明）",
+   "spec": "≥300 sccm 许可（暂值），24 VDC 干接点",
+   "src": "R1 02.08/控制点位 DI07"
+  },
+  {
+   "tag": "PCV-202",
+   "type": "regulator",
+   "desc": "驱动 N₂ 减压阀（带 PI-202）",
+   "spec": "出口按执行器要求 0.4–0.6 MPa(g)",
+   "src": "R1 02.07"
+  },
+  {
+   "tag": "HV-301",
+   "type": "ball_valve",
+   "desc": "冷凝液排液阀（常关，定期人工排放）",
+   "spec": "316L",
+   "src": "R1 02.15",
+   "normally": "NC"
+  }
+ ],
+ "tees": [
+  {
+   "id": "T-IN",
+   "on": "N2-0102-6-S1",
+   "branch": "IN-0202-4-P1",
+   "desc": "驱动 N₂ 取气点（PCV-102 上游，保证 ≥0.45 MPa）"
+  },
+  {
+   "id": "T-BP1",
+   "on": "N2-0102-6-S1",
+   "branch": "N2-0201-6-S1",
+   "desc": "旁路分出（PCV-102 下游、XV-102 上游）"
+  },
+  {
+   "id": "T-BP2",
+   "on": "N2-0102-6-S1",
+   "branch": "N2-0201-6-S1",
+   "desc": "旁路汇入（FIC-102 下游、CK-102 上游）"
+  },
+  {
+   "id": "T-M2",
+   "on": "FG-0203-6-S1",
+   "branch": "N2-0102-6-S1"
+  },
+  {
+   "id": "T-M3",
+   "on": "FG-0203-6-S1",
+   "branch": "CO-0103-6-S1"
+  },
+  {
+   "id": "T-M4",
+   "on": "FG-0203-6-S1",
+   "branch": "CH4-0104-6-S1"
+  },
+  {
+   "id": "T-M5",
+   "on": "FG-0203-6-S1",
+   "branch": "CO2-0105-6-S1"
+  },
+  {
+   "id": "T-M6",
+   "on": "FG-0203-6-S1",
+   "branch": "SP-0106-6-S1"
+  },
+  {
+   "id": "T-PT",
+   "on": "FG-0203-6-S1",
+   "branch": "PT-201 取压",
+   "desc": "靠近夹具冷端阳极入口"
+  }
+ ],
+ "lines": [
+  {
+   "no": "H2-0101-6-S1",
+   "fluid": "H2",
+   "seq": [
+    "BL-H2",
+    "HV-101",
+    "FL-101",
+    "PCV-101",
+    "XV-101",
+    "FIC-101",
+    "CK-101",
+    "FG-0203-6-S1:start"
+   ],
+   "op": "0.15 MPa(g) 至 MFC；下游近常压",
+   "flow": "0–200 sccm"
+  },
+  {
+   "no": "N2-0102-6-S1",
+   "fluid": "N2",
+   "seq": [
+    "BL-N2",
+    "HV-102",
+    "FL-102",
+    "T-IN",
+    "PCV-102",
+    "T-BP1",
+    "XV-102",
+    "FIC-102",
+    "T-BP2",
+    "CK-102",
+    "T-M2"
+   ],
+   "op": "上游 ≥0.45 MPa(g)；PCV 后 0.15",
+   "flow": "0–500 sccm"
+  },
+  {
+   "no": "CO-0103-6-S1",
+   "fluid": "CO",
+   "seq": [
+    "BL-CO",
+    "HV-103",
+    "FL-103",
+    "PCV-103",
+    "XV-103",
+    "FIC-103",
+    "CK-103",
+    "T-M3"
+   ],
+   "op": "0.15 MPa(g)",
+   "flow": "0–100 sccm"
+  },
+  {
+   "no": "CH4-0104-6-S1",
+   "fluid": "CH4",
+   "seq": [
+    "BL-CH4",
+    "HV-104",
+    "FL-104",
+    "PCV-104",
+    "XV-104",
+    "FIC-104",
+    "CK-104",
+    "T-M4"
+   ],
+   "op": "0.15 MPa(g)",
+   "flow": "0–100 sccm"
+  },
+  {
+   "no": "CO2-0105-6-S1",
+   "fluid": "CO2",
+   "seq": [
+    "BL-CO2",
+    "HV-105",
+    "FL-105",
+    "PCV-105",
+    "XV-105",
+    "FIC-105",
+    "CK-105",
+    "T-M5"
+   ],
+   "op": "0.15 MPa(g)",
+   "flow": "0–100 sccm"
+  },
+  {
+   "no": "SP-0106-6-S1",
+   "fluid": "SP",
+   "seq": [
+    "BL-SP",
+    "CAP-106",
+    "HV-106",
+    "HV-107",
+    "CK-106",
+    "T-M6"
+   ],
+   "op": "本期封堵不用",
+   "flow": "—",
+   "note": "启用可燃/有毒介质前须补装自动切断阀并评审"
+  },
+  {
+   "no": "N2-0201-6-S1",
+   "fluid": "N2",
+   "seq": [
+    "T-BP1",
+    "XV-201",
+    "HV-202",
+    "FSL-201",
+    "T-BP2"
+   ],
+   "op": "0.15 MPa(g)",
+   "flow": "500 sccm（限流）"
+  },
+  {
+   "no": "IN-0202-4-P1",
+   "fluid": "IN",
+   "seq": [
+    "T-IN",
+    "PCV-202",
+    "驱动气分配块→XY-101~105、XY-201"
+   ],
+   "op": "0.4–0.6 MPa(g)",
+   "flow": "间断"
+  },
+  {
+   "no": "FG-0203-6-S1",
+   "fluid": "FG",
+   "seq": [
+    "H2-0101 汇入",
+    "T-M2",
+    "T-M3",
+    "T-M4",
+    "T-M5",
+    "T-M6",
+    "T-PT",
+    "X-301:AN_IN"
+   ],
+   "op": "0–0.3 kPa(g) 正常",
+   "flow": "≤500 sccm（程序限定）",
+   "note": "低死容积，受控容积 ≤0.2 L"
+  },
+  {
+   "no": "AG-0301-6-S1",
+   "fluid": "AG",
+   "seq": [
+    "X-301:AN_OUT",
+    "V-301:IN"
+   ],
+   "op": "近常压",
+   "flow": "≤500 sccm 含水汽",
+   "note": "低阻、防冷凝积液走向"
+  },
+  {
+   "no": "AG-0302-6-S1",
+   "fluid": "AG",
+   "seq": [
+    "V-301:OUT",
+    "BL-AG"
+   ],
+   "op": "近常压",
+   "flow": "≤500 sccm"
+  },
+  {
+   "no": "DR-0303-6-S1",
+   "fluid": "DR",
+   "seq": [
+    "V-301:DRAIN",
+    "HV-301",
+    "BL-DR"
+   ],
+   "op": "常压",
+   "flow": "间断"
+  }
+ ],
+ "instruments": [
+  {
+   "tag": "PI-101",
+   "loc": "field",
+   "desc": "H₂ 二级减压后压力表",
+   "range": "0–0.4 MPa",
+   "on": "PCV-101",
+   "src": "R1 02.01"
+  },
+  {
+   "tag": "PI-102",
+   "loc": "field",
+   "desc": "N₂ 二级减压后压力表",
+   "range": "0–0.4 MPa",
+   "on": "PCV-102",
+   "src": "R1 02.01"
+  },
+  {
+   "tag": "PI-103",
+   "loc": "field",
+   "desc": "CO 二级减压后压力表",
+   "range": "0–0.4 MPa",
+   "on": "PCV-103",
+   "src": "R1 02.01"
+  },
+  {
+   "tag": "PI-104",
+   "loc": "field",
+   "desc": "CH₄ 二级减压后压力表",
+   "range": "0–0.4 MPa",
+   "on": "PCV-104",
+   "src": "R1 02.01"
+  },
+  {
+   "tag": "PI-105",
+   "loc": "field",
+   "desc": "CO₂ 二级减压后压力表",
+   "range": "0–0.4 MPa",
+   "on": "PCV-105",
+   "src": "R1 02.01"
+  },
+  {
+   "tag": "PI-202",
+   "loc": "field",
+   "desc": "驱动 N₂ 压力表",
+   "range": "0–1.0 MPa",
+   "on": "PCV-202",
+   "src": "R1 02.07"
+  },
+  {
+   "tag": "FIC-101",
+   "loc": "field_integral",
+   "desc": "H₂ MFC 设定/反馈",
+   "io": "COM01 RS485",
+   "alarms": "FAD 偏差报警",
+   "src": "控制点位"
+  },
+  {
+   "tag": "FIC-102",
+   "loc": "field_integral",
+   "desc": "N₂ MFC",
+   "io": "COM02 RS485",
+   "alarms": "FAD",
+   "src": "控制点位"
+  },
+  {
+   "tag": "FIC-103",
+   "loc": "field_integral",
+   "desc": "CO MFC",
+   "io": "COM03 RS485",
+   "alarms": "FAD",
+   "src": "控制点位"
+  },
+  {
+   "tag": "FIC-104",
+   "loc": "field_integral",
+   "desc": "CH₄ MFC",
+   "io": "COM04 RS485",
+   "alarms": "FAD",
+   "src": "控制点位"
+  },
+  {
+   "tag": "FIC-105",
+   "loc": "field_integral",
+   "desc": "CO₂ MFC",
+   "io": "COM05 RS485",
+   "alarms": "FAD",
+   "src": "控制点位"
+  },
+  {
+   "tag": "XY-101",
+   "loc": "field",
+   "desc": "XV-101 先导电磁阀",
+   "io": "DO01",
+   "src": "控制点位"
+  },
+  {
+   "tag": "XY-102",
+   "loc": "field",
+   "desc": "XV-102 先导电磁阀",
+   "io": "DO02",
+   "src": "控制点位"
+  },
+  {
+   "tag": "XY-103",
+   "loc": "field",
+   "desc": "XV-103 先导电磁阀",
+   "io": "DO03",
+   "src": "控制点位"
+  },
+  {
+   "tag": "XY-104",
+   "loc": "field",
+   "desc": "XV-104 先导电磁阀",
+   "io": "DO04",
+   "src": "控制点位"
+  },
+  {
+   "tag": "XY-105",
+   "loc": "field",
+   "desc": "XV-105 先导电磁阀",
+   "io": "DO05",
+   "src": "控制点位"
+  },
+  {
+   "tag": "XY-201",
+   "loc": "field",
+   "desc": "XV-201 先导电磁阀（得电关旁路）",
+   "io": "DO07",
+   "src": "控制点位"
+  },
+  {
+   "tag": "FSL-201",
+   "loc": "field",
+   "desc": "N₂ 旁路流量低（流量证明）",
+   "io": "DI07",
+   "setpoint": "<300 sccm（暂值）",
+   "src": "控制点位"
+  },
+  {
+   "tag": "PT-201",
+   "loc": "field",
+   "desc": "阳极微压变送器",
+   "range": "0–5 kPa(g)",
+   "io": "AI01 4–20 mA",
+   "src": "R1 02.09"
+  },
+  {
+   "tag": "PI-201",
+   "loc": "plc",
+   "desc": "阳极压力显示/记录",
+   "src": "R8"
+  },
+  {
+   "tag": "PAHH-201",
+   "loc": "plc",
+   "desc": "阳极压力高高",
+   "setpoint": "3 kPa(g)（暂值，须低于封接允许压）",
+   "src": "R8 表4/E"
+  },
+  {
+   "tag": "TIC-301",
+   "loc": "vendor",
+   "desc": "炉温控制（科晶自带温控，Modbus 远程设定/读取）",
+   "io": "COM06 RS485",
+   "src": "C/R8"
+  },
+  {
+   "tag": "TE-301",
+   "loc": "vendor",
+   "desc": "炉控制热偶（炉自带）",
+   "src": "R1 03.01"
+  },
+  {
+   "tag": "TSHH-301",
+   "loc": "vendor",
+   "desc": "炉超温保护（炉自带，硬接点）",
+   "io": "DI09",
+   "src": "控制点位（厂家硬接点待核实）"
+  },
+  {
+   "tag": "XY-301",
+   "loc": "field",
+   "desc": "炉加热许可（接触器）",
+   "io": "DO08",
+   "src": "控制点位"
+  },
+  {
+   "tag": "TE-302",
+   "loc": "field",
+   "desc": "样品 S 型热电偶（独立）",
+   "range": "0–1200 ℃",
+   "src": "R1 03.05"
+  },
+  {
+   "tag": "TI-302",
+   "loc": "plc",
+   "desc": "样品温度显示/记录",
+   "io": "TC01 SM1231 TC",
+   "src": "控制点位"
+  },
+  {
+   "tag": "TAHH-302",
+   "loc": "plc",
+   "desc": "样品超温/热偶断线",
+   "setpoint": "按工况设定（暂定 950 ℃）",
+   "src": "R8 表4/E"
+  },
+  {
+   "tag": "TE-303",
+   "loc": "field",
+   "desc": "冷端 Pt100",
+   "range": "0–200 ℃",
+   "src": "R1 03.06"
+  },
+  {
+   "tag": "TT-303",
+   "loc": "field",
+   "desc": "Pt100 温度变送器 4–20 mA",
+   "io": "AI02",
+   "src": "R1 03.06"
+  },
+  {
+   "tag": "TAH-303",
+   "loc": "plc",
+   "desc": "冷端过热报警",
+   "setpoint": "按密封材料冻结（暂定 120 ℃）",
+   "src": "B0 D14/E"
+  },
+  {
+   "tag": "EI-304",
+   "loc": "plc",
+   "desc": "电池电压（负载四线测量，SCPI 读取）",
+   "range": "0.2–1.5 V",
+   "io": "COM07",
+   "src": "R8"
+  },
+  {
+   "tag": "II-304",
+   "loc": "plc",
+   "desc": "电池电流（负载 CC，SCPI 读取）",
+   "range": "0–2 A",
+   "io": "COM07",
+   "src": "R8"
+  },
+  {
+   "tag": "XY-304",
+   "loc": "field",
+   "desc": "负载禁能（数字 I/O，硬卸载）",
+   "io": "DO09",
+   "src": "控制点位（厂家确认 I/O 功能）"
+  },
+  {
+   "tag": "AIT-401",
+   "loc": "field",
+   "desc": "CO 探测器",
+   "range": "0–200 ppm",
+   "setpoint": "AAH 10 ppm / AAHH 20 ppm（暂值）；AAH 预警由探测器本机声光实现，不进 PLC（E）",
+   "io": "DI05 高高报警+故障合并",
+   "src": "R8 表4；R1 05.08"
+  },
+  {
+   "tag": "AIT-402",
+   "loc": "field",
+   "desc": "H₂ 可燃气探测器",
+   "range": "0–100 %LEL",
+   "setpoint": "AAH 10 %LEL / AAHH 20 %LEL；AAH 预警由探测器本机声光实现，不进 PLC（E）",
+   "io": "DI03",
+   "src": "R8 表4；R1 05.09"
+  },
+  {
+   "tag": "AIT-403",
+   "loc": "field",
+   "desc": "CH₄ 可燃气探测器",
+   "range": "0–100 %LEL",
+   "setpoint": "AAH 10 %LEL / AAHH 20 %LEL；AAH 预警由探测器本机声光实现，不进 PLC（E）",
+   "io": "DI04",
+   "src": "R8 表4；R1 05.10"
+  },
+  {
+   "tag": "HS-401",
+   "loc": "field",
+   "desc": "急停按钮（双触点）",
+   "io": "DI01（经安全继电器）",
+   "src": "R1 05.12"
+  },
+  {
+   "tag": "HS-402",
+   "loc": "field",
+   "desc": "复位按钮",
+   "src": "R1 05.12"
+  },
+  {
+   "tag": "XA-401",
+   "loc": "field",
+   "desc": "总声光报警",
+   "io": "DO10",
+   "src": "控制点位；R1 05.12"
+  },
+  {
+   "tag": "UZ-401",
+   "loc": "field",
+   "desc": "硬件安全继电器（独立撤销燃料与加热许可）",
+   "io": "DI01/DI02 反馈",
+   "src": "R1 05.11"
+  },
+  {
+   "tag": "PLC-401",
+   "loc": "plc",
+   "desc": "S7-1200 CPU1214C，顺序控制与联锁（非安全 PLC）",
+   "src": "U/R1 05.01"
+  },
+  {
+   "tag": "HMI-401",
+   "loc": "plc",
+   "desc": "昆仑通态 TPC1031Nt 10\" 触摸屏；VNC 至台式电脑；CSV 导出",
+   "src": "U/R1 05.07",
+   "io": "NET01 以太网（PLC/HMI/PC，VNC）"
+  },
+  {
+   "tag": "JSL-401",
+   "loc": "field",
+   "desc": "UPS 市电失电接点（电源低开关）",
+   "io": "DI06（释放的备用点）",
+   "src": "设计确认 2026-10-07（Q-09）；R1 05.14"
+  }
+ ],
+ "signals": [
+  {
+   "from": "FIC-101..105",
+   "to": "PLC-401",
+   "type": "software",
+   "desc": "RS485 Modbus RTU 总线（与 TIC-301 共 6 节点）"
+  },
+  {
+   "from": "TIC-301",
+   "to": "PLC-401",
+   "type": "software",
+   "desc": "RS485 Modbus RTU"
+  },
+  {
+   "from": "JL-301",
+   "to": "PLC-401",
+   "type": "software",
+   "desc": "RS232/SCPI 经隔离串口服务器转以太网"
+  },
+  {
+   "from": "PLC-401",
+   "to": "HMI-401",
+   "type": "software",
+   "desc": "以太网；HMI→台式电脑 VNC"
+  },
+  {
+   "from": "PT-201",
+   "to": "PLC-401",
+   "type": "electric",
+   "desc": "4–20 mA"
+  },
+  {
+   "from": "TE-302",
+   "to": "PLC-401",
+   "type": "electric",
+   "desc": "S 型补偿导线至 TC 模块"
+  },
+  {
+   "from": "TE-303",
+   "to": "TT-303",
+   "type": "electric"
+  },
+  {
+   "from": "TT-303",
+   "to": "PLC-401",
+   "type": "electric",
+   "desc": "4–20 mA"
+  },
+  {
+   "from": "FSL-201",
+   "to": "PLC-401",
+   "type": "electric",
+   "desc": "干接点"
+  },
+  {
+   "from": "TSHH-301",
+   "to": "PLC-401",
+   "type": "electric",
+   "desc": "干接点"
+  },
+  {
+   "from": "AIT-401..403",
+   "to": "UZ-401",
+   "type": "electric",
+   "desc": "报警/故障继电器接点串入安全许可，并入 PLC DI"
+  },
+  {
+   "from": "HS-401",
+   "to": "UZ-401",
+   "type": "electric",
+   "desc": "双通道"
+  },
+  {
+   "from": "UZ-401",
+   "to": "XY-101..105, XY-301, XY-304",
+   "type": "electric",
+   "desc": "安全许可串联在 PLC DO 之后（硬件撤销）"
+  },
+  {
+   "from": "PLC-401",
+   "to": "XY-101..105, XY-201, XY-301, XY-304, XA-401",
+   "type": "electric",
+   "desc": "24 V 继电器输出"
+  },
+  {
+   "from": "IN-0202",
+   "to": "XY-101..105, XY-201",
+   "type": "pneumatic",
+   "desc": "驱动 N₂ 经先导阀至隔膜执行机构；先导阀排气引至柜外"
+  },
+  {
+   "from": "X-301:E_POS/E_NEG",
+   "to": "JL-301",
+   "type": "electric",
+   "desc": "Kelvin 四线：2 电流线 + 2 测压线"
+  }
+ ],
+ "interlocks": [
+  {
+   "id": "I-01",
+   "cause": "急停 HS-401 按下",
+   "detect": "安全继电器 UZ-401（硬件）",
+   "setpoint": "—",
+   "actions": {
+    "fuel_xv": "关",
+    "n2_bypass": "开（N₂ 吹扫）；但 I-02/I-10 成立时保持关",
+    "heat": "切断",
+    "load": "禁能",
+    "alarm": "声光"
+   },
+   "reset": "急停复位 + HS-402 + HMI 确认",
+   "src": "R8 表4"
+  },
+  {
+   "id": "I-02",
+   "cause": "阳极压力高高 PAHH-201",
+   "detect": "PLC（PT-201）",
+   "setpoint": "3 kPa(g)（暂值）",
+   "actions": {
+    "fuel_xv": "关（含 XV-102）",
+    "n2_bypass": "保持关（不送 N₂）",
+    "heat": "切断",
+    "load": "禁能",
+    "alarm": "声光"
+   },
+   "reset": "排查尾气堵塞后 HMI 人工确认",
+   "src": "R8 表4"
+  },
+  {
+   "id": "I-03",
+   "cause": "CO 高高 AAHH-401 或探测器故障",
+   "detect": "探测器继电器→UZ-401（硬件）+ PLC",
+   "setpoint": "20 ppm",
+   "actions": {
+    "fuel_xv": "关",
+    "n2_bypass": "开（N₂ 吹扫）；但 I-02/I-10 成立时保持关",
+    "heat": "切断",
+    "load": "禁能",
+    "alarm": "声光"
+   },
+   "reset": "浓度恢复 + 人工复位",
+   "src": "R8 表4；故障并入=R1 控制点位"
+  },
+  {
+   "id": "I-04",
+   "cause": "H₂ 高高 AAHH-402 或探测器故障",
+   "detect": "同 I-03",
+   "setpoint": "20 %LEL",
+   "actions": {
+    "fuel_xv": "关",
+    "n2_bypass": "开（N₂ 吹扫）；但 I-02/I-10 成立时保持关",
+    "heat": "切断",
+    "load": "禁能",
+    "alarm": "声光"
+   },
+   "reset": "同 I-03",
+   "src": "R8 表4"
+  },
+  {
+   "id": "I-05",
+   "cause": "CH₄ 高高 AAHH-403 或探测器故障",
+   "detect": "同 I-03",
+   "setpoint": "20 %LEL",
+   "actions": {
+    "fuel_xv": "关",
+    "n2_bypass": "开（N₂ 吹扫）；但 I-02/I-10 成立时保持关",
+    "heat": "切断",
+    "load": "禁能",
+    "alarm": "声光"
+   },
+   "reset": "同 I-03",
+   "src": "R8 表4"
+  },
+  {
+   "id": "I-06",
+   "cause": "气体预警 AAH-401/402/403（探测器本机）",
+   "detect": "探测器本机声光（不进 PLC）",
+   "setpoint": "10 ppm / 10 %LEL",
+   "actions": {
+    "alarm": "探测器本机声光预警"
+   },
+   "reset": "自动",
+   "src": "R8 表4；设计复核：点表每台仅一个合并 DI，预警改为本机（E）"
+  },
+  {
+   "id": "I-07",
+   "cause": "N₂ 供应失效：启动前 FSL-201 流量证明失败，或运行中 FIC-102 测量 < 设定×50% 持续 10 s（暂定）",
+   "detect": "PLC",
+   "setpoint": "<300 sccm（旁路开启时判定）",
+   "actions": {
+    "permissive": "未证明时禁止开燃料和升温",
+    "fuel_xv": "运行中失效：报警并转正常停机 M7（E）",
+    "alarm": "声光"
+   },
+   "reset": "流量恢复",
+   "src": "R8 表4；R1 02.08“低于此值撤销运行许可”；设计复核：补运行中失流处置（E）"
+  },
+  {
+   "id": "I-08",
+   "cause": "炉超温 TSHH-301",
+   "detect": "炉自带保护 + PLC",
+   "setpoint": "炉厂设定",
+   "actions": {
+    "fuel_xv": "关",
+    "n2_bypass": "开（N₂ 吹扫）；但 I-02/I-10 成立时保持关",
+    "heat": "切断",
+    "load": "禁能",
+    "alarm": "声光"
+   },
+   "reset": "人工",
+   "src": "R8 表4/控制点位 DI09"
+  },
+  {
+   "id": "I-09",
+   "cause": "样品超温 TAHH-302 或热偶断线",
+   "detect": "PLC",
+   "setpoint": "暂定 950 ℃",
+   "actions": {
+    "fuel_xv": "关",
+    "n2_bypass": "开（N₂ 吹扫）；但 I-02/I-10 成立时保持关",
+    "heat": "切断",
+    "load": "禁能",
+    "alarm": "声光"
+   },
+   "reset": "人工",
+   "src": "R8 表4"
+  },
+  {
+   "id": "I-10",
+   "cause": "PT-201 信号丢失（<3.6 mA 或 >21 mA）",
+   "detect": "PLC",
+   "setpoint": "—",
+   "actions": {
+    "fuel_xv": "关（含 XV-102）",
+    "n2_bypass": "保持关（不送 N₂，同阳极超压）",
+    "heat": "切断",
+    "load": "禁能",
+    "alarm": "声光"
+   },
+   "reset": "人工",
+   "src": "R8 表4；设计确认 2026-10-06：信号丢失按阳极超压处理"
+  },
+  {
+   "id": "I-11",
+   "cause": "通信中断（MFC/炉/负载看门狗）",
+   "detect": "PLC",
+   "setpoint": "连续 3 个轮询周期",
+   "actions": {
+    "fuel_xv": "关",
+    "n2_bypass": "开（N₂ 吹扫）；但 I-02/I-10 成立时保持关",
+    "heat": "切断",
+    "load": "禁能",
+    "alarm": "声光"
+   },
+   "reset": "人工",
+   "src": "工程推荐，设计确认 2026-10-06"
+  },
+  {
+   "id": "I-12",
+   "cause": "冷端过热 TAH-303",
+   "detect": "PLC",
+   "setpoint": "暂定 120 ℃",
+   "actions": {
+    "alarm": "声光"
+   },
+   "reset": "自动",
+   "src": "B0 D14/E"
+  },
+  {
+   "id": "I-13",
+   "cause": "外部市电失电",
+   "detect": "UPS 市电失电干接点 JSL-401 → PLC DI06（UPS 维持 PLC/HMI/报警）",
+   "setpoint": "—",
+   "actions": {
+    "fuel_xv": "关（PLC 执行 M8；彻底断电时 FC 自然关）",
+    "n2_bypass": "开（FO；I-02/I-10 成立时保持关，彻底断电时 FO 自然开）",
+    "heat": "停",
+    "load": "禁能",
+    "alarm": "声光"
+   },
+   "reset": "来电不自动重启，人工确认",
+   "src": "R8；设计复核；设计确认 2026-10-07：UPS 市电失电接点进 PLC"
+  }
+ ],
+ "modes": [
+  {
+   "id": "M0",
+   "name": "冷态停机/断电安全态",
+   "fuel_xv": "全关",
+   "xv102": "关",
+   "bypass": "开（失电）",
+   "n2_source": "冷态停机后关 HV-102",
+   "mfc": "0",
+   "heat": "停",
+   "load": "禁能",
+   "permissive": "—",
+   "exit": "上电、复位、自检通过"
+  },
+  {
+   "id": "M1",
+   "name": "上电自检与 N₂ 流量证明",
+   "fuel_xv": "全关",
+   "xv102": "关",
+   "bypass": "开",
+   "n2_source": "开 HV-102",
+   "mfc": "0",
+   "heat": "停",
+   "load": "禁能",
+   "permissive": "急停复位、探测器无报警无故障、通信正常、FSL-201 证明流量",
+   "exit": "流量证明成立"
+  },
+  {
+   "id": "M2",
+   "name": "N₂ 置换",
+   "fuel_xv": "全关",
+   "xv102": "关",
+   "bypass": "开",
+   "n2_source": "开",
+   "mfc": "全部 0（仅旁路 500 sccm，避免混气段超 500 sccm）",
+   "heat": "停",
+   "load": "禁能",
+   "permissive": "M1",
+   "exit": "置换时间 ≥180 s（暂值，FAT 实测）"
+  },
+  {
+   "id": "M3",
+   "name": "N₂ 保护升温",
+   "fuel_xv": "全关",
+   "xv102": "开",
+   "bypass": "关（XY-201 得电）",
+   "n2_source": "开",
+   "mfc": "N₂ 50 sccm（基准）",
+   "heat": "按程序 3 ℃/min 升至 800 ℃",
+   "load": "禁能",
+   "permissive": "M2 完成、N₂ 流量反馈正常",
+   "exit": "样品温度稳定"
+  },
+  {
+   "id": "M4",
+   "name": "H₂/N₂ 还原",
+   "fuel_xv": "XV-101 开",
+   "xv102": "开",
+   "bypass": "关",
+   "n2_source": "开",
+   "mfc": "H₂ 按程序递增，N₂ 递减（配方由甲方按电池材料确定）",
+   "heat": "恒温",
+   "load": "禁能（OCV 监测）",
+   "permissive": "样品温度 ≥ 还原允许温度",
+   "exit": "OCV 稳定"
+  },
+  {
+   "id": "M5",
+   "name": "稳态/极化测试（H₂/N₂ 基准）",
+   "fuel_xv": "XV-101 开",
+   "xv102": "开",
+   "bypass": "关",
+   "n2_source": "开",
+   "mfc": "H₂ 50 / N₂ 50 sccm 基准",
+   "heat": "恒温",
+   "load": "CC 阶梯/稳态，≤2 A，电压下限保护",
+   "permissive": "OCV 稳定、温度稳定",
+   "exit": "测试结束"
+  },
+  {
+   "id": "M6",
+   "name": "干气配方测试（CO/CH₄/CO₂）",
+   "fuel_xv": "XV-101 按配方开或关；XV-103/104/105 按配方开",
+   "xv102": "开",
+   "bypass": "关",
+   "n2_source": "开",
+   "mfc": "混气总流量 ≤500 sccm（程序限定）",
+   "heat": "恒温",
+   "load": "同 M5",
+   "permissive": "CO 探测器正常；含 CO/CH₄ 配方有积碳风险，配方由甲方确定",
+   "exit": "切回 H₂/N₂ 或停机"
+  },
+  {
+   "id": "M7",
+   "name": "正常停机降温",
+   "fuel_xv": "先卸载再全关",
+   "xv102": "开",
+   "bypass": "关（N₂ 经 FIC-102 保护）；如 N₂ MFC 不可用则开旁路且 MFC 全部 0",
+   "n2_source": "开",
+   "mfc": "N₂ 保护",
+   "heat": "程序降温",
+   "load": "禁能",
+   "permissive": "—",
+   "exit": "样品 ≤150 ℃（TE-302 失效时以 TIC-301）后停 N₂ → M0"
+  },
+  {
+   "id": "M8",
+   "name": "紧急停机（I-01/I-03~I-05/I-08/I-09/I-11/I-13）",
+   "fuel_xv": "全关",
+   "xv102": "关",
+   "bypass": "开（N₂ 吹扫保护至样品 ≤150 ℃；TE-302 失效时以炉温 TIC-301 ≤150 ℃）；I-02/I-10 成立时保持关",
+   "n2_source": "开",
+   "mfc": "0",
+   "heat": "切断",
+   "load": "禁能",
+   "permissive": "—",
+   "exit": "人工复位；N₂ 保护在样品 ≤150 ℃（TE-302 失效时用 TIC-301）后停止"
+  },
+  {
+   "id": "M9",
+   "name": "阳极超压或测压失效停机（I-02/I-10）",
+   "fuel_xv": "全关",
+   "xv102": "关",
+   "bypass": "保持关（不送 N₂）",
+   "n2_source": "开",
+   "mfc": "0",
+   "heat": "切断",
+   "load": "禁能",
+   "permissive": "—",
+   "exit": "恢复前 PT-201 有效且 <0.3 kPa(g)、人工确认尾气通畅；只能进入 M7 降温或 M2 置换，不得直接回 M4~M6"
+  },
+  {
+   "id": "M10",
+   "name": "故障复位",
+   "fuel_xv": "保持关",
+   "xv102": "保持复位前安全态",
+   "bypass": "保持复位前安全态",
+   "n2_source": "保持复位前安全态",
+   "mfc": "保持复位前安全态",
+   "heat": "保持复位前安全态",
+   "load": "保持复位前安全态",
+   "permissive": "原因消除 + HS-402 + HMI 确认；来电不自动重启；阳极超压后只能转 M7/M2",
+   "exit": "返回 M1"
+  }
+ ],
+ "open_points": [
+  {
+   "id": "Q-01",
+   "item": "I-10 PT-201 信号丢失后是否自动转 N₂ 吹扫",
+   "why": "R8 只写“切断燃料和加热”，并称除阳极压力高外均转吹扫；但信号丢失时无法判断是否堵塞",
+   "proposal": "按 R8 字面转吹扫，图注“待确认”",
+   "resolution": "已定：按阳极超压处理，不吹 N₂（设计确认 2026-10-06）"
+  },
+  {
+   "id": "Q-02",
+   "item": "I-11 通信中断联锁",
+   "why": "R8/R1 未列，属工程推荐",
+   "proposal": "保留，标注 E",
+   "resolution": "已定：设联锁（设计确认 2026-10-06）"
+  },
+  {
+   "id": "Q-03",
+   "item": "TAHH-302 950 ℃、TAH-303 120 ℃ 暂值",
+   "why": "无甲方给定值",
+   "proposal": "图上标“暂定”，按密封材料冻结"
+  },
+  {
+   "id": "Q-04",
+   "item": "驱动 N₂ 取气点在 PCV-102 上游",
+   "why": "R8 要求驱动气 ≥0.45 MPa，而二级减压后只有 0.15 MPa",
+   "proposal": "按此绘制；R1 02.14 的“旁路三通 2”需加 1 只取气三通（驱动气成套另含接头，金额可能已覆盖）",
+   "resolution": "已定：取气点在 PCV-102 上游（设计确认拓扑 2026-10-06）"
+  },
+  {
+   "id": "Q-05",
+   "item": "M9 阳极超压且热态时的保护",
+   "why": "不送 N₂ 时阳极可能进空气氧化 Ni",
+   "proposal": "由操作员在排除堵塞后手动恢复 N₂；图注说明"
+  },
+  {
+   "id": "Q-06",
+   "item": "N₂ 保护旁路画在 101 的 N₂ 支路上（与计划中 102 不同）",
+   "why": "旁路两端都在 N₂ 支路上，同图表达连接最直接",
+   "proposal": "按此",
+   "resolution": "已定：按此（设计确认拓扑 2026-10-06）"
+  },
+  {
+   "id": "Q-07",
+   "item": "标题栏“设计单位”与“项目编号”",
+   "why": "项目资料中没有",
+   "proposal": "待提供；暂显示“（设计单位待定）/待定”",
+   "resolution": "暂显示“待定”，以后再填（设计确认 2026-10-06）"
+  },
+  {
+   "id": "Q-08",
+   "item": "叠加故障时 N₂ 旁路优先级（阳极超压/测压失效 与 急停/泄漏/超温 同时出现）",
+   "why": "I-02/I-10 要求旁路关，I-01/I-03~05/I-08/I-09/I-11 要求开（设计复核）",
+   "proposal": "建议：阳极超压或测压失效任一成立时旁路保持关（压力保护优先），其余情况开；完全失电或失驱动气时 FO 自然打开，图注说明",
+   "resolution": "压力保护优先：I-02/I-10 成立时旁路保持关，其余联锁开旁路（设计确认 2026-10-07）"
+  },
+  {
+   "id": "Q-09",
+   "item": "外部失电能否真正形成 FC/FO 安全态",
+   "why": "24 V 电源经 UPS，市电失电时先导阀仍得电（设计复核）",
+   "proposal": "增加 UPS“市电失电”干接点进 PLC 备用 DI（DI06/DI08 已释放），失电即执行 M8；或先导阀回路不经 UPS。需电气确认",
+   "resolution": "UPS 市电失电干接点 JSL-401 进 PLC DI06，失电执行 M8（设计确认 2026-10-07）；上游影响：成本 R1 05.14 UPS 须带市电失电输出接点"
+  },
+  {
+   "id": "Q-10",
+   "item": "样品热偶失效后 N₂ 保护终止依据",
+   "why": "I-09 含断线，无法凭失效测点判断降到 150 ℃（设计复核）",
+   "proposal": "改用炉温 TIC-301 读数 ≤150 ℃，或按降温时间人工确认",
+   "resolution": "TE-302 失效时以炉温 TIC-301 ≤150 ℃ 结束 N₂ 保护（设计确认 2026-10-07）"
+  },
+  {
+   "id": "Q-11",
+   "item": "阳极超压停机后的热态恢复条件",
+   "why": "M9 不送 N₂，Q-05 允许人工恢复但无条件（设计复核）",
+   "proposal": "恢复前须 PT-201 有效且 <0.3 kPa(g)、尾气通畅确认，恢复只能进入 M7 降温或 M2 置换，不得直接回 M4~M6",
+   "resolution": "恢复前 PT-201 有效且 <0.3 kPa(g)、确认尾气通畅，只能进入 M7 或 M2（设计确认 2026-10-07）"
+  },
+  {
+   "id": "Q-12",
+   "item": "成本 R1 02.14 接头适用压力 0~0.2 MPa(g) 与 T-IN 处 0.45~0.6 MPa(g) 不一致",
+   "why": "上游文件依据冲突（设计复核）",
+   "proposal": "下游变更：列入影响清单，是否修改 R1 另行确定"
+  },
+  {
+   "id": "Q-13",
+   "item": "FT6211A 数字禁能、炉超温硬接点、禁能时读取 OCV 的厂家证明",
+   "why": "均为假设（设计复核）",
+   "proposal": "询价时向厂家确认"
+  }
+ ],
+ "sheets": [
+  {
+   "no": "P&ID-000",
+   "title": "封面与图纸目录"
+  },
+  {
+   "no": "P&ID-001",
+   "title": "图例与符号说明"
+  },
+  {
+   "no": "P&ID-101",
+   "title": "五路燃料、备用口与 N₂ 保护旁路配气",
+   "content": "H2/N2/CO/CH4/CO2/SP 六支路至混气集管；N2 支路含保护旁路 XV-201/HV-202/FSL-201；驱动气取气点 T-IN"
+  },
+  {
+   "no": "P&ID-102",
+   "title": "驱动 N₂、混气与阳极进气",
+   "content": "IN-0202 驱动气减压与 6 只先导阀分配；FG-0203 混气段、PT-201 取压"
+  },
+  {
+   "no": "P&ID-103",
+   "title": "管式炉、夹具、尾气与电测",
+   "content": "F-301/X-301/V-301/JL-301；AG/DR 管线；TE/TT/TIC；Kelvin 四线"
+  },
+  {
+   "no": "P&ID-104",
+   "title": "安全检测、急停与控制系统接口",
+   "content": "AIT-401~403、HS-401/402、UZ-401、XA-401、PLC-401/HMI-401/PC，通信与硬接线"
+  },
+  {
+   "no": "P&ID-901",
+   "title": "联锁因果矩阵",
+   "content": "I-01~I-13 联锁原因与动作"
+  },
+  {
+   "no": "P&ID-902",
+   "title": "运行工况表（一）",
+   "content": "M0~M5 停机、自检、置换、升温、还原、稳态测试"
+  },
+  {
+   "no": "P&ID-903",
+   "title": "运行工况表（二）",
+   "content": "M6~M10 干气配方、降温、紧急停机、超压停机、复位"
+  }
+ ],
+ "review_log": [
+  {
+   "date": "2026-10-06",
+   "by": "Codex gpt-6.1-sol high（只读）",
+   "file": "review-codex-20261006-2212.md",
+   "adopted": [
+    "审阅表同步",
+    "T-IN 分支管线号",
+    "I-06 预警改本机",
+    "I-07 运行中失流",
+    "M2/M6/M7 流量与阀位",
+    "FAD 字母",
+    "常关阀填黑表达"
+   ],
+   "to_user": [
+    "Q-08",
+    "Q-09",
+    "Q-10",
+    "Q-11"
+   ],
+   "listed_upstream": [
+    "Q-12"
+   ],
+   "not_adopted": []
+  },
+  {
+   "date": "2026-10-07",
+   "by": "Claude",
+   "note": "对账 R1 询价表：AIT-401~403、XA-401、JSL-401 的依据补 R1 WBS（05.08~05.10、05.12、05.14），仅补出处，不改设计"
+  },
+  {
+   "date": "2026-10-07",
+   "by": "Claude",
+   "note": "对账 R1 控制点位表：HMI-401 补 I/O 点位 NET01，仅补出处，不改设计"
+  },
+  {
+   "date": "2026-10-07",
+   "by": "Claude",
+   "note": "出图审查：901 改为因果矩阵；902 运行工况表拆为 902（M0~M5）与 903（M6~M10），图纸由 8 张增至 9 张；原表格超出图框压标题栏"
+  }
+ ]
+}

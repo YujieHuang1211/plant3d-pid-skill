@@ -1,0 +1,7 @@
+{
+  "base": "E:/AutoCAD Mechanical 2026/AutoCAD 2026/PLNT3D/UserDataCache/zh-CN/Template/PID ISO A1 -Color Dependent Plot Styles.dwt",
+  "out": "E:/05p_id图绘制中心/青木子纽扣电池测试台/PID DWG/模板/青木子_PID_A3_GB.dwt",
+  "paper": "A3",
+  "layout": "A3 GB 标题栏",
+  "stylecfg": "E:/05p_id图绘制中心/_PidBot/specs/qmz_stylecfg.json"
+}

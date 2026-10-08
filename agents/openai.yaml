@@ -1,0 +1,8 @@
+interface:
+  display_name: Plant 3D P&ID 出图
+  short_description: 用 AutoCAD Plant 3D 为非标设备/测试台绘制、修改、核查 P&ID 图集与联锁工况文件
+  default_prompt: 使用 $plant3d-pid 根据项目文件夹中的需求、技术方案和成本表绘制 P&ID 图集。
+policy:
+  products:
+  - codex
+  allow_implicit_invocation: true

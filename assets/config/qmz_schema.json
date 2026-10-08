@@ -1,0 +1,44 @@
+{
+  // 青木子纽扣电池测试台：项目数据模型补充（PIP 公制模板基础上）
+  "classes": [
+    {"name": "MassFlowController", "base": "InlineInstruments", "display": "质量流量控制器（MFC）"},
+    {"name": "TestFixture", "base": "MiscellaneousEquipment", "display": "电池测试夹具"},
+    {"name": "ElectronicLoad", "base": "MiscellaneousEquipment", "display": "电子负载"},
+    {"name": "GasDetector", "base": "GeneralInstrumentSymbols", "display": "固定式气体探测器"},
+    {"name": "TieInPoint", "base": "PipingSpecialtyItems", "display": "界区接口（甲方供/去向）"}
+  ],
+  "columns": [
+    {"table": "EngineeringItems", "name": "BasisCategory", "display": "依据类别（甲方输入/用户确认/工程假设）", "len": 32},
+    {"table": "EngineeringItems", "name": "BasisRef", "display": "设计依据出处", "len": 128},
+    {"table": "EngineeringItems", "name": "AlarmTripSetting", "display": "设定值/联锁值", "len": 128},
+    {"table": "EngineeringItems", "name": "InstrRange", "display": "量程", "len": 64},
+    {"table": "EngineeringItems", "name": "IOPoint", "display": "I/O 点位", "len": 64},
+    {"table": "EngineeringItems", "name": "FailSafePosition", "display": "故障位置（FC/FO）", "len": 16},
+    {"table": "EngineeringItems", "name": "CostWBS", "display": "成本 WBS", "len": 32}
+  ],
+  "drawing": [
+    {"name": "Revision", "display": "版次"},
+    {"name": "Stage", "display": "设计阶段"},
+    {"name": "Scale", "display": "比例"},
+    {"name": "SheetNo", "display": "第几张"},
+    {"name": "SheetTotal", "display": "共几张"},
+    {"name": "Checker", "display": "校核"},
+    {"name": "Reviewer", "display": "审核"},
+    {"name": "Approver", "display": "批准"},
+    {"name": "IssueDate", "display": "日期"},
+    {"name": "RevNote", "display": "修订说明", "len": 128}
+  ],
+  "project": [
+    {"name": "Project_Data_DesignOrg", "display": "设计单位", "category": "Project_Data", "prop": "DesignOrg", "len": 128}
+  ],
+  "picklists": {
+    "Pipe_Sizes_Metric": [["4", "外径 4 mm 管"], ["6", "外径 6 mm 管"]],
+    "Pipe_Specs": [["S1", "316L Φ6×1 无缝管，双卡套，0.6 MPa(g)/60 ℃"], ["P1", "PU Φ4 气管，快插，0.6 MPa(g)/40 ℃"]],
+    "Services": [["H2", "氢气"], ["N2", "氮气"], ["CO", "一氧化碳"], ["CH4", "甲烷"], ["CO2", "二氧化碳"],
+                 ["SP", "备用气（本期封堵）"], ["IN", "驱动用氮气"], ["AG", "阳极尾气"]],
+    "Instrument_Types": [["AIT", ""], ["AAH", ""], ["AAHH", ""], ["PAHH", ""], ["PCV", "自力式调压阀"], ["FSL", ""],
+                         ["TSHH", ""], ["TIC", ""], ["UZ", "安全继电器"], ["XA", "声光报警"], ["EI", ""], ["II", ""],
+                         ["HS", ""], ["UY", ""], ["XY", ""], ["JSL", "电源低开关（UPS 市电失电接点）"], ["I", "联锁"], ["PLC", "可编程控制器"], ["HMI", "人机界面"]],
+    "Equipment_Types": [["X", "试验夹具"], ["JL", "电子负载"]]
+  }
+}

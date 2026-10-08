@@ -1,0 +1,8 @@
+[
+  {"name": "Instrumentation Tag [Area-Type-Number]",
+   "format": "#(+TargetObject.Type)-#(+TargetObject.LoopNumber)",
+   "desc": "青木子项目：ISA-5.1 字母代号-回路号，例 XV-101（不含区域）"},
+  {"name": "Pipeline Tag [Size-Spec-Service-Line Number]",
+   "format": "#(+PipeLineGroup.Service)-#(+PipeLineGroup.LineNumber)-#(+TargetObject.Size)-#(+TargetObject.Spec)",
+   "desc": "青木子项目：HG/T 20519 物料代号-主项序号-管径-管道等级，例 H2-0101-6-S1"}
+]
