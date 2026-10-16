@@ -441,5 +441,93 @@
   "att": [],
   "scale": 1.0,
   "from_ang": 0
+ },
+ "QMZ Plasma Torch Style": {
+  "bbox": [
+   -7,
+   0,
+   7,
+   50
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ },
+ "QMZ Reaction Chamber Style": {
+  "bbox": [
+   -21,
+   -58.0,
+   21,
+   58.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ },
+ "QMZ Coil Module Style": {
+  "bbox": [
+   -9,
+   -6,
+   9,
+   6
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ },
+ "QMZ Mixing Tank Style": {
+  "bbox": [
+   -10,
+   -30.0,
+   10,
+   30.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ },
+ "QMZ Condensate Tank Style": {
+  "bbox": [
+   -7,
+   -21.0,
+   7,
+   21.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ },
+ "QMZ Shell Tube Condenser Style": {
+  "bbox": [
+   -6,
+   -20,
+   6,
+   20
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ },
+ "QMZ Safety Valve Style": {
+  "bbox": [
+   -5,
+   -3,
+   5,
+   7.2
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ },
+ "QMZ Flow Meter Style": {
+  "bbox": [
+   -7,
+   -3,
+   7,
+   3
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
  }
 }

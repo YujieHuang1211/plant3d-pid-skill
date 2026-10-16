@@ -85,7 +85,7 @@ def main(model, out):
         ('版次/日期', f"{meta['rev']} / {meta['date']}"),
         ('状态', meta['status']),
         ('设计依据', '\n'.join(meta['basis'])),
-        ('依据类别代号', '；'.join(f'{k}={v}' for k, v in meta['source_codes'].items()) + '；R8=技术方案 R8，R1=成本核算 R1，B0=四件套 R0 baseline'),
+        ('依据类别代号', '；'.join(f'{k}={v}' for k, v in meta['source_codes'].items()) + '；src 中的 R 加数字为技术方案版次，其后为章节或表号'),
         ('管线号规则', M['conventions']['line_number']),
         ('仪表位号规则', M['conventions']['tags']['instrument']),
         ('其他位号', '；'.join(f'{k}: {v}' for k, v in M['conventions']['tags'].items() if k != 'instrument')),
@@ -94,7 +94,7 @@ def main(model, out):
         ('图纸', '；'.join(f"{s['no']} {s['title']}" for s in M['sheets'])),
         ('暂定值', '注“暂定”的设定值在 FAT 前确定。'),
     ]
-    ws.cell(1, 1, '青木子纽扣电池测试台 P&ID 设计依据与连接关系表').font = TITLE
+    ws.cell(1, 1, meta['project'] + ' P&ID 设计依据与连接关系表').font = TITLE
     for i, (k, v) in enumerate(lines, 3):
         a, b = ws.cell(i, 1, k), ws.cell(i, 2, v)
         a.font, b.font = BOLD, FONT
@@ -132,19 +132,33 @@ def main(model, out):
     sheet(wb, '信号', ['起', '止', '类型', '说明'],
           [[s['from'], s['to'], typ.get(s['type'], s['type']), s.get('desc', '')] for s in M['signals']], [22, 30, 12, 60])
 
-    acts = [('fuel_xv', '燃料切断阀 XV-101/103/104/105（含 XV-102）'), ('n2_bypass', 'N₂ 保护旁路 XV-201'),
-            ('heat', '炉加热 XY-301'), ('load', '负载 XY-304'), ('alarm', '报警 XA-401'), ('permissive', '启动许可')]
-    sheet(wb, '联锁因果表', ['编号', '原因', '检测', '设定值'] + [a[1] for a in acts] + ['复位', '依据'],
-          [[i['id'], i['cause'], i['detect'], i['setpoint']] + [i['actions'].get(k, '') for k, _ in acts] + [i['reset'], i['src']]
-           for i in M['interlocks']],
-          [7, 26, 20, 18, 18, 16, 10, 8, 14, 18, 22, 18])
+    conv = M['conventions']
+    acols = conv.get('action_columns')
+    if acols:
+        # 新项目：动作列取自 conventions.action_columns，列名取自 action_names（缺省用键名）
+        anames = conv.get('action_names', {})
+        sheet(wb, '联锁因果表', ['编号', '原因', '检测', '设定值'] + [anames.get(k, k) for k in acols] + ['复位', '依据'],
+              [[i['id'], i['cause'], i['detect'], i['setpoint']] + [i['actions'].get(k, '') for k in acols] + [i['reset'], i['src']]
+               for i in M['interlocks']],
+              [7, 28, 20, 26] + [16] * len(acols) + [20, 18])
+        mcols = conv.get('mode_columns', [])
+        mnames = conv.get('mode_names', {})
+        sheet(wb, '运行工况', ['编号', '工况'] + [mnames.get(k, k) for k in mcols] + ['许可条件', '转出条件'],
+              [[m['id'], m['name']] + [m.get(k, '') for k in mcols] + [m.get('permissive', ''), m.get('exit', '')] for m in M['modes']],
+              [6, 24] + [22] * len(mcols) + [28, 26])
+    else:
+        acts = [('fuel_xv', '燃料切断阀 XV-101/103/104/105（含 XV-102）'), ('n2_bypass', 'N₂ 保护旁路 XV-201'),
+                ('heat', '炉加热 XY-301'), ('load', '负载 XY-304'), ('alarm', '报警 XA-401'), ('permissive', '启动许可')]
+        sheet(wb, '联锁因果表', ['编号', '原因', '检测', '设定值'] + [a[1] for a in acts] + ['复位', '依据'],
+              [[i['id'], i['cause'], i['detect'], i['setpoint']] + [i['actions'].get(k, '') for k, _ in acts] + [i['reset'], i['src']]
+               for i in M['interlocks']],
+              [7, 26, 20, 18, 18, 16, 10, 8, 14, 18, 22, 18])
+        sheet(wb, '运行工况', ['编号', '工况', '燃料切断阀', 'XV-102', 'N₂ 旁路 XV-201', 'N₂ 气源', 'MFC', '加热', '负载', '许可条件', '转出条件'],
+              [[m['id'], m['name'], m['fuel_xv'], m['xv102'], m['bypass'], m['n2_source'], m['mfc'], m['heat'], m['load'], m['permissive'], m['exit']]
+               for m in M['modes']],
+              [6, 22, 18, 10, 18, 16, 24, 18, 18, 30, 26])
 
-    sheet(wb, '运行工况', ['编号', '工况', '燃料切断阀', 'XV-102', 'N₂ 旁路 XV-201', 'N₂ 气源', 'MFC', '加热', '负载', '许可条件', '转出条件'],
-          [[m['id'], m['name'], m['fuel_xv'], m['xv102'], m['bypass'], m['n2_source'], m['mfc'], m['heat'], m['load'], m['permissive'], m['exit']]
-           for m in M['modes']],
-          [6, 22, 18, 10, 18, 16, 24, 18, 18, 30, 26])
-
-    sheet(wb, '符号对应表', ['对象类别', 'Plant 类', '采用符号（样式）', '来源', 'A3 打印尺寸', '注'], [list(r) for r in SYMBOLS],
+    sheet(wb, '符号对应表', ['对象类别', 'Plant 类', '采用符号（样式）', '来源', 'A3 打印尺寸', '注'], [list(r) for r in M.get('symbols', SYMBOLS)],
           [26, 34, 40, 26, 14, 30], title='对象类别—采用符号—来源（计划，阶段 2 配置后以项目符号库为准）')
 
     sheet(wb, '待确认', ['编号', '事项', '原因', '建议'],

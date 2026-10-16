@@ -11,6 +11,11 @@ description: Use when drawing, revising or checking P&IDs (管道及仪表流程
 
 引擎是 `E:\05p_id图绘制中心\_PidBot`（PidBot，C# 热加载插件 + PowerShell 驱动）。本技能的 `scripts/` 是通用 Python 工具，`assets/` 有符号几何目录、配置模板和一个完整项目示例。
 
+## 出图路线（2026-10-16 起默认：普通图元）
+- **默认**：不建 Plant 智能对象，只画普通图元（块、多段线、文字、表格），再由引擎按图层给颜色、线宽、线型。图面规范，出图稳定（整套 6 张约 5.5 min，连续多轮一次成功）。流程：Plant 版 spec → `plain_convert.py` 转普通版 spec（内联符号处断线、线交叉打断、流向箭头、位号与线号版式）→ `lint_specs.py` → `check_plain.py`（位号/线号齐全、唯一、无禁用词）→ `build_set.ps1 -Plain` → `clean_pdf_meta.py` → `pack_pdfs.py`。
+- **可选**：需要 Plant 智能对象（管线号数据、报表、拓扑核查）时才走 Plant 对象路线，随机崩溃概率高，需 `verify_topology.py`/`check_orphans.py` 和故障重试。
+- 用户另有 AutoCAD 任务时不启动引擎；引擎发现外来 AutoCAD 会直接停止。
+
 ## 何时用 / 不用
 - 用：
   - 依据项目文件夹中的需求、技术方案、成本表，新出一套 P&ID；

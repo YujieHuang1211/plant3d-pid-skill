@@ -49,6 +49,7 @@ build_set.ps1 -Project <Project.xml> -Specs <specs目录> -Pdf <PDF目录> -Back
 - **故障处理**：
   - Plant 状态异常、对话框、超时或 AutoCAD 退出：失败现场改名留证 → 用最近 zip 恢复 → 新会话从该图起重试一次；
   - spec 错误：立即停止。
+  - 每次故障把 `<动词>.live.log`、`draw.live.log`、`newdwg.live.log` 带时间戳存到 `<Backup>\_故障留证\`（2026-10-16 起）。崩溃时 `<动词>.log` 不会写出，只有 live 日志有现场；此前版本复制的是上一张图的旧 `draw.log`，不能用来定位。
 - **结束时**：退出 AutoCAD → `verify_topology.py`（全部已出图纸）→ `check_orphans.py`，两项都须 PASS。
 - **`-Redraw`**：
   1. rmdwg 要重画的图，删除它们的 id 登记，purge 空线组；
@@ -75,3 +76,37 @@ build_set.ps1 -Project <Project.xml> -Specs <specs目录> -Pdf <PDF目录> -Back
 | 改一张图 | 从该张起整串重画，30~45 min | `-Redraw`（两会话）约 6.5 min；`-RedrawSession one` 约 4 min |
 | 新建并配置 Plant 项目 | 约 10 min | 约 180 s |
 | 版面检查 | 出 PDF 后人工看 | lint + 预览，9 张约 1 s |
+
+## 排查用环境变量（2026-10-16，默认值即原行为）
+在启动 AutoCAD 的 PowerShell 会话里设置，仅影响 `draw`：
+| 变量 | 取值 | 作用 |
+|---|---|---|
+| `PB_LINE_AUTO` | `0` / `1`（默认 1） | `LineSegmentAdder` 的 enableAutomations |
+| `PB_NOZZLE_AUTO` | `0` / `1`（默认 1） | 管嘴 `AssetAdder` 的 enableAutomations |
+| `PB_CONN_ROWID` | `1` 启用（默认 0） | 线–对象连接改用官方示例的行号重载，不套自建事务 |
+
+## 官方资料（Plant 3D SDK）
+- 安装包放在 `E:\Users\yujie\Downloads\AutoCAD Plant 3D 2026 SDK`：`docs\plantsdk_ref.chm`、`plantsdk_dev.chm`（API 参考）；`samples\PnID\PnIDCreateSline\DrawPnID.cs`（官方建资产、管线、管嘴、内联阀并连接的示例）、`PnPScanValves`、`ListPipelineObjects`。
+- 公开参考：`autodesk-platform-services/skills` 仓库 `skills/acad-dotnet/references/plant3d-api.md`（API 世界地图、DataLinksManager、关系表、`AssetAdder`/`LineSegmentAdder` 用法）。官方文档只说明“所有 Plant API 只能在 AutoCAD 主线程调用”，没有 `eNotOpenForWrite` 的说明。
+- 遇到不确定的 API 行为先查这两处，再在验证项目试，不要凭印象写。
+
+## 普通图元模式（默认路线，2026-10-16 起）
+出图不再创建 Plant 智能对象：Plant 的 `AssetAdder` / `LineSegmentAdder` / `ConnectLineWithAsset` 在本机会随机崩溃（`eNotOpenForWrite`，一次成功率约一半到三分之二），而图纸验收看的是“规范合理的可编辑 DWG”，不是对象是否智能。
+流程：`pid_model.json` → 版面模块生成 Plant 版 spec（仍作为数据源，lint 在它上面跑，保留线端几何检查）→ `plain_convert.py` 转成只含 `sym` / `poly` / `text` / `table` 的普通 spec → `build_set.ps1 -Plain` 出图。普通模式没有 Plant 库对象，跳过 `verify_topology` / `check_orphans`。
+```
+python scripts\plain_convert.py <Plant 版 specs> <普通版输出目录> --catalog assets\symbol_catalog.json --catalog <项目目录.json>
+powershell.exe -File …\build_set.ps1 … -Specs <普通版输出目录> -Plain
+```
+`plain_convert.py` 负责补上原来由 Plant 自动生成的东西：
+| 内容 | 做法 |
+|---|---|
+| 符号 | `asset`/`cv` → `sym`（控制阀 = 阀体块 + 执行机构块），在“符号”层 |
+| 管线 | `poly`，线宽、颜色、线型只由图层决定（实体随层）：管线-主 0.50 红；管线-次 0.30 黄；信号-电 0.18 青 虚线；信号-软件 0.18 洋红；符号 0.30；位号 0.25 绿 |
+| 断线 | 内联符号两端连接点处把管线断开；线交叉处打断较细的线（同级打断横线，每侧 1.4 mm）；T 形接头不处理 |
+| 线号 | `group` 拼 `Service-LineNumber-NominalSize-NominalSpec`，标注点在线上时贴在线的上方（竖线贴左侧） |
+| 位号 | 阀门椭圆；仪表圈（两行：类别/回路号）+ 到符号的细连线；设备位号带下划线 |
+| 流向箭头 | `Flow Arrow Style` 块，放在 Primary 线每一段直线的末端（含拐弯处） |
+| 跨图连接器 | 左格字母、右格去向图号；去向全文放在连接器背向侧，碰到标题栏则翻到另一侧；竖向连接器图号旋转 90° |
+| 其他 | 信号线（软件）中点小圆；`nozzle`、`connect`、`tee`、`opc` 丢弃 |
+引擎 `draw` 顶层支持 `"layers": [{"name","color","ltype","lw"}]`（`lw` 单位 0.01 mm，2026-10-16 新增）。
+图例页符号要按目录外框自动算占行数和居中偏移，不要手写偏移：弹簧式安全阀外框偏上 2.1 mm，手写居中会顶出行框。

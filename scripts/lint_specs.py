@@ -2,7 +2,7 @@
 用法: python lint_specs.py <specs 目录> <图号 ...> [--catalog symbol_catalog.json] [--strict]
 ERROR（任一即 LINT FAIL）：
   - 引用未定义：connect/tee/nozzle 引用本图之前未定义的 id；opc 的 b 须在本图或同目录其他 spec 中定义
-  - id 重复
+  - id 重复（本图内，以及同目录各图之间：引擎的对象登记按 id 全套共用，线 id 同名会让两张图的线并进同一线组）
   - 文字/表格压标题栏+修订栏（x>235、y<91）或超出图框
   - 连接几何：端接（start/end）线端离目标符号外框 >0.5 mm（图面看似未连上）；
     在线（inline）符号插入点不在管线上；三通（tee）线端不在被接管线上；接管嘴的线端离管嘴 >0.5 mm
@@ -173,15 +173,20 @@ def main(argv):
         args.append(argv[i]); i += 1
     specdir, sheets = Path(args[0]), args[1:]
     cat = json.loads(cat_path.read_text(encoding='utf-8')) if cat_path.exists() else {}
-    all_ids = set()
-    for f in specdir.glob('*.json'):
+    all_ids, owner, errs, warns = set(), {}, [], []
+    for f in sorted(specdir.glob('*.json')):
         if f.name.endswith(('.props.json', '.ids.json')) or f.stem.startswith('_'):
             continue
         try:
-            all_ids |= {it['id'] for it in json.loads(f.read_text(encoding='utf-8')).get('items', []) if it.get('id')}
+            ids = {it['id'] for it in json.loads(f.read_text(encoding='utf-8')).get('items', []) if it.get('id')}
         except (json.JSONDecodeError, AttributeError):
-            pass
-    errs, warns = [], []
+            continue
+        all_ids |= ids
+        for i_ in ids:
+            owner.setdefault(i_, []).append(f.stem)
+    for i_, fs in sorted(owner.items()):
+        if len(fs) > 1 and any(s in sheets for s in fs):
+            errs.append(f'id 跨图重复：{i_} 同时出现在 {"、".join(fs)}（线 id、对象 id 须全套唯一，否则线组串组、位号错乱）')
     for no in sheets:
         items = json.loads((specdir / f'{no}.json').read_text(encoding='utf-8'))['items']
         lint_sheet(no, items, cat, all_ids, errs, warns)

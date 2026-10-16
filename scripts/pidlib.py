@@ -251,7 +251,7 @@ class Sheet:
         order = [x['no'] for x in M['sheets']]
         d = PROPS_DEFAULT
         props = {'PnID': self.no, 'Title': sh['title'], 'Description': sh.get('content', sh['title']),
-                 'Area': d['Area'], 'Author': d['Author'], 'Revision': d['Revision'], 'Stage': d['Stage'], 'Scale': d['Scale'],
+                 'Area': d['Area'], 'Author': d['Author'], 'Revision': M['meta'].get('rev', d['Revision']), 'Stage': d['Stage'], 'Scale': d['Scale'],
                  'SheetNo': str(order.index(self.no) + 1), 'SheetTotal': str(len(order)),
                  'Checker': d['Checker'], 'Reviewer': d['Reviewer'], 'Approver': d['Approver'],
                  'IssueDate': M['meta']['date'], 'RevNote': d['RevNote']}
@@ -281,6 +281,10 @@ def wrap(t, width, h=H):
     out, line, w = [], '', 0.0
     for ch in str(t):
         cw = _cw(ch, h)
+        if ch in '，。；：、）》】”’！？,.;:)' and w + cw > width - 2.4 and line:   # 避头标点：悬挂在上一行末尾，不另起一行
+            line += ch
+            w += cw
+            continue
         if ch == '\n' or w + cw > width - 2.4:
             if ch == '\n':
                 out.append(line)

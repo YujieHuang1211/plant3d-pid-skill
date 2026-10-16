@@ -49,3 +49,15 @@
 - 根目录不要含 `&`，已改为 `E:\05p_id图绘制中心`。
 - Plant 项目放本地盘（SQLite 加文件锁），不放云盘；交付件放项目文件夹。
 - 同一项目只开一个 AutoCAD，不并行写库。
+
+## 运行环境与脚本编写（2026-10-16 追加）
+| 现象 | 原因 | 处理 |
+|---|---|---|
+| “AutoCAD 启动超时”，停在开始页 | 用 PowerShell 7（pwsh）运行了引擎脚本：.NET Core 没有 `Marshal.GetActiveObject`，取不到 AutoCAD 对象 | 引擎脚本一律用 `powershell.exe`（Windows PowerShell 5） |
+| 自写的 `.ps1` 一启动就报“找不到 …\setup_project.ps1”，路径是乱码 | 脚本含中文路径但存成不带 BOM 的 UTF-8，PowerShell 5 按 GBK 读 | 含中文的 `.ps1` 必须存为 UTF-8 **带 BOM**（引擎自带脚本都带 BOM）；写完用 `head -c3 \| xxd` 核对是 `efbbbf` |
+| 后台任务启动后看似在跑，其实几秒前就失败了 | 启动后没有核对日志 | 后台启动后 30～60 s 内必须看到日志里出现第一条进度行（如“启动 AutoCAD”“=== P&ID-xxx”）才算启动成功，再向用户报预计耗时 |
+| `build_set` 打包 zip 时报 IOException，文件被占用 | `-Backup` 目录放在项目文件夹里，zip 把自己也打进去 | 备份目录放项目外，例如 `_验证\_备份\<项目名>` |
+| 验证 `verify_set` 报“位号不符”“缺关系/缺三通”，同一线号被别的图的线占用 | Plant 线组按线序号并组，**spec 里的线 id 必须在整套图内唯一**；两张图都叫 `LSMP` 就会串组 | 线 id 全套唯一；出图前用脚本核对所有 spec 的 line id 无重复 |
+| 进程列表里有 acad.exe 但没有窗口、没有线程 | 僵尸进程（上次强制结束残留），不能被杀 | 判断 AutoCAD 是否在运行时，只算 `Threads.Count -gt 0` 的进程（`Get-Process acad` 已按此过滤） |
+| 连接器 OPC 方向反、位置错 | `end` 型 rot=θ 体沿 θ 方向、插入点在尾；`start` 型箭头尖在管线起点，方向须与流向一致 | 管线向左流的进口连接器手写：`at=[x起点+OPC_LEN, y], rot=180`，再 `connect ctx='start'` |
+| 竖向阀门位号竖排旋转 | 位号是 Plant 自动标注，随阀门方向旋转 | 接受；不要用手工文字替代自动位号 |
