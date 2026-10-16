@@ -61,3 +61,23 @@
 | 进程列表里有 acad.exe 但没有窗口、没有线程 | 僵尸进程（上次强制结束残留），不能被杀 | 判断 AutoCAD 是否在运行时，只算 `Threads.Count -gt 0` 的进程（`Get-Process acad` 已按此过滤） |
 | 连接器 OPC 方向反、位置错 | `end` 型 rot=θ 体沿 θ 方向、插入点在尾；`start` 型箭头尖在管线起点，方向须与流向一致 | 管线向左流的进口连接器手写：`at=[x起点+OPC_LEN, y], rot=180`，再 `connect ctx='start'` |
 | 竖向阀门位号竖排旋转 | 位号是 Plant 自动标注，随阀门方向旋转 | 接受；不要用手工文字替代自动位号 |
+
+## 普通图元模式与流水线（2026-10-16 追加）
+| 现象 | 原因 | 处理 |
+|---|---|---|
+| Plant 智能对象路线 103 图随机崩溃（eNotOpenForWrite，dwgprops/syncstyles/regen 超时，newdwg AV） | `AssetAdder`/`LineSegmentAdder`/连接调用在本机不稳定；`PB_LINE_AUTO`、`PB_NOZZLE_AUTO`、`PB_CONN_ROWID` 三个开关对照实验均无效 | 改画普通图元（`plain_convert.py` + `build_set.ps1 -Plain`）：连续多轮整套一次成功 |
+| 失败日志看不出现场 | 崩溃时 `<动词>.log` 不写出，旧版 `build_set` 复制的是上一张图的旧 `draw.log` | 现版留证 `<动词>.live.log` 到 `<Backup>\_故障留证\` |
+| `Stop-Acad` 把用户自己的 AutoCAD 也杀了 | 旧版会强杀所有 AutoCAD | 现版只结束自启进程（`-All` 才处理全部）；`Start-Acad` 发现外来实例即抛异常停止（`PB_ALLOW_FOREIGN=1` 可跳过） |
+| 启动后立刻发命令失败率高 | AutoCAD 刚打开项目时仍在后台加载 | `Start-Acad` 打开项目后默认等 30 s 并等 CPU 静默（`PB_SETTLE_SEC=0` 关闭） |
+| 流水线 `draw` 后日志是空的、进程几秒就结束 | 用 `DETACHED_PROCESS` 启动 PowerShell 会丢掉输出 | 用 `CREATE_NO_WINDOW` + `CREATE_NEW_PROCESS_GROUP` 启动：父进程退出后子进程继续跑，日志完整 |
+| JSON 里的路径出现 `Invalid \escape` | 反斜杠没转义 | `pipeline.json` 里的路径一律写正斜杠 |
+| 在命令行里写 `\` 被折成单个 `\`，字符串替换失败或文件里出现控制字符 | 本工具环境对反斜杠的处理 | 含反斜杠的替换用 `chr(92)` 拼，或用编辑工具改文件，不用 heredoc 里的 Python |
+| 子类重写 `S.line()` 后新增参数（`noarrow=True`）报 unexpected keyword | 项目的版面基类只透传固定参数 | 重写时加 `**extra` 并透传给 `super().line(...)` |
+| `accoreconsole.exe` 无头打开 DWG 没有任何输出，进程挂起 | 本机该程序加载 Plant 环境后不回应脚本 | 不用它做核查；改查 spec 和 PDF。挂起的进程用任务管理器结束，不要批量杀 |
+| 在二进制 DWG 里扫“GPT”等三字母词命中 | 压缩数据里的随机巧合 | 二进制扫描只用 5 个字符以上的词 |
+| DWG 属性里“最后保存者”是 Windows 用户名 | AutoCAD 保存时自动写入，无法由脚本清除 | `plain_pipeline.py post` 会报告；对外发 DWG 时由用户决定（改发 PDF 或另存） |
+| PDF 里抽不出文字 | 文字按曲线输出 | 位号和线号核对用 `check_plain.py` 对照 spec |
+| 流向箭头压在符号或断口上 | 旧规则在每个拐角都放箭头 | 现规则：每条主管线只在末段放一个，与符号、断口重叠不放 |
+| 管线沿器壁走、与设备边线重合 | 管嘴方向与管线来向不一致 | 管嘴 `rot` 与来向一致；上下串联设备同轴 |
+| 用户的 AutoCAD 正在运行时启动引擎 | 旧版没有检查 | 现版 `draw` 先查有线程的 acad 进程，有则拒绝 |
+| 删除命令被安全检查拒绝（带通配符的 `rm -f dir/*`） | 工具对批量删除保守 | 输出到新目录代替清空旧目录；确需删除的目录让用户确认 |

@@ -90,13 +90,14 @@ class Sheet:
     def text(self, x, y, s, h=CN, just='ML', **kw):
         self.items.append({'k': 'text', 'at': [x, y], 'text': shx(s), 'h': h, 'just': just, 'layer': '注释', **kw})
 
-    def line(self, lid, pts, no, style='Primary Style', anno=None):
+    def line(self, lid, pts, no, style='Primary Style', anno=None, **extra):
         fluid, num, size, spec = no.split('-')
         it = {'k': 'line', 'id': lid, 'style': style, 'pts': pts,
               'group': {'Service': fluid, 'LineNumber': num, 'NominalSize': size, 'NominalSpec': spec},
               'props': {'Size': size, 'Spec': spec}}
         if anno:
             it['anno'] = anno
+        it.update(extra)      # 例：noarrow=True（设备内部连线，不放流向箭头）
         self.items.append(it)
 
     def sig(self, lid, pts, style='Electrical Style'):
@@ -254,7 +255,7 @@ class Sheet:
                  'Area': d['Area'], 'Author': d['Author'], 'Revision': M['meta'].get('rev', d['Revision']), 'Stage': d['Stage'], 'Scale': d['Scale'],
                  'SheetNo': str(order.index(self.no) + 1), 'SheetTotal': str(len(order)),
                  'Checker': d['Checker'], 'Reviewer': d['Reviewer'], 'Approver': d['Approver'],
-                 'IssueDate': M['meta']['date'], 'RevNote': d['RevNote']}
+                 'IssueDate': M['meta']['date'], 'RevNote': M['meta'].get('rev_note', d['RevNote'])}
         props = {k: v.replace('₂', '2').replace('₄', '4').replace('–', '~') for k, v in props.items()}   # 字段值不解释 MText 代码
         (Path(out) / f'{self.no}.props.json').write_text(json.dumps(props, ensure_ascii=False, indent=1), encoding='utf-8')
         return p

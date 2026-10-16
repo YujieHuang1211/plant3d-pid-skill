@@ -152,15 +152,20 @@ def sheet_001():
 # ================================================================ P&ID-901 联锁因果表
 def sheet_901():
     """因果矩阵：行＝联锁原因，列＝动作，X＝触发。全文（检测方式、各动作说明、依据）见《联锁因果表》xlsx。
-    与 xlsx“因果矩阵”页同一归纳规则（make_ce_modes.matrix_marks）。图面须在修订栏（顶边 89 mm）之上结束。"""
-    from make_ce_modes import matrix_marks
+    与 xlsx“因果矩阵”页同一归纳规则（pidlib.ce_matrix）。图面须在修订栏（顶边 89 mm）之上结束。"""
+    import sys
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).resolve().parents[2] / 'scripts'))
+    import pidlib
+    pidlib.M.update(M)          # ce_matrix 读取模型里的 conventions
+    ce_matrix = pidlib.ce_matrix
     s = Sheet('P&ID-901')
     s.text(30, 288, '联锁因果矩阵（C&E）', 5, 'ML')
-    effects = list(matrix_marks(M['interlocks'][0]).keys())
+    effects = list(ce_matrix(M['interlocks'][0]).keys())
     cols = [14, 66, 28] + [17] * len(effects) + [44]
     rows = [['编号', '原因', '设定值'] + effects + ['复位']]
     for i in M['interlocks']:
-        rows.append([i['id'], i['cause'], i['setpoint']] + list(matrix_marks(i).values()) + [i['reset']])
+        rows.append([i['id'], i['cause'], i['setpoint']] + list(ce_matrix(i).values()) + [i['reset']])
     y = table(s, 28, 280, cols, rows)
     notes = ['注：1. X 表示该原因触发该动作。叠加故障时压力保护优先：I-02 或 I-10 成立时 N₂ 旁路保持关闭。',
              '2. 外部市电失电由 UPS 干接点 JSL-401 送 PLC，执行 M8；完全断电或失驱动气时 FC 阀关闭、FO 阀打开。',

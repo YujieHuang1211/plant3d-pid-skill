@@ -1,5 +1,6 @@
 """出图前静态检查 spec（不需要 AutoCAD）。
-用法: python lint_specs.py <specs 目录> <图号 ...> [--catalog symbol_catalog.json] [--strict]
+用法: python lint_specs.py <specs 目录> <图号 ...> [--catalog symbol_catalog.json ...] [--strict]
+        （--catalog 可重复，后者覆盖前者；默认先载入技能自带目录）
 ERROR（任一即 LINT FAIL）：
   - 引用未定义：connect/tee/nozzle 引用本图之前未定义的 id；opc 的 b 须在本图或同目录其他 spec 中定义
   - id 重复（本图内，以及同目录各图之间：引擎的对象登记按 id 全套共用，线 id 同名会让两张图的线并进同一线组）
@@ -163,16 +164,19 @@ def lint_sheet(no, items, cat, all_ids, errs, warns):
 
 
 def main(argv):
-    args, cat_path, strict = [], DEFAULT_CATALOG, False
+    args, cat_paths, strict = [], [DEFAULT_CATALOG], False
     i = 0
     while i < len(argv):
         if argv[i] == '--catalog':
-            cat_path = Path(argv[i + 1]); i += 2; continue
+            cat_paths.append(Path(argv[i + 1])); i += 2; continue
         if argv[i] == '--strict':
             strict = True; i += 1; continue
         args.append(argv[i]); i += 1
     specdir, sheets = Path(args[0]), args[1:]
-    cat = json.loads(cat_path.read_text(encoding='utf-8')) if cat_path.exists() else {}
+    cat = {}
+    for cp in cat_paths:
+        if cp.exists():
+            cat.update(json.loads(cp.read_text(encoding='utf-8')))
     all_ids, owner, errs, warns = set(), {}, [], []
     for f in sorted(specdir.glob('*.json')):
         if f.name.endswith(('.props.json', '.ids.json')) or f.stem.startswith('_'):

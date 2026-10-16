@@ -4,9 +4,10 @@
 
 转换规则（引擎 draw 已支持 sym / poly / text / table，不改 C#）：
   asset / cv        → sym（样式块插入；控制阀 = 阀体块 + 执行机构块，同点同转角）
-  line              → poly（按样式定线宽/图层/线型）；内联符号处把管线断开；Primary 线末端补流向箭头；
+  line              → poly（按样式定线宽/图层/线型）；内联符号处把管线断开；Primary 线末段补一个流向箭头（末端落在管嘴上时退到法兰外）；
                       Software 线中点补小圆
-  nozzle/connect/tee/opc → 丢弃（它们只在 Plant 库里有意义）
+  nozzle            → 接管 + 法兰线（符号层，自设备壁沿 rot 方向）
+  connect/tee/opc   → 丢弃（它们只在 Plant 库里有意义）
   原由 Plant 自动生成的文字，改由本脚本按 spec 数据生成：
     线号（group 拼 Service-LineNumber-NominalSize-NominalSpec）、阀门椭圆位号、仪表圈（两行：类别/回路号）、
     设备位号（下划线）、仪表/PLC/联锁圈内文字、跨图连接器字母与去向
@@ -23,11 +24,11 @@ INSTR = {'Field Mounted Discrete Instrument Style', 'Primary Loc Accessible PLC 
 # 图层：颜色（ACI）、线宽（0.01 mm）、线型。实体一律“随层”，线宽/颜色/线型只由图层决定，
 # 这样在 AutoCAD 里改图层即可整体调整；PDF 为黑白时按线宽区分层次
 LAYERS = [
-    {'name': '管线-主', 'color': 1, 'lw': 50},                       # 主工艺管线 0.50，红
-    {'name': '管线-次', 'color': 2, 'lw': 30},                       # 仪表接管、取样、排凝支线 0.30，黄
+    {'name': '管线-主', 'color': 1, 'lw': 70},                       # 主工艺管线 0.70，红
+    {'name': '管线-次', 'color': 2, 'lw': 35},                       # 仪表接管、取样、排凝支线 0.35，黄
     {'name': '信号-电', 'color': 4, 'lw': 18, 'ltype': 'DASHED2'},   # 电信号、气动信号 0.18，青，虚线
     {'name': '信号-软件', 'color': 6, 'lw': 18},                     # 软件/通讯链路 0.18，洋红，实线+小圆
-    {'name': '符号', 'color': 7, 'lw': 30},                          # 阀门、仪表、设备、连接器、箭头的块参照 0.30
+    {'name': '符号', 'color': 7, 'lw': 35},                          # 阀门、仪表、设备、管嘴、连接器、箭头 0.35
     {'name': '位号', 'color': 3, 'lw': 25},                          # 位号、线号、仪表圈、椭圆 0.25，绿
 ]
 LINES = {
@@ -38,6 +39,7 @@ LINES = {
     'Pneumatic Style': dict(layer='信号-电'),
 }
 ARROW_STYLE, ARROW_LEN = 'Flow Arrow Style', 4.7
+NECK, FLANGE_GAP, FLANGE_LEN = 3.0, 1.0, 5.2    # 管嘴：接管长度、法兰对间距、法兰线长（mm）
 GAP = 1.4            # 线交叉处打断：每侧留 1.4 mm（共 2.8 mm）
 RANK = {'信号-电': 0, '信号-软件': 0, '管线-次': 1, '管线-主': 2}   # 交叉时优先打断数字小（线宽更细）的线
 R_BUBBLE = 5.0
@@ -169,10 +171,14 @@ class Conv:
             if it['k'] == 'connect' and it.get('ctx') == 'inline':
                 inline.setdefault(it['line'], []).append(it['asset'])
         self.cross = self.find_crossings(items)
+        self.nozzles = [(n['at'], n.get('rot', 0)) for n in items if n['k'] == 'nozzle']
         syms, polys, texts = [], [], []
         for it in items:
             k = it['k']
-            if k in ('connect', 'tee', 'opc', 'nozzle'):
+            if k in ('connect', 'tee', 'opc'):
+                continue
+            if k == 'nozzle':
+                self.nozzle(it, polys)
                 continue
             if k == 'asset':
                 self.asset(it, syms, texts)
@@ -216,6 +222,18 @@ class Conv:
                         acc_b += lb_seg
                     acc_a += la_seg
         return out
+
+    def nozzle(self, it, polys):
+        """管嘴：自设备壁沿 rot 方向伸出一小段接管，端部画一对法兰线（符号层）"""
+        x, y = it['at']
+        r = math.radians(it.get('rot', 0))
+        dx, dy = math.cos(r), math.sin(r)
+        px, py = -dy, dx
+        polys.append({'k': 'poly', 'pts': [[round(x, 3), round(y, 3)], [round(x + dx * (NECK + FLANGE_GAP), 3), round(y + dy * (NECK + FLANGE_GAP), 3)]], 'layer': '符号'})
+        for off in (NECK, NECK + FLANGE_GAP):
+            cx, cy = x + dx * off, y + dy * off
+            polys.append({'k': 'poly', 'pts': [[round(cx - px * FLANGE_LEN / 2, 3), round(cy - py * FLANGE_LEN / 2, 3)],
+                                               [round(cx + px * FLANGE_LEN / 2, 3), round(cy + py * FLANGE_LEN / 2, 3)]], 'layer': '符号'})
 
     # ------------------------------------------------------------------ 符号与位号
     def sym(self, style, it, syms):
@@ -343,20 +361,23 @@ class Conv:
             pts = subpath(V, s0, s1)
             if len(pts) >= 2:
                 polys.append({'k': 'poly', 'pts': [[round(v, 3) for v in p] for p in pts], 'layer': sty['layer']})
-        # 流向箭头：Primary 线末端
-        if it['style'] == 'Primary Style':
-            acc = 0.0
-            for i in range(len(V) - 1):      # Plant 在每段直线末端（含拐弯处）放流向箭头
-                a, b = V[i], V[i + 1]
-                L = seglen(a, b)
-                acc += L
-                # 箭头占 [acc-ARROW_LEN, acc]：与符号或线交叉断口重叠的不放，避免压在符号上
-                if any(c0 < acc and c1 > acc - ARROW_LEN for c0, c1 in cuts):
-                    continue
-                if L >= ARROW_LEN + 2:
-                    ux, uy = (b[0] - a[0]) / L, (b[1] - a[1]) / L
-                    ang = math.degrees(math.atan2(uy, ux))
-                    syms.append({'k': 'sym', 'style': ARROW_STYLE, 'at': [round(b[0] - ux * ARROW_LEN, 3), round(b[1] - uy * ARROW_LEN, 3)], 'rot': round(ang, 3), 'layer': '符号'})
+        # 流向箭头：Primary 线只在末段放一个（流入方向）。末段上有朝向来流的管嘴（线在管嘴处或穿过器壁继续到设备内部）时，
+        # 箭头尖放在该管嘴法兰外侧；否则放在线端
+        if it['style'] == 'Primary Style' and len(V) >= 2 and not it.get('noarrow'):
+            a, b = V[-2], V[-1]
+            L = seglen(a, b)
+            ux, uy = (b[0] - a[0]) / L, (b[1] - a[1]) / L
+            t_tip = L
+            for (nx, ny), nr in self.nozzles:
+                t = (nx - a[0]) * ux + (ny - a[1]) * uy
+                off = abs(-(nx - a[0]) * uy + (ny - a[1]) * ux)
+                ox, oy = math.cos(math.radians(nr)), math.sin(math.radians(nr))
+                if off < 0.8 and 0.5 < t <= L + 0.8 and ox * ux + oy * uy < -0.9:
+                    t_tip = min(t_tip, t - (NECK + FLANGE_GAP + 0.4)) if t_tip < L else t - (NECK + FLANGE_GAP + 0.4)
+            s_tip = total - L + t_tip
+            if t_tip - ARROW_LEN >= 1.0 and not any(c0 < s_tip and c1 > s_tip - ARROW_LEN for c0, c1 in cuts):
+                ang = math.degrees(math.atan2(uy, ux))
+                syms.append({'k': 'sym', 'style': ARROW_STYLE, 'at': [round(a[0] + ux * (t_tip - ARROW_LEN), 3), round(a[1] + uy * (t_tip - ARROW_LEN), 3)], 'rot': round(ang, 3), 'layer': '符号'})
         # 信号线（软件/通讯）中点小圆
         if sty.get('circle') and total > 3:
             mid = subpath(V, total / 2 - 0.01, total / 2 + 0.01)

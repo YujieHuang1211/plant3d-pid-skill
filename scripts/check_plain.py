@@ -68,7 +68,7 @@ def main(argv):
             if '�' in t or '??' in t:
                 errs.append(f'{no}: 文字含乱码或连续问号：{t[:30]}')
             for w in ban:
-                hit = re.search(r'(?<![A-Za-z])' + re.escape(w) + r'(?![A-Za-z])', t) if w.isascii() and w.isalpha() and len(w) <= 3 else (w.lower() in t.lower())
+                hit = re.search(r'(?<![A-Za-z0-9])' + re.escape(w) + r'(?![A-Za-z0-9])', t) if w.isascii() and w.isalpha() and len(w) <= 3 else (w.lower() in t.lower())
                 if hit:
                     errs.append(f'{no}: 文字含禁用词“{w}”：{t[:40]}')
     for tag, sheets in sorted(seen.items()):

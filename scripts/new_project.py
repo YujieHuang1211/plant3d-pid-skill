@@ -16,8 +16,7 @@ MODEL = {
     'conventions': {'fluids': {}, 'pipe_classes': {}, 'action_columns': [], 'mode_columns': [], 'effect_columns': [], 'wbs_per_unit': {}},
     'boundary': [], 'equipment': [], 'inline': [], 'tees': [], 'lines': [], 'instruments': [], 'signals': [],
     'interlocks': [], 'modes': [], 'open_points': [],
-    'sheets': [{'no': 'P&ID-000', 'title': '封面与图纸目录'}, {'no': 'P&ID-001', 'title': '图例与符号说明'},
-               {'no': 'P&ID-101', 'title': ''}],
+    'sheets': [{'no': 'P&ID-101', 'title': '请填图名'}],     # 封面、图例（P&ID-000/001）按需加，版面参照 assets/example/sheets_000_900.py
     'review_log': [],
 }
 
@@ -67,20 +66,26 @@ def main(stage, name, parent=r'E:\05p_id图绘制中心'):
         pp.write_text(json.dumps({'Project_Description': f'{name} P&ID', 'Project_Number': '待定',
                                   'Client_Information_Company_Name': '', 'Project_Data_DesignOrg': ' '}, ensure_ascii=False, indent=1), encoding='utf-8')
         print('写出', pp)
-    specs = ENGINE / 'specs' / name
+    pj = w / 'pipeline.json'
+    if not pj.exists():
+        pj.write_text(json.dumps({'project': name, 'parent': str(parent).replace(chr(92), '/'), 'layout': 'sheets.py',
+                                  'catalogs': [], 'dwg': {}, 'ban': []}, ensure_ascii=False, indent=1), encoding='utf-8')
+        print('写出', pj)
     sc = SKILL / 'scripts'
+    pp_ = sc / 'plain_pipeline.py'
     print(f'''
-下一步：
-1. 填 pid_model.json（字段见 references/model_schema.md），用 make_review.py 出设计依据表请用户确认：
-   python "{sc}\\make_review.py" "{m}" "{stage}\\P&ID设计依据与连接关系表_R0（待确认）.xlsx"
-2. 新建 Plant 项目（约 4 min）：
-   powershell -File "{ENGINE}\\scripts\\setup_project.ps1" -Name "{name}" -Parent "{parent}" -ProjProps "{pp}"
-3. 写 sheets.py，生成 spec，检查与预览：
-   python "{lay}" "{specs}"
-   python "{sc}\\lint_specs.py" "{specs}" P&ID-101 …
-   python "{sc}\\preview_spec.py" "{specs}" "{w}\\预览" P&ID-101 …
-4. 出图（后台运行；同时生成 Office 交付件）：
-   powershell -File "{ENGINE}\\scripts\\build_set.ps1" -Project "{parent}\\{name}\\Project.xml" -Specs "{specs}" -Pdf "{parent}\\{name}\\出图PDF" -Backup "{parent}\\_备份" -Sheets "P&ID-101|P&ID-101_图名.dwg;…" -Reopen
+下一步（普通图元模式，不建 Plant 智能对象）：
+1. 填 pid_model.json（字段见 references/model_schema.md；仪表按 SKILL.md “仪表精简原则”取舍），出设计依据表请用户确认：
+   python "{sc / 'make_review.py'}" "{m}" "{Path(stage) / 'P&ID设计依据与连接关系表_R0（待确认）.xlsx'}"
+2. 写 sheets.py（参照 assets/example/ 和 references/layout_rules.md）。
+   自定义符号目录放在工作底稿里，路径写进 pipeline.json 的 catalogs；DWG 文件名可在 dwg 里指定，缺省为“图号_图名.dwg”。
+3. 离线检查与预览（数秒，不需要 AutoCAD）：
+   python "{pp_}" "{w}" prep
+4. 出图（AutoCAD 须没有别的实例在运行；项目不存在时自动先建，约 6 分钟）：
+   python "{pp_}" "{w}" draw --wait
+   改动后只重画某几张：python "{pp_}" "{w}" draw P&ID-101 --redraw --wait
+5. 收尾并逐张看 终审PNG：
+   python "{pp_}" "{w}" post
 ''')
 
 
