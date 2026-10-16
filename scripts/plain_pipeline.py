@@ -110,6 +110,8 @@ def check_phase(cfg, nos, preview=True):
     ban = ['--ban', ','.join(cfg['ban'])] if cfg.get('ban') else []
     r = run([PY, HERE / 'check_plain.py', cfg['specs'], cfg['plain']] + ban)
     ok &= step('check_plain（位号/线号齐全、唯一、禁用词）', r)
+    r = run([PY, HERE / 'check_numbering.py', cfg['work'] / 'pid_model.json', cfg['plain']])
+    ok &= step('check_numbering（线号分组连续、联锁编号连续、文字里的位号都在模型里）', r)
     if preview and ok:
         pv = cfg['work'] / '预览'
         r = run([PY, HERE / 'preview_spec.py', cfg['plain'], pv] + nos + cat + ['--scale', '3'])
@@ -244,7 +246,7 @@ def cmd_post(cfg, argv):
             k = b.find(key16, k + 2)
         for m in re.findall(rb'<prop id="8"><string>([^<]*)</string>', b):
             who.add(m.decode('latin1'))
-        print(('FAIL ' if hits else 'OK   ') + f'DWG {f.name}: 敏感词 {hits or "无"}；最后保存者 {sorted(who) or "无"}')
+        print(('FAIL ' if hits else 'OK   ') + f'DWG {f.name}: 敏感词 {hits or "无"}；最后保存者 {sorted(who) or "无"}（仅供参考）')
         ok &= not hits
     # 项目 zip（排除 .bak 与锁文件，放在项目外）
     import zipfile

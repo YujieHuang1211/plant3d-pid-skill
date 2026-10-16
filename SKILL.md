@@ -24,7 +24,7 @@ AutoCAD 只负责最终出图；版面、连接几何、压框、重叠都在离
 4. 定分图（A3 多张）和编号，写进 `sheets`。
 5. `python scripts\new_project.py <阶段目录> <项目名>` 建 `_工作底稿/`（模型模板、`sheets.py`、`pipeline.json`、`projprops.json`）。
 6. 写版面模块（`from pidlib import *`，参照 `assets/example/` 和 `references/layout_rules.md`）。
-7. `python scripts\plain_pipeline.py <_工作底稿> prep`：版面 → lint → 转换 → 普通版 lint → `check_plain` → 预览 PNG（`预览/`）。全部 OK 才能出图；逐张看预览。
+7. `python scripts\plain_pipeline.py <_工作底稿> prep`：版面 → lint → 转换 → 普通版 lint → `check_plain`（位号、线号齐全唯一）→ `check_numbering`（线号分组连续、联锁编号连续、文字里的位号都在模型里）→ 预览 PNG（`预览/`）。全部 OK 才能出图；逐张看预览。
 8. `plain_pipeline.py <…> draw --wait`（项目不存在时自动先建）。改动后重画加 `--redraw`，只重画列出的图：`draw P&ID-103 --redraw`。
 9. `plain_pipeline.py <…> post`，**逐张看 `终审PNG/`**（截断、压框、重叠、线是否落在符号上、管嘴、标题栏字段）。有问题回到第 6 步。
 10. ★ 版次递增时（R0→R1）：不覆盖旧版本，交付目录另放 `R1\`；`pid_model.json` 的 `meta.rev` 与 `meta.rev_note` 同步更新。一次复制到交付目录（项目在云盘时先本地生成自查）。
@@ -37,7 +37,7 @@ AutoCAD 只负责最终出图；版面、连接几何、压框、重叠都在离
 - **线断开**：内联符号（阀、过滤器、流量计）处线断开；两线交叉时断开较细的一条，同级断横线，每侧留 1.4 mm；T 接和端点相接不断。
 - **设备管嘴**：设备上每个接管口画管嘴——自器壁沿 `rot` 方向伸出 3 mm 接管加一对法兰线；管线接在法兰外侧，流向箭头尖停在法兰外。管线穿过器壁到设备内部时，管嘴放在器壁上，壁内一段用 `noarrow=True` 的短线连到内部件。
 - **流向箭头**：每条主管线只在末段放一个，不在每个拐角放。与符号、断口重叠处不放。
-- **线号**：`物料代号-主项序号-外径-等级`，贴在线的上方（竖线贴左侧），不压符号、位号、设备。
+- **线号**：`物料代号-主项序号-外径-等级`，贴在线的上方（竖线贴左侧），不压符号、位号、设备。主项序号前两位按系统分组（如 01 配气与混合罐、02 备用炬配气、03 炬与腔体、04 冷凝与出口、05 冷却水），每组内从 01 起连续，同一设备的线放同一组。
 - **位号**：阀门椭圆在阀下方；仪表圈两行（类别 / 回路号），上方；设备位号下划线。同一位号全套只出现一次。
 - **注释要把功能讲清楚**：每张图的注释写明本图做什么、各路气体或水路的用途、关键设备和仪表的作用、联锁和图形符号的含义、专用缩写，让没参与设计的人能读懂；写满注释区也不要压图框和标题栏（注释顶边不高于最下一行位号 2 mm 以上，底边离图框 ≥ 5 mm）。
 - **仪表精简原则**（设计会因此变复杂，故只画有用的）：
@@ -57,10 +57,11 @@ AutoCAD 只负责最终出图；版面、连接几何、压框、重叠都在离
 | 设计依据表 | `python scripts\make_review.py <pid_model.json> <输出.xlsx>` |
 | 联锁表与工况说明 | `python scripts\make_ce_modes.py <pid_model.json> <目录>`，再 `render_ce_modes.py` |
 | 清单与对账 | `python scripts\export_lists.py <pid_model.json> <输出.xlsx> <成本表.xlsx\|-> <dcf\|->` |
-| 单步工具 | `lint_specs.py`、`plain_convert.py`、`check_plain.py`、`preview_spec.py`、`render_pdfs.py`、`clean_pdf_meta.py`、`pack_pdfs.py` |
+| 单步工具 | `lint_specs.py`、`plain_convert.py`、`check_plain.py`、`check_numbering.py`、`preview_spec.py`、`render_pdfs.py`、`clean_pdf_meta.py`、`pack_pdfs.py` |
 | 符号目录更新 | `catalog_from_info.py assets\symbol_catalog.json <*.info.log>` |
 
 ## 铁规则
+- **出图期间不要点 AutoCAD / Plant 3D**：`draw` 运行的约 6 分钟内用户不要操作；如果点过，对受影响的图用 `draw <图号> --redraw` 重出，必要时整套重出。
 - **AutoCAD 实例**：同一时间只开一个 AutoCAD；用户自己的 AutoCAD 在运行时**不启动引擎**（引擎检测到外来实例会直接停止，`draw` 也会先查）。要出图先请用户保存关闭。引擎只结束它自己启动的进程，不要用“杀所有 acad”之类的命令。
 - **改动验证**：引擎、模板、符号库、`plain_convert.py` 的改动，先在验证项目跑一遍（`pipeline.json` 的 `project` 指向验证项目），通过后才用于正式项目。验证项目名不得带到正式图面。
 - **版本**：产出出新版本，不覆盖旧版本；本地 `_恢复备份\` 留上一版项目 zip。

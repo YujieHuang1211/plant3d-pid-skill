@@ -102,6 +102,8 @@ def lint_sheet(no, items, cat, all_ids, errs, warns):
                 errs.append(f'{no} 第 {n} 项 {k} 压标题栏/修订栏：x {x0:.0f}~{x1:.0f}，下沿 y={y0:.0f}')
             if x0 < FRAME[0] or x1 > FRAME[2] or y0 < FRAME[1] or y1 > FRAME[3]:
                 errs.append(f'{no} 第 {n} 项 {k} 超出图框：x {x0:.0f}~{x1:.0f}，y {y0:.0f}~{y1:.0f}')
+            elif y0 < FRAME[1] + 5 and k == 'text':
+                warns.append(f'{no} 第 {n} 项 text 下沿距图框不足 5 mm（y={y0:.1f}）：注释太长时精简文字或上移起点（lint 估算偏小，实际更低）')
         if it.get('id'):
             if it['id'] in here:
                 errs.append(f'{no} 第 {n} 项 id 重复：{it["id"]}')
