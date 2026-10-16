@@ -12,9 +12,11 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 from lint_specs import DEFAULT_CATALOG, FRAME, TB, placed, table_box, text_box
+import symbol_geom
 
 FONT = 'C:/Windows/Fonts/simsun.ttc'
 W, H = 420, 297
+GEOM = symbol_geom.load()
 STYLE_W = {'Primary Style': 3, 'Secondary Style': 2}
 ACI = {1: (230, 0, 0), 2: (200, 160, 0), 3: (0, 150, 0), 4: (0, 160, 170), 5: (0, 0, 220), 6: (200, 0, 200), 7: (0, 0, 0)}
 
@@ -73,8 +75,15 @@ def main(argv):
                             t0, t1 = j / n, min(1, (j + 1) / n)
                             d.line([(a[0] + (b[0] - a[0]) * t0, a[1] + (b[1] - a[1]) * t0),
                                     (a[0] + (b[0] - a[0]) * t1, a[1] + (b[1] - a[1]) * t1)], fill=col, width=1)
-            elif kind in ('asset', 'cv'):
+            elif kind in ('asset', 'cv') or (kind == 'sym' and it.get('style') in GEOM):
                 st = it.get('style') or it.get('body')
+                if st in GEOM:
+                    for pa in symbol_geom.polys(st, it['at'], it.get('rot', 0), symbol_geom.eff_scale(st, it.get('scale'))):
+                        gp = [P(*q) for q in pa['pts']]
+                        if len(gp) >= 2:
+                            d.line(gp, fill=(60, 60, 60), width=1)
+                    if kind == 'sym':
+                        continue
                 pl = placed(cat, st, it['at'], it.get('rot', 0))
                 if pl:
                     (x0, y0, x1, y1), att = pl

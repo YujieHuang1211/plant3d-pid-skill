@@ -1,5 +1,6 @@
 """把 Plant 版 spec 转成“普通图元”spec：只含 sym / poly / text / table，不创建任何 Plant 智能对象。
-用法: python plain_convert.py <原 specs 目录> <输出目录> [--catalog symbol_catalog.json ...] [图号 ...]
+用法: python plain_convert.py <原 specs 目录> <输出目录> [--catalog symbol_catalog.json ...] [--geom-all] [图号 ...]
+        --geom-all：Plant 库符号也用几何库画成折线（不依赖项目符号样式；默认只有手工新增的符号这样画）
         （--catalog 可重复，后者覆盖前者；不给图号则转换目录下全部图）
 
 转换规则（引擎 draw 已支持 sym / poly / text / table，不改 C#）：
@@ -17,6 +18,12 @@ import json
 import math
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import symbol_geom  # noqa: E402
+
+GEOM = symbol_geom.load()      # 非智能对象几何库（手工新增符号默认用它；--geom-all 时 Plant 库符号也用它）
+GEOM_ALL = False
 
 INSTR = {'Field Mounted Discrete Instrument Style', 'Primary Loc Accessible PLC Style',
          'Field Mounted Discrete Hardware Interlock Style', 'Primary Loc Accessible Discrete Instrument Style',
@@ -172,6 +179,7 @@ class Conv:
                 inline.setdefault(it['line'], []).append(it['asset'])
         self.cross = self.find_crossings(items)
         self.nozzles = [(n['at'], n.get('rot', 0)) for n in items if n['k'] == 'nozzle']
+        self.native_polys = []
         syms, polys, texts = [], [], []
         for it in items:
             k = it['k']
@@ -188,7 +196,7 @@ class Conv:
                 self.line(it, byid, inline, polys, syms, texts)
             else:
                 out.append(it)
-        return out + polys + syms + texts
+        return out + polys + self.native_polys + syms + texts
 
     def find_crossings(self, items):
         """全部管线两两求交；返回 {线 id: [交点弧长…]}（只记需要在该线上打断的）"""
@@ -237,6 +245,12 @@ class Conv:
 
     # ------------------------------------------------------------------ 符号与位号
     def sym(self, style, it, syms):
+        g = GEOM.get(style)
+        if g is not None and (g.get('native') or GEOM_ALL):
+            # 非智能对象几何库：直接画成折线，不依赖项目里的符号样式
+            for pa in symbol_geom.polys(style, it['at'], it.get('rot', 0), it.get('scale', 1.0)):
+                self.native_polys.append({'k': 'poly', 'pts': pa['pts'], 'layer': '符号', **({'closed': True} if pa['closed'] and len(pa['pts']) > 3 else {})})
+            return
         d = {'k': 'sym', 'style': style, 'at': it['at'], 'rot': it.get('rot', 0), 'layer': '符号'}
         if 'scale' in it:
             d['scale'] = it['scale']
@@ -400,10 +414,13 @@ class Conv:
 
 
 def main(argv):
+    global GEOM_ALL
     cats, args, i = [], [], 0
     while i < len(argv):
         if argv[i] == '--catalog':
             cats.append(argv[i + 1]); i += 2; continue
+        if argv[i] == '--geom-all':
+            GEOM_ALL = True; i += 1; continue
         args.append(argv[i]); i += 1
     src, dst, sheets = Path(args[0]), Path(args[1]), args[2:]
     cat = {}

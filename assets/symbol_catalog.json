@@ -1,4 +1,28 @@
 {
+ "Air Cooled Exchanger Style": {
+  "bbox": [
+   -62.5,
+   -62.5,
+   65.0,
+   32.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Angle Valve Style": {
+  "bbox": [
+   -2.5,
+   -5.0,
+   5.0,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
  "Assumed Nozzle Style": {
   "bbox": [
    0.0,
@@ -9,6 +33,114 @@
   "att": [],
   "scale": 1.0,
   "from_ang": 0
+ },
+ "Auxiliary Loc Accessible DCS Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Auxiliary Loc Accessible Discrete Instrument Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Auxiliary Loc Accessible PLC Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Auxiliary Loc Inaccessible DCS Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Auxiliary Loc Inaccessible Discrete Instrument Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Auxiliary Loc Inaccessible PLC Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Averaging Pitot Tube Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "BackPressureRegulator Style": {
+  "bbox": [
+   -4.7,
+   0.0,
+   3.1,
+   12.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "BackPressureRegulatorWithExternalTap Style": {
+  "bbox": [
+   -9.4,
+   0.0,
+   3.1,
+   14.1
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
  },
  "Ball Valve Closed Style": {
   "bbox": [
@@ -50,6 +182,90 @@
   "scale": 8.0,
   "from_ang": 0
  },
+ "Basket Strainer Style": {
+  "bbox": [
+   -7.5,
+   -6.0,
+   7.5,
+   6.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Blade Agitator Style": {
+  "bbox": [
+   -20.0,
+   -25.0,
+   20.0,
+   0.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Blank Style": {
+  "bbox": [
+   -2.5,
+   0.0,
+   2.5,
+   13.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "BlankWithFlanges Style": {
+  "bbox": [
+   -2.5,
+   -2.5,
+   2.5,
+   13.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Blind Flange Style": {
+  "bbox": [
+   0.0,
+   -2.5,
+   0.0,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Breather Style": {
+  "bbox": [
+   -5.0,
+   0.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Butterfly Valve Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
  "Cap Style": {
   "bbox": [
    -0.0,
@@ -65,6 +281,42 @@
   ],
   "scale": 40.0,
   "from_ang": 180
+ },
+ "Centrifugal Blower Style": {
+  "bbox": [
+   -17.5,
+   -17.5,
+   22.5,
+   50.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Centrifugal Compressor Style": {
+  "bbox": [
+   -57.5,
+   -17.5,
+   20.0,
+   15.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Centrifugal Sump Pump Style": {
+  "bbox": [
+   -15.0,
+   -5.0,
+   30.0,
+   72.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
  },
  "Check Valve Style": {
   "bbox": [
@@ -86,6 +338,246 @@
   "scale": 8.0,
   "from_ang": 0
  },
+ "Chemical Seal - Diaphragm": {
+  "bbox": [
+   -2.0,
+   -5.0,
+   2.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Chiller Style": {
+  "bbox": [
+   -12,
+   -7,
+   12,
+   9
+  ],
+  "att": [
+   [
+    -12,
+    3
+   ],
+   [
+    12,
+    3
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "Closed Drain No PID Style": {
+  "bbox": [
+   -7.8,
+   -14.8,
+   7.8,
+   0.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Closed Figure8 Blind Style": {
+  "bbox": [
+   -2.5,
+   0.0,
+   2.5,
+   17.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "ClosedFigure8BlindWithFlanges Style": {
+  "bbox": [
+   -2.5,
+   -2.5,
+   2.5,
+   17.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Cold Trap Style": {
+  "bbox": [
+   -7,
+   -9,
+   7,
+   12
+  ],
+  "att": [
+   [
+    -3,
+    12
+   ],
+   [
+    3,
+    12
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "Concentric Reducer Style": {
+  "bbox": [
+   -2.5,
+   -2.5,
+   2.5,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Cone Roof Tank Style": {
+  "bbox": [
+   0.0,
+   0.0,
+   110.0,
+   82.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Cone Strainer Style": {
+  "bbox": [
+   -2.5,
+   -2.5,
+   2.5,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Control Valve Style": {
+  "bbox": [
+   -0.2,
+   -0.1,
+   0.2,
+   0.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Coriolis Meter Style": {
+  "bbox": [
+   -9,
+   -4,
+   9,
+   4
+  ],
+  "att": [
+   [
+    -9,
+    0
+   ],
+   [
+    9,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "Cylinder Or Piston Style": {
+  "bbox": [
+   -2.5,
+   0.0,
+   2.5,
+   13.7
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Damper Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "De Super Heater Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Desiccant Dryer Style": {
+  "bbox": [
+   -4,
+   -12.0,
+   4.0,
+   12.0
+  ],
+  "att": [
+   [
+    0,
+    12
+   ],
+   [
+    0,
+    -12
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "Detonation Arrestor Style": {
+  "bbox": [
+   -7.5,
+   -3.7,
+   7.5,
+   3.8
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Diaphragm Style": {
+  "bbox": [
+   -2.0,
+   0.0,
+   2.0,
+   7.2
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
  "Diaphragm Valve Style": {
   "bbox": [
    -4.0,
@@ -105,6 +597,231 @@
   ],
   "scale": 8.0,
   "from_ang": 0
+ },
+ "Diesel Engine Style": {
+  "bbox": [
+   0.0,
+   -12.5,
+   40.0,
+   12.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "DifferentialPressureReducingRegulator Style": {
+  "bbox": [
+   -6.2,
+   0.0,
+   6.2,
+   15.6
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Diverter Valve Style": {
+  "bbox": [
+   -5.0,
+   -5.4,
+   5.4,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Dome Roof Tank Style": {
+  "bbox": [
+   0.0,
+   0.0,
+   110.0,
+   82.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Double Line Nozzle Style": {
+  "bbox": [
+   0.0,
+   -2.5,
+   7.5,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Double Pipe Exchanger Style": {
+  "bbox": [
+   -62.5,
+   -25.0,
+   47.5,
+   25.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Double Wall Tank Style": {
+  "bbox": [
+   0.0,
+   0.0,
+   110.0,
+   82.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Duplex Strainer Style": {
+  "bbox": [
+   -7.5,
+   -5.0,
+   7.5,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Eccentric Reducer Style": {
+  "bbox": [
+   -2.5,
+   -3.8,
+   2.5,
+   1.2
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Ejector Or Eductor Style": {
+  "bbox": [
+   -15.0,
+   -4.0,
+   12.5,
+   4.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Electric Heater Style": {
+  "bbox": [
+   -9,
+   -4,
+   9,
+   4
+  ],
+  "att": [
+   [
+    -9,
+    0
+   ],
+   [
+    9,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "Electric Motor Style": {
+  "bbox": [
+   0.0,
+   -5.0,
+   37.5,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Electro-Hydraulic Style": {
+  "bbox": [
+   -3.1,
+   0.0,
+   3.1,
+   15.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Excess Flow Valve Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   4.8
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Exhaust Head Style": {
+  "bbox": [
+   -5.0,
+   0.0,
+   5.0,
+   10.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Expansion Joint Style": {
+  "bbox": [
+   -10.0,
+   -4.2,
+   10.0,
+   4.2
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "External Floating Roof Tank Style": {
+  "bbox": [
+   0.0,
+   0.0,
+   110.0,
+   70.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Field Mounted DCS Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
  },
  "Field Mounted Discrete Hardware Interlock Style": {
   "bbox": [
@@ -162,6 +879,18 @@
   "scale": 20.0,
   "from_ang": 0
  },
+ "Field Mounted PLC Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
  "Filter Pipe Style": {
   "bbox": [
    -4.0,
@@ -181,6 +910,78 @@
   ],
   "scale": 8.0,
   "from_ang": 0
+ },
+ "Filter Style": {
+  "bbox": [
+   -10.0,
+   -7.5,
+   90.0,
+   47.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Fired Heater Style": {
+  "bbox": [
+   -5.0,
+   0.0,
+   65.0,
+   150.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Flame Arrestor Style": {
+  "bbox": [
+   -7.5,
+   -3.8,
+   7.5,
+   3.8
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Flange Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   0.0,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Flanged Nozzle Style": {
+  "bbox": [
+   0.0,
+   -2.5,
+   7.5,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Flexible Hose Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
  },
  "Flow Arrow Style": {
   "bbox": [
@@ -202,6 +1003,205 @@
   "scale": 25.0,
   "from_ang": 0
  },
+ "Flow Conditioning Device Style": {
+  "bbox": [
+   -10.0,
+   -5.0,
+   10.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Flow Nozzle Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Flume Style": {
+  "bbox": [
+   -7.5,
+   -5.0,
+   7.5,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Four Way Valve Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Front Facing CNozzle Style": {
+  "bbox": [
+   -2.5,
+   -2.5,
+   2.2,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Front Facing Nozzle Style": {
+  "bbox": [
+   -2.5,
+   -2.5,
+   2.5,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Furnace Style": {
+  "bbox": [
+   -5.0,
+   0.0,
+   65.0,
+   150.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Gap Style": {
+  "bbox": [
+   -0.4,
+   -1.4,
+   0.4,
+   1.4
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Gas Bag Style": {
+  "bbox": [
+   -6,
+   -8,
+   6,
+   10
+  ],
+  "att": [
+   [
+    0,
+    10
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "Gas Cylinder Style": {
+  "bbox": [
+   -4.0,
+   -10,
+   4.0,
+   14.5
+  ],
+  "att": [
+   [
+    0,
+    14
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "Gas Washing Bottle Style": {
+  "bbox": [
+   -6,
+   -9,
+   6.0,
+   14
+  ],
+  "att": [
+   [
+    -2,
+    14
+   ],
+   [
+    3,
+    14
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "Gate Valve Closed Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Gate Valve Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Generic Rotary Valve Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Globe Valve Closed Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
  "Globe Valve Style": {
   "bbox": [
    -4.0,
@@ -221,6 +1221,234 @@
   ],
   "scale": 8.0,
   "from_ang": 0
+ },
+ "Hand Wheel With Actuator Style": {
+  "bbox": [
+   -3.1,
+   0.0,
+   3.8,
+   11.3
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Heat Tracing Style": {
+  "bbox": [
+   -8,
+   -2.0,
+   8,
+   2.0
+  ],
+  "att": [
+   [
+    -8,
+    0
+   ],
+   [
+    8,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "Horizontal Centrifugal Pump Style": {
+  "bbox": [
+   -12.5,
+   -15.0,
+   37.5,
+   20.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Horizontal Drum Style": {
+  "bbox": [
+   -13.0,
+   -7,
+   13.0,
+   7
+  ],
+  "att": [
+   [
+    -13,
+    0
+   ],
+   [
+    13,
+    0
+   ],
+   [
+    0,
+    7
+   ],
+   [
+    0,
+    -7
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "Hose Connection Style": {
+  "bbox": [
+   0.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "In Line Mixer Style": {
+  "bbox": [
+   -7.5,
+   -1.6,
+   7.5,
+   1.6
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "In Line Silencer Style": {
+  "bbox": [
+   -7.5,
+   -3.8,
+   7.5,
+   3.8
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Internal Floating Roof Tank Style": {
+  "bbox": [
+   0.0,
+   0.0,
+   110.0,
+   82.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Jacketed Reactor Style": {
+  "bbox": [
+   -10,
+   -20.0,
+   10.0,
+   22
+  ],
+  "att": [
+   [
+    0,
+    20
+   ],
+   [
+    0,
+    -20
+   ],
+   [
+    10,
+    -8
+   ],
+   [
+    10,
+    4
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "Knife Valve Style": {
+  "bbox": [
+   -1.3,
+   -3.7,
+   1.3,
+   7.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Liquid Ring Vacuum Pump Style": {
+  "bbox": [
+   -12.5,
+   -12.5,
+   17.5,
+   47.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Magnetic Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Manual Operator Style": {
+  "bbox": [
+   -0.9,
+   0.0,
+   0.9,
+   3.8
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Mass Spectrometer Style": {
+  "bbox": [
+   -8,
+   -5,
+   6,
+   5
+  ],
+  "att": [
+   [
+    -8,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "Motor Operated Style": {
+  "bbox": [
+   -3.1,
+   0.0,
+   3.1,
+   15.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
  },
  "Needle Valve Closed Style": {
   "bbox": [
@@ -282,6 +1510,325 @@
   "scale": 25.0,
   "from_ang": 0
  },
+ "Open Drain No PID Style": {
+  "bbox": [
+   -7.8,
+   -10.2,
+   7.8,
+   0.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Open Figure8 Blind Style": {
+  "bbox": [
+   -2.5,
+   0.0,
+   2.5,
+   17.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Open Top Tank Style": {
+  "bbox": [
+   0.0,
+   0.0,
+   110.0,
+   70.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "OpenFigure8BlindWithFlanges": {
+  "bbox": [
+   -2.5,
+   -2.5,
+   2.5,
+   17.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Orifice In Quick Change Fitting Style": {
+  "bbox": [
+   -2.5,
+   -5.0,
+   2.5,
+   7.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Orifice Plate Union Style": {
+  "bbox": [
+   -5,
+   -3,
+   5,
+   3
+  ],
+  "att": [
+   [
+    -5,
+    0
+   ],
+   [
+    5,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "Orifice Style": {
+  "bbox": [
+   -1.9,
+   -3.8,
+   1.9,
+   3.8
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Paddle Agitator Style": {
+  "bbox": [
+   -21.0,
+   -24.0,
+   21.0,
+   0.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "PilotLight Style": {
+  "bbox": [
+   -0.3,
+   -0.3,
+   0.3,
+   0.3
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "PilotOperatedReliefValve Style": {
+  "bbox": [
+   -3.8,
+   -5.0,
+   5.0,
+   17.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Pinch Valve Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Pitot Tube Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Plate And Frame Exchanger Style": {
+  "bbox": [
+   -25.0,
+   -17.5,
+   25.0,
+   22.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Plug Style": {
+  "bbox": [
+   0.0,
+   -1.2,
+   2.5,
+   1.2
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Plug Valve Closed Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Plug Valve Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "PositionerAndSolenoid Style": {
+  "bbox": [
+   -26.4,
+   0.0,
+   3.1,
+   31.3
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Positive Displacement Blower Style": {
+  "bbox": [
+   -12.5,
+   -17.5,
+   12.5,
+   52.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Positive Displacement Pump Style": {
+  "bbox": [
+   -12.5,
+   -15.0,
+   12.5,
+   52.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Positive Displacement Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Power Supply Style": {
+  "bbox": [
+   -9,
+   -6,
+   10,
+   6
+  ],
+  "att": [
+   [
+    10,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "Pressure And Vacuum Relief Valve Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   10.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Pressure Balanced Diaphragm Style": {
+  "bbox": [
+   -3.1,
+   0.0,
+   3.1,
+   13.8
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Pressure Gauge Style": {
+  "bbox": [
+   -4.0,
+   -5,
+   4.0,
+   4.0
+  ],
+  "att": [
+   [
+    0,
+    -5
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "Pressure Relief Valve Style": {
+  "bbox": [
+   -2.5,
+   -5.0,
+   5.0,
+   10.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
  "PressureReducingRegulator Style": {
   "bbox": [
    -1.5,
@@ -297,6 +1844,30 @@
   ],
   "scale": 12.0,
   "from_ang": 0
+ },
+ "PressureReducingRegulatorWithExternalTap Style": {
+  "bbox": [
+   -3.1,
+   0.0,
+   9.4,
+   14.1
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Primary Loc Accessible DCS Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
  },
  "Primary Loc Accessible Discrete Instrument Style": {
   "bbox": [
@@ -354,12 +1925,83 @@
   "scale": 20.0,
   "from_ang": 0
  },
+ "Primary Loc Inaccessible DCS Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Primary Loc Inaccessible Discrete Instrument Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Primary Loc Inaccessible PLC Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Progressive Cavity Pump Style": {
+  "bbox": [
+   -25.0,
+   -7.5,
+   60.0,
+   10.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Pulsation Damper Style": {
+  "bbox": [
+   -5.0,
+   0.0,
+   5.0,
+   29.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
  "QMZ Battery Limit Style": {
   "bbox": [
    -10.0,
    -3.0,
    10.0,
    3.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ },
+ "QMZ Coil Module Style": {
+  "bbox": [
+   -9,
+   -6,
+   9,
+   6
   ],
   "att": [],
   "scale": 1.0,
@@ -387,6 +2029,17 @@
   "scale": 1.0,
   "from_ang": 0
  },
+ "QMZ Condensate Tank Style": {
+  "bbox": [
+   -7,
+   -21.0,
+   7,
+   21.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ },
  "QMZ Diaphragm Solenoid Actuator": {
   "bbox": [
    -3.0,
@@ -404,6 +2057,17 @@
    -8.0,
    16.0,
    8.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0
+ },
+ "QMZ Flow Meter Style": {
+  "bbox": [
+   -7,
+   -3,
+   7,
+   3
   ],
   "att": [],
   "scale": 1.0,
@@ -431,12 +2095,12 @@
   "scale": 1.0,
   "from_ang": 0
  },
- "QMZ Tube Furnace Style": {
+ "QMZ Mixing Tank Style": {
   "bbox": [
-   -45.0,
-   -14.0,
-   45.0,
-   14.0
+   -10,
+   -30.0,
+   10,
+   30.0
   ],
   "att": [],
   "scale": 1.0,
@@ -464,34 +2128,12 @@
   "scale": 1.0,
   "from_ang": 0
  },
- "QMZ Coil Module Style": {
+ "QMZ Safety Valve Style": {
   "bbox": [
-   -9,
-   -6,
-   9,
-   6
-  ],
-  "att": [],
-  "scale": 1.0,
-  "from_ang": 0
- },
- "QMZ Mixing Tank Style": {
-  "bbox": [
-   -10,
-   -30.0,
-   10,
-   30.0
-  ],
-  "att": [],
-  "scale": 1.0,
-  "from_ang": 0
- },
- "QMZ Condensate Tank Style": {
-  "bbox": [
-   -7,
-   -21.0,
-   7,
-   21.0
+   -5,
+   -3,
+   5,
+   7.2
   ],
   "att": [],
   "scale": 1.0,
@@ -508,26 +2150,698 @@
   "scale": 1.0,
   "from_ang": 0
  },
- "QMZ Safety Valve Style": {
+ "QMZ Tube Furnace Style": {
   "bbox": [
-   -5,
-   -3,
-   5,
-   7.2
+   -45.0,
+   -14.0,
+   45.0,
+   14.0
   ],
   "att": [],
   "scale": 1.0,
   "from_ang": 0
  },
- "QMZ Flow Meter Style": {
+ "Quick Connector Style": {
   "bbox": [
-   -7,
-   -3,
-   7,
-   3
+   -6,
+   -2,
+   6,
+   2
+  ],
+  "att": [
+   [
+    -6,
+    0
+   ],
+   [
+    6,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "Reciprocating Compressor Style": {
+  "bbox": [
+   -52.5,
+   -20.0,
+   25.0,
+   20.0
   ],
   "att": [],
   "scale": 1.0,
-  "from_ang": 0
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Removable Spool Style": {
+  "bbox": [
+   -7.5,
+   -5.5,
+   7.5,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Rotameter Style": {
+  "bbox": [
+   -10.0,
+   -10.0,
+   15.0,
+   10.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Rotameter With Integral Valve Style": {
+  "bbox": [
+   -20.0,
+   -10.0,
+   15.0,
+   10.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Rotary Valve Style": {
+  "bbox": [
+   -5.0,
+   -3.0,
+   5.0,
+   3.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Rupture Disc For Pressure Relief Style": {
+  "bbox": [
+   -2.5,
+   -5.0,
+   2.5,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Rupture Disc For Vacuum Relief Style": {
+  "bbox": [
+   -2.5,
+   -5.0,
+   2.5,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Screw Compressor Style": {
+  "bbox": [
+   -40.0,
+   -10.0,
+   77.5,
+   15.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Screw Pump Style": {
+  "bbox": [
+   -25.0,
+   -7.5,
+   60.0,
+   10.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Segment Breaker Style": {
+  "bbox": [
+   -7.5,
+   0.0,
+   7.5,
+   12.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Silo Style": {
+  "bbox": [
+   -25.0,
+   0.0,
+   25.0,
+   115.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Single Line Nozzle Style": {
+  "bbox": [
+   0.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Single Solenoid Style": {
+  "bbox": [
+   -1.9,
+   0.0,
+   1.9,
+   11.2
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Single Solenoid-Manual Reset Style": {
+  "bbox": [
+   -1.9,
+   0.0,
+   10.0,
+   11.2
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Single Solenoid-Remote Reset Style": {
+  "bbox": [
+   -1.9,
+   0.0,
+   10.0,
+   11.2
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Spacer Style": {
+  "bbox": [
+   -2.5,
+   0.0,
+   2.5,
+   13.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "SpacerWithFlanges": {
+  "bbox": [
+   -2.5,
+   -2.5,
+   2.5,
+   13.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Spec and Insulation Break Style": {
+  "bbox": [
+   -0.3,
+   0.0,
+   0.3,
+   0.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Sphere Style": {
+  "bbox": [
+   -40.0,
+   -50.0,
+   40.0,
+   40.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Spiral Exchanger Style": {
+  "bbox": [
+   -25.0,
+   -20.0,
+   25.0,
+   25.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Steam Trap Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Stop Check Valve Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Syringe Pump Style": {
+  "bbox": [
+   -13,
+   -3,
+   10,
+   3
+  ],
+  "att": [
+   [
+    10,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "T-type Strainer Style": {
+  "bbox": [
+   -2.5,
+   -7.5,
+   2.5,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "TEMA type AEL Style": {
+  "bbox": [
+   -22.5,
+   -5.0,
+   107.5,
+   32.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "TEMA type AEM Style": {
+  "bbox": [
+   -22.5,
+   -5.0,
+   105.0,
+   32.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "TEMA type BEM Style": {
+  "bbox": [
+   -22.5,
+   -5.0,
+   105.0,
+   32.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "TEMA type BEU Style": {
+  "bbox": [
+   -22.5,
+   -5.0,
+   105.0,
+   32.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "TEMA type BKU Style": {
+  "bbox": [
+   -20.0,
+   -5.0,
+   105.0,
+   35.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "TEMA type NEN Style": {
+  "bbox": [
+   -25.0,
+   -5.0,
+   105.0,
+   32.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Target Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "TemperatureRegulatorFilledSystemType Style": {
+  "bbox": [
+   -3.1,
+   0.0,
+   8.6,
+   14.8
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Temporary Strainer Style": {
+  "bbox": [
+   -2.5,
+   -2.5,
+   2.5,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Three Way Valve Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Tie In Symbol Style": {
+  "bbox": [
+   -5.8,
+   -5.0,
+   5.8,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Turbine Drive Style": {
+  "bbox": [
+   0.0,
+   -12.5,
+   37.5,
+   10.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Turbine Or Propeller Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Ultrasonic Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Undefined Interlock Logic": {
+  "bbox": [
+   -3.8,
+   -3.8,
+   3.8,
+   3.8
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Vacuum Pump Dry Style": {
+  "bbox": [
+   -9,
+   -7.0,
+   9,
+   7.0
+  ],
+  "att": [
+   [
+    -9,
+    0
+   ],
+   [
+    9,
+    6
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "Vacuum Relief Valve Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   2.5,
+   10.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Vent Cover Style": {
+  "bbox": [
+   -5.0,
+   0.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Vent Silencer Style": {
+  "bbox": [
+   -4.0,
+   0.0,
+   4.0,
+   26.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Venturi Style": {
+  "bbox": [
+   -7.5,
+   -5.0,
+   7.5,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Vertical Can Pump Style": {
+  "bbox": [
+   -10.0,
+   -55.0,
+   10.0,
+   40.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Vertical Inline Pump Style": {
+  "bbox": [
+   -22.5,
+   -7.5,
+   22.5,
+   45.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Vessel Style": {
+  "bbox": [
+   -45.0,
+   0.0,
+   45.0,
+   300.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "VesselWithPackedSection Style": {
+  "bbox": [
+   -45.0,
+   0.0,
+   45.0,
+   300.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "VesselWithTrayedInternals Style": {
+  "bbox": [
+   -45.0,
+   0.0,
+   45.0,
+   300.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Vortex Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Wedge Meter Style": {
+  "bbox": [
+   -7.5,
+   -5.0,
+   7.5,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Weir Style": {
+  "bbox": [
+   -7.5,
+   -5.0,
+   7.5,
+   5.0
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Welded Connection Style": {
+  "bbox": [
+   -1.2,
+   -1.2,
+   1.2,
+   1.2
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
+ },
+ "Y-type Strainer Style": {
+  "bbox": [
+   -5.0,
+   -5.4,
+   5.4,
+   2.5
+  ],
+  "att": [],
+  "scale": 1.0,
+  "from_ang": 0,
+  "plant_lib": true
  }
 }

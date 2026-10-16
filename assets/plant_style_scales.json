@@ -1,0 +1,1426 @@
+{
+"Air Cooled Exchanger Style": {
+"scale": 40.0,
+"block": "PIP 气冷式换热器",
+"size": [
+3.19,
+2.38
+]
+},
+"Angle Valve Style": {
+"scale": 10.0,
+"block": "PIP 角阀",
+"size": [
+0.75,
+0.75
+]
+},
+"Assumed Nozzle Style": {
+"scale": 40.0,
+"block": "PIP 假定的管嘴",
+"size": [
+0.0,
+0.0
+]
+},
+"Auxiliary Loc Accessible DCS Style": {
+"scale": 20.0,
+"block": "PIP 可从辅助位置使用 - DCS",
+"size": [
+0.5,
+0.5
+]
+},
+"Auxiliary Loc Accessible Discrete Instrument Style": {
+"scale": 20.0,
+"block": "PIP 可从辅助位置使用 - 离散式",
+"size": [
+0.5,
+0.5
+]
+},
+"Auxiliary Loc Accessible PLC Style": {
+"scale": 20.0,
+"block": "PIP 可从辅助位置使用 - PLC",
+"size": [
+0.5,
+0.5
+]
+},
+"Auxiliary Loc Inaccessible DCS Style": {
+"scale": 20.0,
+"block": "PIP 不可从辅助位置使用 - DCS",
+"size": [
+0.5,
+0.5
+]
+},
+"Auxiliary Loc Inaccessible Discrete Instrument Style": {
+"scale": 20.0,
+"block": "PIP 不可从辅助位置使用 - 离散式",
+"size": [
+0.5,
+0.5
+]
+},
+"Auxiliary Loc Inaccessible PLC Style": {
+"scale": 20.0,
+"block": "PIP 不可从辅助位置使用 - PLC",
+"size": [
+0.5,
+0.5
+]
+},
+"Averaging Pitot Tube Style": {
+"scale": 10.0,
+"block": "PIP 均速皮托管",
+"size": [
+1.0,
+1.0
+]
+},
+"BackPressureRegulator Style": {
+"scale": 25.0,
+"block": "PIP 反压调节器",
+"size": [
+0.31,
+0.5
+]
+},
+"BackPressureRegulatorWithExternalTap Style": {
+"scale": 25.0,
+"block": "PIP 带外部旋塞的反压调节器",
+"size": [
+0.5,
+0.56
+]
+},
+"Ball Valve Closed Style": {
+"scale": 10.0,
+"block": "PIP 球阀(闭合式)",
+"size": [
+1.0,
+0.67
+]
+},
+"Ball Valve Style": {
+"scale": 10.0,
+"block": "PIP 球阀",
+"size": [
+1.0,
+0.67
+]
+},
+"Basket Strainer Style": {
+"scale": 40.0,
+"block": "PIP 篮式粗滤器",
+"size": [
+0.38,
+0.3
+]
+},
+"Blade Agitator Style": {
+"scale": 40.0,
+"block": "叶片式搅拌器",
+"size": [
+1.0,
+0.62
+]
+},
+"Blank Style": {
+"scale": 40.0,
+"block": "PIP 插板",
+"size": [
+0.12,
+0.32
+]
+},
+"BlankWithFlanges Style": {
+"scale": 40.0,
+"block": "PIP 带凸缘的插板",
+"size": [
+0.12,
+0.39
+]
+},
+"Blind Flange Style": {
+"scale": 40.0,
+"block": "PIP 法兰盖",
+"size": [
+0.0,
+0.12
+]
+},
+"Breather Style": {
+"scale": 10.0,
+"block": "PIP 通气阀",
+"size": [
+1.0,
+0.5
+]
+},
+"Butterfly Valve Style": {
+"scale": 10.0,
+"block": "PIP 蝶阀",
+"size": [
+1.0,
+0.5
+]
+},
+"Cap Style": {
+"scale": 40.0,
+"block": "PIP 管帽",
+"size": [
+0.06,
+0.12
+]
+},
+"Centrifugal Blower Style": {
+"scale": 40.0,
+"block": "PIP 离心式鼓风机",
+"size": [
+1.0,
+1.69
+]
+},
+"Centrifugal Compressor Style": {
+"scale": 40.0,
+"block": "PIP 离心式压缩机",
+"size": [
+1.94,
+0.81
+]
+},
+"Centrifugal Sump Pump Style": {
+"scale": 40.0,
+"block": "PIP 离心式排水泵",
+"size": [
+1.12,
+1.94
+]
+},
+"Check Valve Style": {
+"scale": 10.0,
+"block": "PIP 止回阀",
+"size": [
+1.0,
+0.5
+]
+},
+"Chemical Seal - Diaphragm": {
+"scale": 40.0,
+"block": "PIP 化学密封 - 隔膜",
+"size": [
+0.1,
+0.25
+]
+},
+"Closed Drain No PID Style": {
+"scale": 25.0,
+"block": "PIP 暗渠(无 P&ID)",
+"size": [
+0.63,
+0.59
+]
+},
+"Closed Figure8 Blind Style": {
+"scale": 40.0,
+"block": "PIP 闭合式 8 字盲板",
+"size": [
+0.12,
+0.42
+]
+},
+"ClosedFigure8BlindWithFlanges Style": {
+"scale": 40.0,
+"block": "PIP 关闭状态的法兰连接型 8 字盲板",
+"size": [
+0.12,
+0.49
+]
+},
+"Concentric Reducer Style": {
+"scale": 40.0,
+"block": "PIP 同心异径管",
+"size": [
+0.12,
+0.12
+]
+},
+"Cone Roof Tank Style": {
+"scale": 40.0,
+"block": "PIP 锥顶罐",
+"size": [
+2.75,
+2.06
+]
+},
+"Cone Strainer Style": {
+"scale": 10.0,
+"block": "PIP 锥形粗滤器",
+"size": [
+0.5,
+0.5
+]
+},
+"Control Valve Style": {
+"scale": 1.0,
+"block": "控制阀",
+"size": [
+0.3,
+0.53
+]
+},
+"Cylinder Or Piston Style": {
+"scale": 25.0,
+"block": "PIP 汽缸 - 活塞",
+"size": [
+0.2,
+0.55
+]
+},
+"Damper Style": {
+"scale": 10.0,
+"block": "PIP 阻尼器",
+"size": [
+1.0,
+0.5
+]
+},
+"De Super Heater Style": {
+"scale": 10.0,
+"block": "PIP 减温器",
+"size": [
+1.0,
+1.0
+]
+},
+"Detonation Arrestor Style": {
+"scale": 40.0,
+"block": "PIP 阻爆器",
+"size": [
+0.38,
+0.19
+]
+},
+"Diaphragm Style": {
+"scale": 25.0,
+"block": "PIP 隔膜",
+"size": [
+0.25,
+0.45
+]
+},
+"Diaphragm Valve Style": {
+"scale": 10.0,
+"block": "PIP 隔膜阀",
+"size": [
+1.0,
+0.5
+]
+},
+"Diesel Engine Style": {
+"scale": 40.0,
+"block": "PIP 柴油发动机",
+"size": [
+1.0,
+0.62
+]
+},
+"DifferentialPressureReducingRegulator Style": {
+"scale": 25.0,
+"block": "PIP 差压减压调节器",
+"size": [
+0.5,
+0.63
+]
+},
+"Diverter Valve Style": {
+"scale": 10.0,
+"block": "PIP 换向阀",
+"size": [
+1.04,
+0.79
+]
+},
+"Dome Roof Tank Style": {
+"scale": 40.0,
+"block": "PIP 拱顶罐",
+"size": [
+2.75,
+2.06
+]
+},
+"Double Line Nozzle Style": {
+"scale": 40.0,
+"block": "PIP 双线管嘴",
+"size": [
+0.19,
+0.12
+]
+},
+"Double Pipe Exchanger Style": {
+"scale": 40.0,
+"block": "PIP 套管式换热器",
+"size": [
+2.75,
+1.25
+]
+},
+"Double Wall Tank Style": {
+"scale": 40.0,
+"block": "PIP 双壁罐",
+"size": [
+2.75,
+2.06
+]
+},
+"Duplex Strainer Style": {
+"scale": 40.0,
+"block": "PIP 复式粗滤器",
+"size": [
+0.38,
+0.25
+]
+},
+"Eccentric Reducer Style": {
+"scale": 40.0,
+"block": "PIP 偏心异径管",
+"size": [
+0.12,
+0.12
+]
+},
+"Ejector Or Eductor Style": {
+"scale": 40.0,
+"block": "PIP 喷射器",
+"size": [
+0.69,
+0.2
+]
+},
+"Electric Motor Style": {
+"scale": 40.0,
+"block": "PIP 电动机",
+"size": [
+0.94,
+0.25
+]
+},
+"Electro-Hydraulic Style": {
+"scale": 25.0,
+"block": "PIP 电动液压",
+"size": [
+0.25,
+0.6
+]
+},
+"Excess Flow Valve Style": {
+"scale": 10.0,
+"block": "PIP 流量限制阀",
+"size": [
+1.0,
+0.73
+]
+},
+"Exhaust Head Style": {
+"scale": 10.0,
+"block": "PIP 排气头",
+"size": [
+1.0,
+1.0
+]
+},
+"Expansion Joint Style": {
+"scale": 40.0,
+"block": "PIP 膨胀节",
+"size": [
+0.5,
+0.21
+]
+},
+"External Floating Roof Tank Style": {
+"scale": 40.0,
+"block": "PIP 外浮顶罐",
+"size": [
+2.75,
+1.75
+]
+},
+"Field Mounted DCS Style": {
+"scale": 20.0,
+"block": "PIP 现场安装 - DCS",
+"size": [
+0.5,
+0.5
+]
+},
+"Field Mounted Discrete Hardware Interlock Style": {
+"scale": 20.0,
+"block": "PIP 现场 - 离散式设备联锁",
+"size": [
+0.5,
+0.5
+]
+},
+"Field Mounted Discrete Instrument Style": {
+"scale": 20.0,
+"block": "PIP 现场安装 - 离散式",
+"size": [
+0.5,
+0.5
+]
+},
+"Field Mounted PLC Style": {
+"scale": 20.0,
+"block": "PIP 现场安装 - PLC",
+"size": [
+0.5,
+0.5
+]
+},
+"Filter Pipe Style": {
+"scale": 10.0,
+"block": "PIP 过滤器",
+"size": [
+1.0,
+1.0
+]
+},
+"Filter Style": {
+"scale": 40.0,
+"block": "板框式过滤器",
+"size": [
+2.5,
+1.38
+]
+},
+"Fired Heater Style": {
+"scale": 40.0,
+"block": "火焰加热器",
+"size": [
+1.75,
+3.75
+]
+},
+"Flame Arrestor Style": {
+"scale": 40.0,
+"block": "PIP 阻火器",
+"size": [
+0.38,
+0.19
+]
+},
+"Flange Style": {
+"scale": 40.0,
+"block": "PIP 法兰",
+"size": [
+0.12,
+0.12
+]
+},
+"Flanged Nozzle Style": {
+"scale": 40.0,
+"block": "PIP 法兰管嘴",
+"size": [
+0.19,
+0.12
+]
+},
+"Flexible Hose Style": {
+"scale": 10.0,
+"block": "PIP 挠性软管",
+"size": [
+1.0,
+0.5
+]
+},
+"Flow Arrow Style": {
+"scale": 25.0,
+"block": "流向箭头",
+"size": [
+0.19,
+0.09
+]
+},
+"Flow Conditioning Device Style": {
+"scale": 10.0,
+"block": "PIP 流量调节器",
+"size": [
+2.0,
+1.0
+]
+},
+"Flow Nozzle Style": {
+"scale": 10.0,
+"block": "PIP 流量管嘴",
+"size": [
+1.0,
+1.0
+]
+},
+"Flume Style": {
+"scale": 10.0,
+"block": "PIP 水槽",
+"size": [
+1.5,
+1.0
+]
+},
+"Four Way Valve Style": {
+"scale": 10.0,
+"block": "PIP 四通阀",
+"size": [
+1.0,
+1.0
+]
+},
+"Front Facing CNozzle Style": {
+"scale": 40.0,
+"block": "C 正向管嘴",
+"size": [
+0.12,
+0.13
+]
+},
+"Front Facing Nozzle Style": {
+"scale": 40.0,
+"block": "PIP 正向管嘴",
+"size": [
+0.12,
+0.12
+]
+},
+"Furnace Style": {
+"scale": 40.0,
+"block": "PIP 锅炉",
+"size": [
+1.75,
+3.75
+]
+},
+"Gap Style": {
+"scale": 25.0,
+"block": "打断符号",
+"size": [
+0.03,
+0.11
+]
+},
+"Gate Valve Closed Style": {
+"scale": 10.0,
+"block": "PIP 闸阀(闭合式)",
+"size": [
+1.0,
+0.5
+]
+},
+"Gate Valve Style": {
+"scale": 10.0,
+"block": "PIP 闸阀",
+"size": [
+1.0,
+0.5
+]
+},
+"Generic Rotary Valve Style": {
+"scale": 10.0,
+"block": "PIP 通用旋转阀",
+"size": [
+1.0,
+1.0
+]
+},
+"Globe Valve Closed Style": {
+"scale": 10.0,
+"block": "PIP 截止阀(闭合式)",
+"size": [
+1.0,
+0.5
+]
+},
+"Globe Valve Style": {
+"scale": 10.0,
+"block": "PIP 截止阀",
+"size": [
+1.0,
+0.5
+]
+},
+"Hand Wheel With Actuator Style": {
+"scale": 25.0,
+"block": "PIP 带促动器的手轮",
+"size": [
+0.28,
+0.45
+]
+},
+"Horizontal Centrifugal Pump Style": {
+"scale": 40.0,
+"block": "PIP 卧式离心泵",
+"size": [
+1.25,
+0.88
+]
+},
+"Hose Connection Style": {
+"scale": 40.0,
+"block": "PIP 软管连接",
+"size": [
+0.12,
+0.12
+]
+},
+"In Line Mixer Style": {
+"scale": 40.0,
+"block": "PIP 嵌入式混合器",
+"size": [
+0.38,
+0.08
+]
+},
+"In Line Silencer Style": {
+"scale": 40.0,
+"block": "PIP 嵌入式消音器",
+"size": [
+0.38,
+0.19
+]
+},
+"Internal Floating Roof Tank Style": {
+"scale": 40.0,
+"block": "PIP 内浮顶罐",
+"size": [
+2.75,
+2.06
+]
+},
+"Knife Valve Style": {
+"scale": 10.0,
+"block": "PIP 刀阀",
+"size": [
+0.25,
+1.13
+]
+},
+"Liquid Ring Vacuum Pump Style": {
+"scale": 40.0,
+"block": "PIP 液环真空泵",
+"size": [
+0.75,
+1.5
+]
+},
+"Magnetic Style": {
+"scale": 10.0,
+"block": "PIP 电磁流量计",
+"size": [
+1.0,
+1.0
+]
+},
+"Manual Operator Style": {
+"scale": 25.0,
+"block": "PIP 手动操作器",
+"size": [
+0.07,
+0.15
+]
+},
+"Motor Operated Style": {
+"scale": 25.0,
+"block": "PIP 电动机驱动",
+"size": [
+0.25,
+0.6
+]
+},
+"Needle Valve Closed Style": {
+"scale": 10.0,
+"block": "PIP 针阀(闭合式)",
+"size": [
+1.0,
+0.73
+]
+},
+"Needle Valve Style": {
+"scale": 10.0,
+"block": "PIP 针阀",
+"size": [
+1.0,
+0.73
+]
+},
+"Open Drain No PID Style": {
+"scale": 25.0,
+"block": "PIP 明渠(无 P&ID)",
+"size": [
+0.62,
+0.41
+]
+},
+"Open Figure8 Blind Style": {
+"scale": 40.0,
+"block": "PIP 开放式 8 字盲板",
+"size": [
+0.12,
+0.42
+]
+},
+"Open Top Tank Style": {
+"scale": 40.0,
+"block": "PIP 敞口储罐",
+"size": [
+2.75,
+1.75
+]
+},
+"OpenFigure8BlindWithFlanges": {
+"scale": 40.0,
+"block": "PIP 开放状态的法兰连接型 8 字盲板",
+"size": [
+0.12,
+0.49
+]
+},
+"Orifice In Quick Change Fitting Style": {
+"scale": 10.0,
+"block": "PIP 快换配件中的孔板流量计",
+"size": [
+0.5,
+1.25
+]
+},
+"Orifice Style": {
+"scale": 10.0,
+"block": "PIP 孔板",
+"size": [
+0.38,
+0.75
+]
+},
+"Paddle Agitator Style": {
+"scale": 40.0,
+"block": "PIP 搅拌器",
+"size": [
+1.05,
+0.6
+]
+},
+"PilotLight Style": {
+"scale": 1.0,
+"block": "PIP 信号灯或液位玻璃管照明器",
+"size": [
+0.64,
+0.64
+]
+},
+"PilotOperatedReliefValve Style": {
+"scale": 10.0,
+"block": "PIP 带遥感器的先导式安全阀",
+"size": [
+0.87,
+2.25
+]
+},
+"Pinch Valve Style": {
+"scale": 10.0,
+"block": "PIP 夹阀",
+"size": [
+1.0,
+0.5
+]
+},
+"Pitot Tube Style": {
+"scale": 10.0,
+"block": "PIP 皮托管流量计",
+"size": [
+1.0,
+1.0
+]
+},
+"Plate And Frame Exchanger Style": {
+"scale": 40.0,
+"block": "PIP 板框式换热器",
+"size": [
+1.25,
+1.0
+]
+},
+"Plug Style": {
+"scale": 40.0,
+"block": "PIP 管堵",
+"size": [
+0.06,
+0.06
+]
+},
+"Plug Valve Closed Style": {
+"scale": 10.0,
+"block": "PIP 旋塞阀(闭合式)",
+"size": [
+1.0,
+0.5
+]
+},
+"Plug Valve Style": {
+"scale": 10.0,
+"block": "PIP 旋塞阀",
+"size": [
+1.0,
+0.5
+]
+},
+"PositionerAndSolenoid Style": {
+"scale": 25.0,
+"block": "PIP 定位器和螺线管",
+"size": [
+1.18,
+1.25
+]
+},
+"Positive Displacement Blower Style": {
+"scale": 40.0,
+"block": "PIP 容积式鼓风机",
+"size": [
+0.62,
+1.75
+]
+},
+"Positive Displacement Pump Style": {
+"scale": 40.0,
+"block": "PIP 容积式泵",
+"size": [
+0.62,
+1.69
+]
+},
+"Positive Displacement Style": {
+"scale": 10.0,
+"block": "PIP 容积式",
+"size": [
+1.0,
+1.0
+]
+},
+"Pressure And Vacuum Relief Valve Style": {
+"scale": 10.0,
+"block": "PIP 压力和真空安全阀",
+"size": [
+1.0,
+1.5
+]
+},
+"Pressure Balanced Diaphragm Style": {
+"scale": 25.0,
+"block": "PIP 压力平衡隔膜",
+"size": [
+0.25,
+0.55
+]
+},
+"Pressure Relief Valve Style": {
+"scale": 10.0,
+"block": "PIP 释放压力 - 安全阀",
+"size": [
+0.75,
+1.5
+]
+},
+"PressureReducingRegulator Style": {
+"scale": 25.0,
+"block": "PIP 减压调节器",
+"size": [
+0.31,
+0.5
+]
+},
+"PressureReducingRegulatorWithExternalTap Style": {
+"scale": 25.0,
+"block": "PIP 带外部旋塞的减压调节器",
+"size": [
+0.5,
+0.56
+]
+},
+"Primary Loc Accessible DCS Style": {
+"scale": 20.0,
+"block": "PIP 可从主要位置使用 - DCS",
+"size": [
+0.5,
+0.5
+]
+},
+"Primary Loc Accessible Discrete Instrument Style": {
+"scale": 20.0,
+"block": "PIP 可从主要位置使用 - 离散式",
+"size": [
+0.5,
+0.5
+]
+},
+"Primary Loc Accessible PLC Style": {
+"scale": 20.0,
+"block": "PIP 可从主要位置使用 - PLC",
+"size": [
+0.5,
+0.5
+]
+},
+"Primary Loc Inaccessible DCS Style": {
+"scale": 20.0,
+"block": "PIP 不可从主要位置使用 - DCS",
+"size": [
+0.5,
+0.5
+]
+},
+"Primary Loc Inaccessible Discrete Instrument Style": {
+"scale": 20.0,
+"block": "PIP 不可从主要位置使用 - 离散式",
+"size": [
+0.5,
+0.5
+]
+},
+"Primary Loc Inaccessible PLC Style": {
+"scale": 20.0,
+"block": "PIP 不可从主要位置使用 - PLC",
+"size": [
+0.5,
+0.5
+]
+},
+"Progressive Cavity Pump Style": {
+"scale": 40.0,
+"block": "PIP 螺杆泵",
+"size": [
+2.12,
+0.44
+]
+},
+"Pulsation Damper Style": {
+"scale": 40.0,
+"block": "PIP 脉动阻尼器",
+"size": [
+0.25,
+0.72
+]
+},
+"Reciprocating Compressor Style": {
+"scale": 40.0,
+"block": "PIP 往复式压缩机",
+"size": [
+1.94,
+1.0
+]
+},
+"Removable Spool Style": {
+"scale": 10.0,
+"block": "PIP 可拆管段",
+"size": [
+1.5,
+0.83
+]
+},
+"Rotameter Style": {
+"scale": 10.0,
+"block": "浮子流量计",
+"size": [
+2.5,
+2.0
+]
+},
+"Rotameter With Integral Valve Style": {
+"scale": 10.0,
+"block": "PIP 积分阀浮子流量计",
+"size": [
+3.5,
+2.0
+]
+},
+"Rotary Valve Style": {
+"scale": 10.0,
+"block": "PIP 旋转阀",
+"size": [
+1.0,
+0.6
+]
+},
+"Rupture Disc For Pressure Relief Style": {
+"scale": 10.0,
+"block": "PIP 破裂膜片 - 释放压力",
+"size": [
+0.5,
+1.0
+]
+},
+"Rupture Disc For Vacuum Relief Style": {
+"scale": 10.0,
+"block": "PIP 破裂膜片 - 释放真空",
+"size": [
+0.5,
+1.0
+]
+},
+"Screw Compressor Style": {
+"scale": 40.0,
+"block": "PIP 螺旋式压缩机",
+"size": [
+2.94,
+0.63
+]
+},
+"Screw Pump Style": {
+"scale": 40.0,
+"block": "PIP 螺旋泵",
+"size": [
+2.12,
+0.44
+]
+},
+"Segment Breaker Style": {
+"scale": 25.0,
+"block": "断线符 - 一对",
+"size": [
+0.6,
+0.5
+]
+},
+"Silo Style": {
+"scale": 40.0,
+"block": "筒仓",
+"size": [
+1.25,
+2.88
+]
+},
+"Single Line Nozzle Style": {
+"scale": 40.0,
+"block": "PIP 单线管嘴",
+"size": [
+0.12,
+0.12
+]
+},
+"Single Solenoid Style": {
+"scale": 25.0,
+"block": "PIP 单螺线管",
+"size": [
+0.15,
+0.45
+]
+},
+"Single Solenoid-Manual Reset Style": {
+"scale": 25.0,
+"block": "PIP 单螺线管 - 手动复位",
+"size": [
+0.48,
+0.45
+]
+},
+"Single Solenoid-Remote Reset Style": {
+"scale": 25.0,
+"block": "PIP 单螺线管 - 遥控复位",
+"size": [
+0.48,
+0.45
+]
+},
+"Spacer Style": {
+"scale": 40.0,
+"block": "PIP 垫环",
+"size": [
+0.12,
+0.32
+]
+},
+"SpacerWithFlanges": {
+"scale": 40.0,
+"block": "PIP 带凸缘的垫环",
+"size": [
+0.12,
+0.39
+]
+},
+"Spec and Insulation Break Style": {
+"scale": 1.0,
+"block": "断线符 - 两对",
+"size": [
+0.6,
+0.5
+]
+},
+"Sphere Style": {
+"scale": 40.0,
+"block": "PIP 球罐",
+"size": [
+2.0,
+2.25
+]
+},
+"Spiral Exchanger Style": {
+"scale": 40.0,
+"block": "PIP 螺旋式换热器",
+"size": [
+1.25,
+1.12
+]
+},
+"Steam Trap Style": {
+"scale": 10.0,
+"block": "PIP 蒸汽疏水阀",
+"size": [
+1.0,
+1.0
+]
+},
+"Stop Check Valve Style": {
+"scale": 10.0,
+"block": "PIP 截止止回阀",
+"size": [
+1.0,
+0.75
+]
+},
+"T-type Strainer Style": {
+"scale": 40.0,
+"block": "PIP T 型粗滤器",
+"size": [
+0.12,
+0.25
+]
+},
+"Target Style": {
+"scale": 10.0,
+"block": "PIP 靶式流量计",
+"size": [
+1.0,
+1.0
+]
+},
+"TEMA type AEL Style": {
+"scale": 40.0,
+"block": "PIP TEMA 型 AEL 换热器",
+"size": [
+3.25,
+0.94
+]
+},
+"TEMA type AEM Style": {
+"scale": 40.0,
+"block": "PIP TEMA 型 AEM 换热器",
+"size": [
+3.19,
+0.94
+]
+},
+"TEMA type BEM Style": {
+"scale": 40.0,
+"block": "PIP TEMA 型 BEM 换热器",
+"size": [
+3.19,
+0.94
+]
+},
+"TEMA type BEU Style": {
+"scale": 40.0,
+"block": "PIP TEMA 型 BEU 换热器",
+"size": [
+3.19,
+0.94
+]
+},
+"TEMA type BKU Style": {
+"scale": 40.0,
+"block": "PIP TEMA 型 BKU 换热器",
+"size": [
+3.12,
+1.0
+]
+},
+"TEMA type NEN Style": {
+"scale": 40.0,
+"block": "PIP TEMA 型 NEN 换热器",
+"size": [
+3.25,
+0.94
+]
+},
+"TemperatureRegulatorFilledSystemType Style": {
+"scale": 25.0,
+"block": "PIP 压力式温度调节器",
+"size": [
+0.47,
+0.59
+]
+},
+"Temporary Strainer Style": {
+"scale": 10.0,
+"block": "PIP 临时粗滤器",
+"size": [
+0.5,
+0.5
+]
+},
+"Three Way Valve Style": {
+"scale": 10.0,
+"block": "PIP 三通阀",
+"size": [
+1.0,
+0.75
+]
+},
+"Tie In Symbol Style": {
+"scale": 25.0,
+"block": "PIP 束捆符号",
+"size": [
+0.46,
+0.4
+]
+},
+"Turbine Drive Style": {
+"scale": 40.0,
+"block": "PIP 汽轮机驱动器",
+"size": [
+0.94,
+0.56
+]
+},
+"Turbine Or Propeller Style": {
+"scale": 10.0,
+"block": "PIP 汽轮机或螺旋桨",
+"size": [
+1.0,
+1.0
+]
+},
+"Ultrasonic Style": {
+"scale": 10.0,
+"block": "PIP 超声波流量计",
+"size": [
+1.0,
+1.0
+]
+},
+"Undefined Interlock Logic": {
+"scale": 40.0,
+"block": "PIP 未定义的联锁逻辑",
+"size": [
+0.38,
+0.38
+]
+},
+"Vacuum Relief Valve Style": {
+"scale": 10.0,
+"block": "PIP 真空安全阀",
+"size": [
+0.75,
+1.5
+]
+},
+"Vent Cover Style": {
+"scale": 10.0,
+"block": "PIP 通气孔盖",
+"size": [
+1.0,
+0.5
+]
+},
+"Vent Silencer Style": {
+"scale": 40.0,
+"block": "PIP 排气消音器",
+"size": [
+0.2,
+0.65
+]
+},
+"Venturi Style": {
+"scale": 10.0,
+"block": "PIP 文丘里管",
+"size": [
+1.5,
+1.0
+]
+},
+"Vertical Can Pump Style": {
+"scale": 40.0,
+"block": "PIP 罐形水泵",
+"size": [
+0.5,
+2.38
+]
+},
+"Vertical Inline Pump Style": {
+"scale": 40.0,
+"block": "PIP 立式管道泵",
+"size": [
+1.12,
+1.31
+]
+},
+"Vessel Style": {
+"scale": 40.0,
+"block": "PIP 容器",
+"size": [
+2.25,
+7.5
+]
+},
+"VesselWithPackedSection Style": {
+"scale": 40.0,
+"block": "PIP 容器(填料)",
+"size": [
+2.25,
+7.5
+]
+},
+"VesselWithTrayedInternals Style": {
+"scale": 40.0,
+"block": "PIP 容器(板式内件)",
+"size": [
+2.25,
+7.5
+]
+},
+"Vortex Style": {
+"scale": 10.0,
+"block": "PIP 涡流传感器",
+"size": [
+1.0,
+1.0
+]
+},
+"Wedge Meter Style": {
+"scale": 10.0,
+"block": "PIP 楔形流量计",
+"size": [
+1.5,
+1.0
+]
+},
+"Weir Style": {
+"scale": 10.0,
+"block": "PIP 溢流表",
+"size": [
+1.5,
+1.0
+]
+},
+"Welded Connection Style": {
+"scale": 40.0,
+"block": "PIP 焊接连接",
+"size": [
+0.06,
+0.06
+]
+},
+"Y-type Strainer Style": {
+"scale": 10.0,
+"block": "PIP Y 型粗滤器",
+"size": [
+1.04,
+0.79
+]
+}
+}

@@ -19,7 +19,7 @@ AutoCAD 只负责最终出图；版面、连接几何、压框、重叠都在离
 
 ## 工作流（每个 ★ 是用户确认关口）
 1. 读项目文件夹：需求、技术方案、成本表的询价表与控制点位表、补充资料。新版本优先于旧版本。
-2. 写 `pid_model.json`，字段见 `references/model_schema.md`。每个对象写明依据：甲方输入、设计确认、工程假设。**仪表按“图面标准”一节的原则精简。**
+2. 写 `pid_model.json`，字段见 `references/model_schema.md`。每个对象写明依据：甲方输入、设计确认、工程假设。**仪表按“图面标准”一节的原则精简；设备和元件先用 `symbol_atlas.py find <关键词>` 查符号库，不同设备用不同的图**（见 `references/symbol_library.md`）。
 3. ★ `make_review.py` 生成《设计依据与连接关系表》，请用户确认拓扑和待定点。
 4. 定分图（A3 多张）和编号，写进 `sheets`。
 5. `python scripts\new_project.py <阶段目录> <项目名>` 建 `_工作底稿/`（模型模板、`sheets.py`、`pipeline.json`、`projprops.json`）。
@@ -58,6 +58,8 @@ AutoCAD 只负责最终出图；版面、连接几何、压框、重叠都在离
 | 联锁表与工况说明 | `python scripts\make_ce_modes.py <pid_model.json> <目录>`，再 `render_ce_modes.py` |
 | 清单与对账 | `python scripts\export_lists.py <pid_model.json> <输出.xlsx> <成本表.xlsx\|-> <dcf\|->` |
 | 单步工具 | `lint_specs.py`、`plain_convert.py`、`check_plain.py`、`check_numbering.py`、`preview_spec.py`、`render_pdfs.py`、`clean_pdf_meta.py`、`pack_pdfs.py` |
+| 查符号 | `python scripts\symbol_atlas.py find <关键词> [--png 输出.png]`；整套图集 `assets/symbol_atlas/` |
+| 新增符号 | `scripts/symbol_geom.py` 的 `DEFS` 加定义 → `build-native` → `png` 目测（库里没有可上网搜标准图形，见 `references/symbol_library.md`） |
 | 符号目录更新 | `catalog_from_info.py assets\symbol_catalog.json <*.info.log>` |
 
 ## 铁规则
@@ -81,7 +83,7 @@ AutoCAD 只负责最终出图；版面、连接几何、压框、重叠都在离
 | 出图后 PDF 没有文字可抽取 | 正常，文字按曲线输出；位号核对用 `check_plain.py`（对照 spec），不要抽 PDF 文字 |
 | `draw` 报已有 AutoCAD | 有线程的 acad 进程才算；僵尸进程（0 线程）不算。请用户保存关闭自己的 AutoCAD |
 
-完整故障记录见 `references/pitfalls.md`；质检与记录模板见 `references/qa.md`；Plant 智能对象路线（已停用，仅备查）见 `references/engine.md` 末节。
+符号库说明见 `references/symbol_library.md`；完整故障记录见 `references/pitfalls.md`；质检与记录模板见 `references/qa.md`；Plant 智能对象路线（已停用，仅备查）见 `references/engine.md` 末节。
 
 ## 已定的取舍
 - **不再建 Plant 智能对象**：见概述。需要位号库、报表时，用 `export_lists.py` 由模型导出清单。

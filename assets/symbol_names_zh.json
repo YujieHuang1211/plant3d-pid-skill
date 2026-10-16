@@ -1,0 +1,1085 @@
+{
+ "Centrifugal Blower Style": {
+  "zh": "离心风机",
+  "cat": "泵与压缩机",
+  "use": "气体输送，低压大流量"
+ },
+ "Centrifugal Compressor Style": {
+  "zh": "离心压缩机",
+  "cat": "泵与压缩机",
+  "use": "气体增压，大流量"
+ },
+ "Centrifugal Sump Pump Style": {
+  "zh": "离心液下泵",
+  "cat": "泵与压缩机",
+  "use": "集液坑排液"
+ },
+ "Horizontal Centrifugal Pump Style": {
+  "zh": "卧式离心泵",
+  "cat": "泵与压缩机",
+  "use": "液体输送，最常用"
+ },
+ "Vertical Can Pump Style": {
+  "zh": "立式筒袋泵",
+  "cat": "泵与压缩机",
+  "use": "低 NPSH 液体输送"
+ },
+ "Vertical Inline Pump Style": {
+  "zh": "立式管道泵",
+  "cat": "泵与压缩机",
+  "use": "管道内安装的小型离心泵"
+ },
+ "Positive Displacement Pump Style": {
+  "zh": "容积泵（柱塞/隔膜/计量泵）",
+  "cat": "泵与压缩机",
+  "use": "小流量精确计量、高压进料"
+ },
+ "Positive Displacement Blower Style": {
+  "zh": "罗茨风机",
+  "cat": "泵与压缩机",
+  "use": "容积式气体输送"
+ },
+ "Progressive Cavity Pump Style": {
+  "zh": "单螺杆泵",
+  "cat": "泵与压缩机",
+  "use": "含固体或高粘度液体"
+ },
+ "Screw Pump Style": {
+  "zh": "螺杆泵",
+  "cat": "泵与压缩机",
+  "use": "高粘度液体"
+ },
+ "Screw Compressor Style": {
+  "zh": "螺杆压缩机",
+  "cat": "泵与压缩机",
+  "use": "气体增压"
+ },
+ "Reciprocating Compressor Style": {
+  "zh": "往复压缩机",
+  "cat": "泵与压缩机",
+  "use": "气体高压增压"
+ },
+ "Liquid Ring Vacuum Pump Style": {
+  "zh": "液环真空泵",
+  "cat": "泵与压缩机",
+  "use": "抽真空（也可代表一般真空泵）"
+ },
+ "Ejector Or Eductor Style": {
+  "zh": "喷射器/引射器",
+  "cat": "泵与压缩机",
+  "use": "蒸汽或气体引射抽吸"
+ },
+ "Pulsation Damper Style": {
+  "zh": "脉动缓冲器",
+  "cat": "泵与压缩机",
+  "use": "往复泵出口稳流"
+ },
+ "Electric Motor Style": {
+  "zh": "电动机",
+  "cat": "设备",
+  "use": "泵、风机的驱动机"
+ },
+ "Diesel Engine Style": {
+  "zh": "柴油机",
+  "cat": "设备",
+  "use": "驱动机"
+ },
+ "Turbine Drive Style": {
+  "zh": "汽轮机驱动",
+  "cat": "设备",
+  "use": "驱动机"
+ },
+ "Blade Agitator Style": {
+  "zh": "叶片搅拌器",
+  "cat": "设备",
+  "use": "容器内搅拌"
+ },
+ "Paddle Agitator Style": {
+  "zh": "桨式搅拌器",
+  "cat": "设备",
+  "use": "容器内搅拌"
+ },
+ "In Line Mixer Style": {
+  "zh": "管道混合器",
+  "cat": "设备",
+  "use": "管道内静态混合"
+ },
+ "Fired Heater Style": {
+  "zh": "火焰加热炉",
+  "cat": "设备",
+  "use": "直接火加热"
+ },
+ "Furnace Style": {
+  "zh": "加热炉/管式炉",
+  "cat": "设备",
+  "use": "管式炉、马弗炉可用"
+ },
+ "Damper Style": {
+  "zh": "风门",
+  "cat": "设备",
+  "use": "风道调节"
+ },
+ "Turbine Or Propeller Style": {
+  "zh": "涡轮/螺旋桨",
+  "cat": "设备",
+  "use": "叶轮类元件（也用作涡轮流量计）"
+ },
+ "Air Cooled Exchanger Style": {
+  "zh": "空冷器",
+  "cat": "换热器",
+  "use": "风冷，无冷却水时"
+ },
+ "De Super Heater Style": {
+  "zh": "减温器",
+  "cat": "换热器",
+  "use": "蒸汽降温"
+ },
+ "Double Pipe Exchanger Style": {
+  "zh": "套管换热器",
+  "cat": "换热器",
+  "use": "小流量换热、实验装置常用"
+ },
+ "Plate And Frame Exchanger Style": {
+  "zh": "板式换热器",
+  "cat": "换热器",
+  "use": "紧凑高效换热"
+ },
+ "Spiral Exchanger Style": {
+  "zh": "螺旋板换热器",
+  "cat": "换热器",
+  "use": "含固体或易结垢介质"
+ },
+ "TEMA type AEL Style": {
+  "zh": "列管换热器 AEL",
+  "cat": "换热器",
+  "use": "固定管板，常用冷凝器/冷却器"
+ },
+ "TEMA type AEM Style": {
+  "zh": "列管换热器 AEM",
+  "cat": "换热器",
+  "use": ""
+ },
+ "TEMA type BEM Style": {
+  "zh": "列管换热器 BEM",
+  "cat": "换热器",
+  "use": ""
+ },
+ "TEMA type BEU Style": {
+  "zh": "列管换热器 BEU（U 形管）",
+  "cat": "换热器",
+  "use": ""
+ },
+ "TEMA type BKU Style": {
+  "zh": "釜式再沸器 BKU",
+  "cat": "换热器",
+  "use": ""
+ },
+ "TEMA type NEN Style": {
+  "zh": "列管换热器 NEN",
+  "cat": "换热器",
+  "use": ""
+ },
+ "Steam Trap Style": {
+  "zh": "疏水器",
+  "cat": "换热器",
+  "use": "蒸汽管路排凝"
+ },
+ "Vessel Style": {
+  "zh": "立式容器/压力容器",
+  "cat": "容器与储罐",
+  "use": "缓冲罐、分离罐、反应罐"
+ },
+ "VesselWithPackedSection Style": {
+  "zh": "填料塔",
+  "cat": "容器与储罐",
+  "use": "吸收、精馏"
+ },
+ "VesselWithTrayedInternals Style": {
+  "zh": "板式塔",
+  "cat": "容器与储罐",
+  "use": "精馏"
+ },
+ "Cone Roof Tank Style": {
+  "zh": "锥顶罐",
+  "cat": "容器与储罐",
+  "use": "常压储罐"
+ },
+ "Dome Roof Tank Style": {
+  "zh": "拱顶罐",
+  "cat": "容器与储罐",
+  "use": "常压储罐"
+ },
+ "Double Wall Tank Style": {
+  "zh": "双壁罐",
+  "cat": "容器与储罐",
+  "use": "低温/危险介质储罐"
+ },
+ "External Floating Roof Tank Style": {
+  "zh": "外浮顶罐",
+  "cat": "容器与储罐",
+  "use": "大型储罐"
+ },
+ "Internal Floating Roof Tank Style": {
+  "zh": "内浮顶罐",
+  "cat": "容器与储罐",
+  "use": "大型储罐"
+ },
+ "Open Top Tank Style": {
+  "zh": "敞口罐",
+  "cat": "容器与储罐",
+  "use": "水槽、开口槽"
+ },
+ "Silo Style": {
+  "zh": "料仓",
+  "cat": "容器与储罐",
+  "use": "固体料储存"
+ },
+ "Sphere Style": {
+  "zh": "球罐",
+  "cat": "容器与储罐",
+  "use": "压力储存"
+ },
+ "Angle Valve Style": {
+  "zh": "角阀",
+  "cat": "手动阀",
+  "use": "直角转向的截止阀"
+ },
+ "Ball Valve Style": {
+  "zh": "球阀（开）",
+  "cat": "手动阀",
+  "use": "最常用的手动截止阀，常开"
+ },
+ "Ball Valve Closed Style": {
+  "zh": "球阀（关）",
+  "cat": "手动阀",
+  "use": "常关球阀（取样、排凝）"
+ },
+ "Butterfly Valve Style": {
+  "zh": "蝶阀",
+  "cat": "手动阀",
+  "use": "大口径低压"
+ },
+ "Diaphragm Valve Style": {
+  "zh": "隔膜阀（也作电磁阀阀体）",
+  "cat": "手动阀",
+  "use": "洁净、腐蚀性介质；本技能用作电磁切断阀阀体"
+ },
+ "Four Way Valve Style": {
+  "zh": "四通阀",
+  "cat": "手动阀",
+  "use": "换向"
+ },
+ "Gate Valve Style": {
+  "zh": "闸阀（开）",
+  "cat": "手动阀",
+  "use": "大口径截止"
+ },
+ "Gate Valve Closed Style": {
+  "zh": "闸阀（关）",
+  "cat": "手动阀",
+  "use": ""
+ },
+ "Globe Valve Style": {
+  "zh": "截止阀（开）",
+  "cat": "手动阀",
+  "use": "调节兼截止"
+ },
+ "Globe Valve Closed Style": {
+  "zh": "截止阀（关）",
+  "cat": "手动阀",
+  "use": ""
+ },
+ "Knife Valve Style": {
+  "zh": "刀闸阀",
+  "cat": "手动阀",
+  "use": "含固体浆料"
+ },
+ "Needle Valve Style": {
+  "zh": "针阀（开）",
+  "cat": "手动阀",
+  "use": "小流量精细调节，实验装置常用"
+ },
+ "Needle Valve Closed Style": {
+  "zh": "针阀（关）",
+  "cat": "手动阀",
+  "use": ""
+ },
+ "Pinch Valve Style": {
+  "zh": "夹管阀",
+  "cat": "手动阀",
+  "use": "含固体浆料"
+ },
+ "Plug Valve Style": {
+  "zh": "旋塞阀（开）",
+  "cat": "手动阀",
+  "use": ""
+ },
+ "Plug Valve Closed Style": {
+  "zh": "旋塞阀（关）",
+  "cat": "手动阀",
+  "use": ""
+ },
+ "Rotary Valve Style": {
+  "zh": "旋转阀",
+  "cat": "手动阀",
+  "use": "固体给料"
+ },
+ "Generic Rotary Valve Style": {
+  "zh": "旋转阀（通用）",
+  "cat": "手动阀",
+  "use": ""
+ },
+ "Three Way Valve Style": {
+  "zh": "三通阀",
+  "cat": "手动阀",
+  "use": "分流/合流/切换，实验装置切换气路"
+ },
+ "Diverter Valve Style": {
+  "zh": "转换阀",
+  "cat": "手动阀",
+  "use": "流向切换"
+ },
+ "Check Valve Style": {
+  "zh": "止回阀",
+  "cat": "手动阀",
+  "use": "防倒流"
+ },
+ "Stop Check Valve Style": {
+  "zh": "截止止回阀",
+  "cat": "手动阀",
+  "use": "带截止功能的止回阀"
+ },
+ "Excess Flow Valve Style": {
+  "zh": "过流阀",
+  "cat": "手动阀",
+  "use": "流量超限自动关"
+ },
+ "Control Valve Style": {
+  "zh": "调节阀（阀体）",
+  "cat": "手动阀",
+  "use": "自动调节阀，配执行机构"
+ },
+ "Diaphragm Style": {
+  "zh": "气动薄膜执行机构",
+  "cat": "调节阀与执行机构",
+  "use": "气动调节阀"
+ },
+ "Cylinder Or Piston Style": {
+  "zh": "气缸/活塞执行机构",
+  "cat": "调节阀与执行机构",
+  "use": "气动开关阀"
+ },
+ "Electro-Hydraulic Style": {
+  "zh": "电液执行机构",
+  "cat": "调节阀与执行机构",
+  "use": ""
+ },
+ "Motor Operated Style": {
+  "zh": "电动执行机构",
+  "cat": "调节阀与执行机构",
+  "use": "电动阀"
+ },
+ "Hand Wheel With Actuator Style": {
+  "zh": "带执行机构的手轮",
+  "cat": "调节阀与执行机构",
+  "use": ""
+ },
+ "Manual Operator Style": {
+  "zh": "手动操作器",
+  "cat": "调节阀与执行机构",
+  "use": ""
+ },
+ "PositionerAndSolenoid Style": {
+  "zh": "定位器 + 电磁阀",
+  "cat": "调节阀与执行机构",
+  "use": ""
+ },
+ "Single Solenoid Style": {
+  "zh": "单电磁线圈",
+  "cat": "调节阀与执行机构",
+  "use": "电磁阀执行机构"
+ },
+ "Single Solenoid-Manual Reset Style": {
+  "zh": "单电磁线圈（手动复位）",
+  "cat": "调节阀与执行机构",
+  "use": ""
+ },
+ "Single Solenoid-Remote Reset Style": {
+  "zh": "单电磁线圈（远程复位）",
+  "cat": "调节阀与执行机构",
+  "use": ""
+ },
+ "Pressure Balanced Diaphragm Style": {
+  "zh": "压力平衡式薄膜执行机构",
+  "cat": "调节阀与执行机构",
+  "use": ""
+ },
+ "BackPressureRegulator Style": {
+  "zh": "背压阀",
+  "cat": "减压与安全",
+  "use": "保持上游压力恒定"
+ },
+ "BackPressureRegulatorWithExternalTap Style": {
+  "zh": "背压阀（外部取压）",
+  "cat": "减压与安全",
+  "use": ""
+ },
+ "PressureReducingRegulator Style": {
+  "zh": "减压阀（自力式）",
+  "cat": "减压与安全",
+  "use": "气路减压，PCV"
+ },
+ "PressureReducingRegulatorWithExternalTap Style": {
+  "zh": "减压阀（外部取压）",
+  "cat": "减压与安全",
+  "use": ""
+ },
+ "DifferentialPressureReducingRegulator Style": {
+  "zh": "差压减压阀",
+  "cat": "减压与安全",
+  "use": ""
+ },
+ "TemperatureRegulatorFilledSystemType Style": {
+  "zh": "温度调节阀（充液式）",
+  "cat": "减压与安全",
+  "use": ""
+ },
+ "PilotOperatedReliefValve Style": {
+  "zh": "先导式安全阀",
+  "cat": "减压与安全",
+  "use": "大泄放量"
+ },
+ "Pressure Relief Valve Style": {
+  "zh": "安全阀（压力）",
+  "cat": "减压与安全",
+  "use": "超压保护，PSV"
+ },
+ "Pressure And Vacuum Relief Valve Style": {
+  "zh": "压力真空安全阀",
+  "cat": "减压与安全",
+  "use": "常压罐呼吸/保护"
+ },
+ "Vacuum Relief Valve Style": {
+  "zh": "真空安全阀",
+  "cat": "减压与安全",
+  "use": ""
+ },
+ "Rupture Disc For Pressure Relief Style": {
+  "zh": "爆破片（正压）",
+  "cat": "减压与安全",
+  "use": "安全阀串联或单独超压保护"
+ },
+ "Rupture Disc For Vacuum Relief Style": {
+  "zh": "爆破片（真空）",
+  "cat": "减压与安全",
+  "use": ""
+ },
+ "Flame Arrestor Style": {
+  "zh": "阻火器",
+  "cat": "减压与安全",
+  "use": "可燃气体管路防回火"
+ },
+ "Detonation Arrestor Style": {
+  "zh": "爆轰阻火器",
+  "cat": "减压与安全",
+  "use": "氢气、可燃气管路"
+ },
+ "Breather Style": {
+  "zh": "呼吸阀",
+  "cat": "减压与安全",
+  "use": "常压罐"
+ },
+ "Vent Silencer Style": {
+  "zh": "放空消声器",
+  "cat": "减压与安全",
+  "use": "放空"
+ },
+ "Exhaust Head Style": {
+  "zh": "排气帽",
+  "cat": "减压与安全",
+  "use": ""
+ },
+ "Vent Cover Style": {
+  "zh": "放空罩",
+  "cat": "减压与安全",
+  "use": ""
+ },
+ "In Line Silencer Style": {
+  "zh": "管道消声器",
+  "cat": "减压与安全",
+  "use": ""
+ },
+ "Basket Strainer Style": {
+  "zh": "篮式过滤器",
+  "cat": "过滤",
+  "use": ""
+ },
+ "Cone Strainer Style": {
+  "zh": "锥形过滤器",
+  "cat": "过滤",
+  "use": "泵入口临时过滤"
+ },
+ "Duplex Strainer Style": {
+  "zh": "双联过滤器",
+  "cat": "过滤",
+  "use": "不停车切换清洗"
+ },
+ "T-type Strainer Style": {
+  "zh": "T 型过滤器",
+  "cat": "过滤",
+  "use": ""
+ },
+ "Y-type Strainer Style": {
+  "zh": "Y 型过滤器",
+  "cat": "过滤",
+  "use": ""
+ },
+ "Temporary Strainer Style": {
+  "zh": "临时过滤器",
+  "cat": "过滤",
+  "use": ""
+ },
+ "Filter Style": {
+  "zh": "过滤器",
+  "cat": "过滤",
+  "use": "设备类过滤器"
+ },
+ "Filter Pipe Style": {
+  "zh": "管道过滤器",
+  "cat": "过滤",
+  "use": "气路小口径管道过滤器，FL"
+ },
+ "Averaging Pitot Tube Style": {
+  "zh": "均速管流量计",
+  "cat": "流量与测量元件",
+  "use": ""
+ },
+ "Pitot Tube Style": {
+  "zh": "皮托管",
+  "cat": "流量与测量元件",
+  "use": ""
+ },
+ "Orifice Style": {
+  "zh": "孔板",
+  "cat": "流量与测量元件",
+  "use": "节流式流量元件"
+ },
+ "Orifice In Quick Change Fitting Style": {
+  "zh": "快换孔板",
+  "cat": "流量与测量元件",
+  "use": ""
+ },
+ "Flow Nozzle Style": {
+  "zh": "流量喷嘴",
+  "cat": "流量与测量元件",
+  "use": ""
+ },
+ "Flume Style": {
+  "zh": "量水槽",
+  "cat": "流量与测量元件",
+  "use": ""
+ },
+ "Weir Style": {
+  "zh": "堰",
+  "cat": "流量与测量元件",
+  "use": ""
+ },
+ "Venturi Style": {
+  "zh": "文丘里",
+  "cat": "流量与测量元件",
+  "use": ""
+ },
+ "Wedge Meter Style": {
+  "zh": "楔形流量计",
+  "cat": "流量与测量元件",
+  "use": ""
+ },
+ "Target Style": {
+  "zh": "靶式流量计",
+  "cat": "流量与测量元件",
+  "use": ""
+ },
+ "Ultrasonic Style": {
+  "zh": "超声波流量计",
+  "cat": "流量与测量元件",
+  "use": ""
+ },
+ "Vortex Style": {
+  "zh": "涡街流量计",
+  "cat": "流量与测量元件",
+  "use": "气体、蒸汽流量"
+ },
+ "Magnetic Style": {
+  "zh": "电磁流量计",
+  "cat": "流量与测量元件",
+  "use": "导电液体"
+ },
+ "Positive Displacement Style": {
+  "zh": "容积式流量计",
+  "cat": "流量与测量元件",
+  "use": ""
+ },
+ "Rotameter Style": {
+  "zh": "转子流量计",
+  "cat": "流量与测量元件",
+  "use": "现场直读小流量"
+ },
+ "Rotameter With Integral Valve Style": {
+  "zh": "转子流量计（带调节阀）",
+  "cat": "流量与测量元件",
+  "use": "实验装置现场调节"
+ },
+ "Flow Conditioning Device Style": {
+  "zh": "整流器",
+  "cat": "流量与测量元件",
+  "use": ""
+ },
+ "Chemical Seal - Diaphragm": {
+  "zh": "隔膜密封",
+  "cat": "流量与测量元件",
+  "use": "压力表/变送器防腐蚀、防堵"
+ },
+ "Field Mounted DCS Style": {
+  "zh": "现场 DCS 仪表",
+  "cat": "仪表与逻辑",
+  "use": ""
+ },
+ "Field Mounted Discrete Instrument Style": {
+  "zh": "现场仪表（圆圈）",
+  "cat": "仪表与逻辑",
+  "use": "ISA-5.1 现场安装仪表"
+ },
+ "Field Mounted PLC Style": {
+  "zh": "现场 PLC 仪表",
+  "cat": "仪表与逻辑",
+  "use": ""
+ },
+ "Field Mounted Discrete Hardware Interlock Style": {
+  "zh": "硬件联锁（菱形）",
+  "cat": "仪表与逻辑",
+  "use": "硬件联锁、急停"
+ },
+ "Primary Loc Accessible DCS Style": {
+  "zh": "主控室可接近 DCS",
+  "cat": "仪表与逻辑",
+  "use": ""
+ },
+ "Primary Loc Accessible Discrete Instrument Style": {
+  "zh": "主控室可接近仪表（带横线）",
+  "cat": "仪表与逻辑",
+  "use": "盘装仪表"
+ },
+ "Primary Loc Accessible PLC Style": {
+  "zh": "PLC 功能/软件联锁（方框）",
+  "cat": "仪表与逻辑",
+  "use": "PLC 内的功能、软件联锁"
+ },
+ "Primary Loc Inaccessible DCS Style": {
+  "zh": "主控室不可接近 DCS",
+  "cat": "仪表与逻辑",
+  "use": ""
+ },
+ "Primary Loc Inaccessible Discrete Instrument Style": {
+  "zh": "主控室不可接近仪表",
+  "cat": "仪表与逻辑",
+  "use": ""
+ },
+ "Primary Loc Inaccessible PLC Style": {
+  "zh": "主控室不可接近 PLC",
+  "cat": "仪表与逻辑",
+  "use": ""
+ },
+ "Auxiliary Loc Accessible DCS Style": {
+  "zh": "辅助室可接近 DCS",
+  "cat": "仪表与逻辑",
+  "use": ""
+ },
+ "Auxiliary Loc Accessible Discrete Instrument Style": {
+  "zh": "辅助室可接近仪表",
+  "cat": "仪表与逻辑",
+  "use": ""
+ },
+ "Auxiliary Loc Accessible PLC Style": {
+  "zh": "辅助室可接近 PLC",
+  "cat": "仪表与逻辑",
+  "use": ""
+ },
+ "Auxiliary Loc Inaccessible DCS Style": {
+  "zh": "辅助室不可接近 DCS",
+  "cat": "仪表与逻辑",
+  "use": ""
+ },
+ "Auxiliary Loc Inaccessible Discrete Instrument Style": {
+  "zh": "辅助室不可接近仪表",
+  "cat": "仪表与逻辑",
+  "use": ""
+ },
+ "Auxiliary Loc Inaccessible PLC Style": {
+  "zh": "辅助室不可接近 PLC",
+  "cat": "仪表与逻辑",
+  "use": ""
+ },
+ "Undefined Interlock Logic": {
+  "zh": "未定义联锁逻辑",
+  "cat": "仪表与逻辑",
+  "use": ""
+ },
+ "PilotLight Style": {
+  "zh": "指示灯",
+  "cat": "仪表与逻辑",
+  "use": ""
+ },
+ "Assumed Nozzle Style": {
+  "zh": "假定管嘴",
+  "cat": "管嘴与法兰",
+  "use": ""
+ },
+ "Flanged Nozzle Style": {
+  "zh": "法兰管嘴",
+  "cat": "管嘴与法兰",
+  "use": ""
+ },
+ "Single Line Nozzle Style": {
+  "zh": "单线管嘴",
+  "cat": "管嘴与法兰",
+  "use": ""
+ },
+ "Double Line Nozzle Style": {
+  "zh": "双线管嘴",
+  "cat": "管嘴与法兰",
+  "use": ""
+ },
+ "Front Facing Nozzle Style": {
+  "zh": "正向管嘴",
+  "cat": "管嘴与法兰",
+  "use": ""
+ },
+ "Front Facing CNozzle Style": {
+  "zh": "正向管嘴（C 型）",
+  "cat": "管嘴与法兰",
+  "use": ""
+ },
+ "Flange Style": {
+  "zh": "法兰",
+  "cat": "管嘴与法兰",
+  "use": ""
+ },
+ "Blind Flange Style": {
+  "zh": "盲板法兰",
+  "cat": "管嘴与法兰",
+  "use": ""
+ },
+ "Blank Style": {
+  "zh": "盲板",
+  "cat": "管嘴与法兰",
+  "use": ""
+ },
+ "BlankWithFlanges Style": {
+  "zh": "盲板（带法兰）",
+  "cat": "管嘴与法兰",
+  "use": ""
+ },
+ "Closed Figure8 Blind Style": {
+  "zh": "8 字盲板（关）",
+  "cat": "管嘴与法兰",
+  "use": ""
+ },
+ "ClosedFigure8BlindWithFlanges Style": {
+  "zh": "8 字盲板（关，带法兰）",
+  "cat": "管嘴与法兰",
+  "use": ""
+ },
+ "Open Figure8 Blind Style": {
+  "zh": "8 字盲板（开）",
+  "cat": "管嘴与法兰",
+  "use": ""
+ },
+ "OpenFigure8BlindWithFlanges": {
+  "zh": "8 字盲板（开，带法兰）",
+  "cat": "管嘴与法兰",
+  "use": ""
+ },
+ "Spacer Style": {
+  "zh": "垫环",
+  "cat": "管嘴与法兰",
+  "use": ""
+ },
+ "SpacerWithFlanges": {
+  "zh": "垫环（带法兰）",
+  "cat": "管嘴与法兰",
+  "use": ""
+ },
+ "Cap Style": {
+  "zh": "封堵帽",
+  "cat": "管件与连接",
+  "use": "管端封堵、预留接口"
+ },
+ "Plug Style": {
+  "zh": "丝堵",
+  "cat": "管件与连接",
+  "use": ""
+ },
+ "Expansion Joint Style": {
+  "zh": "膨胀节",
+  "cat": "管件与连接",
+  "use": ""
+ },
+ "Flexible Hose Style": {
+  "zh": "软管",
+  "cat": "管件与连接",
+  "use": "临时连接、设备间软管"
+ },
+ "Hose Connection Style": {
+  "zh": "软管接口",
+  "cat": "管件与连接",
+  "use": ""
+ },
+ "Concentric Reducer Style": {
+  "zh": "同心异径管",
+  "cat": "管件与连接",
+  "use": ""
+ },
+ "Eccentric Reducer Style": {
+  "zh": "偏心异径管",
+  "cat": "管件与连接",
+  "use": ""
+ },
+ "Removable Spool Style": {
+  "zh": "可拆短管",
+  "cat": "管件与连接",
+  "use": ""
+ },
+ "Gap Style": {
+  "zh": "间隙",
+  "cat": "管件与连接",
+  "use": ""
+ },
+ "Segment Breaker Style": {
+  "zh": "管段分隔",
+  "cat": "管件与连接",
+  "use": ""
+ },
+ "Spec and Insulation Break Style": {
+  "zh": "等级/保温分界",
+  "cat": "管件与连接",
+  "use": ""
+ },
+ "Tie In Symbol Style": {
+  "zh": "碰头符号",
+  "cat": "管件与连接",
+  "use": ""
+ },
+ "Welded Connection Style": {
+  "zh": "焊接连接",
+  "cat": "管件与连接",
+  "use": ""
+ },
+ "Closed Drain No PID Style": {
+  "zh": "闭式排放（本图不画）",
+  "cat": "管件与连接",
+  "use": ""
+ },
+ "Open Drain No PID Style": {
+  "zh": "开式排放（本图不画）",
+  "cat": "管件与连接",
+  "use": ""
+ },
+ "Flow Arrow Style": {
+  "zh": "流向箭头",
+  "cat": "管件与连接",
+  "use": ""
+ },
+ "QMZ Plasma Torch Style": {
+  "zh": "等离子体炬",
+  "cat": "设备",
+  "use": "直流电弧热等离子体炬，起弧/原料/注入/保护气/冷却水接口"
+ },
+ "QMZ Reaction Chamber Style": {
+  "zh": "反应腔体（立式圆顶，带夹套）",
+  "cat": "设备",
+  "use": "带三炬口、分段水冷夹套的立式腔体"
+ },
+ "QMZ Coil Module Style": {
+  "zh": "内置管式换热模块",
+  "cat": "换热器",
+  "use": "腔体内水冷盘管"
+ },
+ "QMZ Mixing Tank Style": {
+  "zh": "混合罐（立式）",
+  "cat": "容器与储罐",
+  "use": "立式储气/预混罐"
+ },
+ "QMZ Condensate Tank Style": {
+  "zh": "集液罐（立式小罐）",
+  "cat": "容器与储罐",
+  "use": "气液分离、冷凝水收集，带液位"
+ },
+ "QMZ Shell Tube Condenser Style": {
+  "zh": "外置列管冷凝器",
+  "cat": "换热器",
+  "use": "立式列管冷凝器"
+ },
+ "QMZ Safety Valve Style": {
+  "zh": "弹簧式安全阀",
+  "cat": "减压与安全",
+  "use": "在线安全阀，进口左、出口右"
+ },
+ "QMZ Flow Meter Style": {
+  "zh": "在线流量计（FM）",
+  "cat": "流量与测量元件",
+  "use": "热式/电磁/涡街流量计本体"
+ },
+ "QMZ MFC Style": {
+  "zh": "质量流量控制器（MFC）",
+  "cat": "流量与测量元件",
+  "use": "气体质量流量控制器"
+ },
+ "QMZ Tube Furnace Style": {
+  "zh": "管式炉",
+  "cat": "换热器",
+  "use": "实验室管式炉"
+ },
+ "QMZ Electronic Load Style": {
+  "zh": "电子负载",
+  "cat": "设备",
+  "use": "电池/电源测试负载"
+ },
+ "QMZ Coin Cell Fixture Style": {
+  "zh": "扣式电池夹具",
+  "cat": "设备",
+  "use": "纽扣电池测试夹具"
+ },
+ "QMZ Flow Switch Style": {
+  "zh": "流量开关",
+  "cat": "流量与测量元件",
+  "use": "流量低/高开关"
+ },
+ "QMZ Condensate Cup Style": {
+  "zh": "冷凝杯/收集杯",
+  "cat": "容器与储罐",
+  "use": "小型收集杯"
+ },
+ "QMZ Diaphragm Solenoid Actuator": {
+  "zh": "隔膜电磁执行机构（S）",
+  "cat": "调节阀与执行机构",
+  "use": "电磁切断阀执行机构，标 FC/FO"
+ },
+ "QMZ Battery Limit Style": {
+  "zh": "界区接口",
+  "cat": "管件与连接",
+  "use": "与甲方、外部系统的界区接口"
+ },
+ "Off Page Connector Style": {
+  "zh": "跨图连接器",
+  "cat": "管件与连接",
+  "use": "图纸之间的连接，左字母右去向图号"
+ },
+ "Gas Cylinder Style": {
+  "zh": "气瓶",
+  "cat": "设备",
+  "use": "高压气瓶（CO₂、H₂、N₂、Ar 等），带瓶阀；出口在顶部",
+  "native": true
+ },
+ "Electric Heater Style": {
+  "zh": "电加热器",
+  "cat": "换热器",
+  "use": "管道/气体电加热器、预热器",
+  "native": true
+ },
+ "Chiller Style": {
+  "zh": "冷水机/冷冻机组",
+  "cat": "换热器",
+  "use": "循环冷却水机组、低温恒温槽",
+  "native": true
+ },
+ "Cold Trap Style": {
+  "zh": "冷阱",
+  "cat": "容器与储罐",
+  "use": "冷凝收集（U 形管浸入冷浴）",
+  "native": true
+ },
+ "Desiccant Dryer Style": {
+  "zh": "干燥器/干燥塔",
+  "cat": "过滤",
+  "use": "气体干燥（硅胶、分子筛）",
+  "native": true
+ },
+ "Coriolis Meter Style": {
+  "zh": "科氏质量流量计",
+  "cat": "流量与测量元件",
+  "use": "液体/气体质量流量计",
+  "native": true
+ },
+ "Pressure Gauge Style": {
+  "zh": "就地压力表",
+  "cat": "仪表与逻辑",
+  "use": "现场就地压力表（不上传信号）",
+  "native": true
+ },
+ "Vacuum Pump Dry Style": {
+  "zh": "干式真空泵",
+  "cat": "泵与压缩机",
+  "use": "无油干式真空泵（实验室常用）",
+  "native": true
+ },
+ "Syringe Pump Style": {
+  "zh": "注射泵",
+  "cat": "泵与压缩机",
+  "use": "微量精密进液",
+  "native": true
+ },
+ "Heat Tracing Style": {
+  "zh": "伴热带",
+  "cat": "设备",
+  "use": "管道电伴热",
+  "native": true
+ },
+ "Mass Spectrometer Style": {
+  "zh": "质谱/色谱分析仪",
+  "cat": "仪表与逻辑",
+  "use": "在线分析仪（GC、MS、红外等），位号 AIT/AE",
+  "native": true
+ },
+ "Orifice Plate Union Style": {
+  "zh": "限流孔板/节流件",
+  "cat": "流量与测量元件",
+  "use": "限流",
+  "native": true
+ },
+ "Horizontal Drum Style": {
+  "zh": "卧式容器/卧式罐",
+  "cat": "容器与储罐",
+  "use": "卧式缓冲罐、分液罐",
+  "native": true
+ },
+ "Jacketed Reactor Style": {
+  "zh": "夹套反应釜（带搅拌）",
+  "cat": "容器与储罐",
+  "use": "带夹套和搅拌的釜式反应器",
+  "native": true
+ },
+ "Gas Bag Style": {
+  "zh": "气袋/采样袋",
+  "cat": "容器与储罐",
+  "use": "气体采样、收集",
+  "native": true
+ },
+ "Gas Washing Bottle Style": {
+  "zh": "洗气瓶/鼓泡瓶",
+  "cat": "容器与储罐",
+  "use": "气体洗涤、鼓泡、液封",
+  "native": true
+ },
+ "Quick Connector Style": {
+  "zh": "快插接头",
+  "cat": "管件与连接",
+  "use": "可快速拆装的气路接头，临时连接处",
+  "native": true
+ },
+ "Power Supply Style": {
+  "zh": "电源/电源柜",
+  "cat": "设备",
+  "use": "热等离子体电源、直流电源、加热电源",
+  "native": true
+ }
+}

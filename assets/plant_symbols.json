@@ -1,0 +1,1604 @@
+{
+ "Air Cooled Exchanger Style": {
+  "bbox": [
+   -62.5,
+   -62.5,
+   65.0,
+   32.5
+  ],
+  "block": "PIP 气冷式换热器"
+ },
+ "Angle Valve Style": {
+  "bbox": [
+   -2.5,
+   -5.0,
+   5.0,
+   2.5
+  ],
+  "block": "PIP 角阀"
+ },
+ "Assumed Nozzle Style": {
+  "bbox": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "block": "PIP 假定的管嘴"
+ },
+ "Auxiliary Loc Accessible DCS Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 可从辅助位置使用 - DCS"
+ },
+ "Auxiliary Loc Accessible Discrete Instrument Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 可从辅助位置使用 - 离散式"
+ },
+ "Auxiliary Loc Accessible PLC Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 可从辅助位置使用 - PLC"
+ },
+ "Auxiliary Loc Inaccessible DCS Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 不可从辅助位置使用 - DCS"
+ },
+ "Auxiliary Loc Inaccessible Discrete Instrument Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 不可从辅助位置使用 - 离散式"
+ },
+ "Auxiliary Loc Inaccessible PLC Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 不可从辅助位置使用 - PLC"
+ },
+ "Averaging Pitot Tube Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 均速皮托管"
+ },
+ "BackPressureRegulator Style": {
+  "bbox": [
+   -4.7,
+   0.0,
+   3.1,
+   12.5
+  ],
+  "block": "PIP 反压调节器"
+ },
+ "BackPressureRegulatorWithExternalTap Style": {
+  "bbox": [
+   -9.4,
+   0.0,
+   3.1,
+   14.1
+  ],
+  "block": "PIP 带外部旋塞的反压调节器"
+ },
+ "Ball Valve Closed Style": {
+  "bbox": [
+   -4.0,
+   -2.7,
+   4.0,
+   2.7
+  ],
+  "block": "PIP 球阀(闭合式)"
+ },
+ "Ball Valve Style": {
+  "bbox": [
+   -4.0,
+   -2.7,
+   4.0,
+   2.7
+  ],
+  "block": "PIP 球阀"
+ },
+ "Basket Strainer Style": {
+  "bbox": [
+   -7.5,
+   -6.0,
+   7.5,
+   6.0
+  ],
+  "block": "PIP 篮式粗滤器"
+ },
+ "Blade Agitator Style": {
+  "bbox": [
+   -20.0,
+   -25.0,
+   20.0,
+   0.0
+  ],
+  "block": "叶片式搅拌器"
+ },
+ "Blank Style": {
+  "bbox": [
+   -2.5,
+   0.0,
+   2.5,
+   13.0
+  ],
+  "block": "PIP 插板"
+ },
+ "BlankWithFlanges Style": {
+  "bbox": [
+   -2.5,
+   -2.5,
+   2.5,
+   13.0
+  ],
+  "block": "PIP 带凸缘的插板"
+ },
+ "Blind Flange Style": {
+  "bbox": [
+   0.0,
+   -2.5,
+   0.0,
+   2.5
+  ],
+  "block": "PIP 法兰盖"
+ },
+ "Breather Style": {
+  "bbox": [
+   -5.0,
+   0.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 通气阀"
+ },
+ "Butterfly Valve Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "block": "PIP 蝶阀"
+ },
+ "Cap Style": {
+  "bbox": [
+   0.0,
+   -2.5,
+   2.5,
+   2.5
+  ],
+  "block": "PIP 管帽"
+ },
+ "Centrifugal Blower Style": {
+  "bbox": [
+   -17.5,
+   -17.5,
+   22.5,
+   50.0
+  ],
+  "block": "PIP 离心式鼓风机"
+ },
+ "Centrifugal Compressor Style": {
+  "bbox": [
+   -57.5,
+   -17.5,
+   20.0,
+   15.0
+  ],
+  "block": "PIP 离心式压缩机"
+ },
+ "Centrifugal Sump Pump Style": {
+  "bbox": [
+   -15.0,
+   -5.0,
+   30.0,
+   72.5
+  ],
+  "block": "PIP 离心式排水泵"
+ },
+ "Check Valve Style": {
+  "bbox": [
+   -4.0,
+   -2.0,
+   4.0,
+   2.0
+  ],
+  "block": "PIP 止回阀"
+ },
+ "Chemical Seal - Diaphragm": {
+  "bbox": [
+   -2.0,
+   -5.0,
+   2.0,
+   5.0
+  ],
+  "block": "PIP 化学密封 - 隔膜"
+ },
+ "Closed Drain No PID Style": {
+  "bbox": [
+   -7.8,
+   -14.8,
+   7.8,
+   0.0
+  ],
+  "block": "PIP 暗渠(无 P&ID)"
+ },
+ "Closed Figure8 Blind Style": {
+  "bbox": [
+   -2.5,
+   0.0,
+   2.5,
+   17.0
+  ],
+  "block": "PIP 闭合式 8 字盲板"
+ },
+ "ClosedFigure8BlindWithFlanges Style": {
+  "bbox": [
+   -2.5,
+   -2.5,
+   2.5,
+   17.0
+  ],
+  "block": "PIP 关闭状态的法兰连接型 8 字盲板"
+ },
+ "Concentric Reducer Style": {
+  "bbox": [
+   -2.5,
+   -2.5,
+   2.5,
+   2.5
+  ],
+  "block": "PIP 同心异径管"
+ },
+ "Cone Roof Tank Style": {
+  "bbox": [
+   0.0,
+   0.0,
+   110.0,
+   82.5
+  ],
+  "block": "PIP 锥顶罐"
+ },
+ "Cone Strainer Style": {
+  "bbox": [
+   -2.5,
+   -2.5,
+   2.5,
+   2.5
+  ],
+  "block": "PIP 锥形粗滤器"
+ },
+ "Control Valve Style": {
+  "bbox": [
+   -0.2,
+   -0.1,
+   0.2,
+   0.5
+  ],
+  "block": "控制阀"
+ },
+ "Cylinder Or Piston Style": {
+  "bbox": [
+   -2.5,
+   0.0,
+   2.5,
+   13.7
+  ],
+  "block": "PIP 汽缸 - 活塞"
+ },
+ "Damper Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "block": "PIP 阻尼器"
+ },
+ "De Super Heater Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 减温器"
+ },
+ "Detonation Arrestor Style": {
+  "bbox": [
+   -7.5,
+   -3.7,
+   7.5,
+   3.8
+  ],
+  "block": "PIP 阻爆器"
+ },
+ "Diaphragm Style": {
+  "bbox": [
+   -2.0,
+   0.0,
+   2.0,
+   7.2
+  ],
+  "block": "PIP 隔膜"
+ },
+ "Diaphragm Valve Style": {
+  "bbox": [
+   -4.0,
+   -2.0,
+   4.0,
+   2.0
+  ],
+  "block": "PIP 隔膜阀"
+ },
+ "Diesel Engine Style": {
+  "bbox": [
+   0.0,
+   -12.5,
+   40.0,
+   12.5
+  ],
+  "block": "PIP 柴油发动机"
+ },
+ "DifferentialPressureReducingRegulator Style": {
+  "bbox": [
+   -6.2,
+   0.0,
+   6.2,
+   15.6
+  ],
+  "block": "PIP 差压减压调节器"
+ },
+ "Diverter Valve Style": {
+  "bbox": [
+   -5.0,
+   -5.4,
+   5.4,
+   2.5
+  ],
+  "block": "PIP 换向阀"
+ },
+ "Dome Roof Tank Style": {
+  "bbox": [
+   0.0,
+   0.0,
+   110.0,
+   82.5
+  ],
+  "block": "PIP 拱顶罐"
+ },
+ "Double Line Nozzle Style": {
+  "bbox": [
+   0.0,
+   -2.5,
+   7.5,
+   2.5
+  ],
+  "block": "PIP 双线管嘴"
+ },
+ "Double Pipe Exchanger Style": {
+  "bbox": [
+   -62.5,
+   -25.0,
+   47.5,
+   25.0
+  ],
+  "block": "PIP 套管式换热器"
+ },
+ "Double Wall Tank Style": {
+  "bbox": [
+   0.0,
+   0.0,
+   110.0,
+   82.5
+  ],
+  "block": "PIP 双壁罐"
+ },
+ "Duplex Strainer Style": {
+  "bbox": [
+   -7.5,
+   -5.0,
+   7.5,
+   5.0
+  ],
+  "block": "PIP 复式粗滤器"
+ },
+ "Eccentric Reducer Style": {
+  "bbox": [
+   -2.5,
+   -3.8,
+   2.5,
+   1.2
+  ],
+  "block": "PIP 偏心异径管"
+ },
+ "Ejector Or Eductor Style": {
+  "bbox": [
+   -15.0,
+   -4.0,
+   12.5,
+   4.0
+  ],
+  "block": "PIP 喷射器"
+ },
+ "Electric Motor Style": {
+  "bbox": [
+   0.0,
+   -5.0,
+   37.5,
+   5.0
+  ],
+  "block": "PIP 电动机"
+ },
+ "Electro-Hydraulic Style": {
+  "bbox": [
+   -3.1,
+   0.0,
+   3.1,
+   15.0
+  ],
+  "block": "PIP 电动液压"
+ },
+ "Excess Flow Valve Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   4.8
+  ],
+  "block": "PIP 流量限制阀"
+ },
+ "Exhaust Head Style": {
+  "bbox": [
+   -5.0,
+   0.0,
+   5.0,
+   10.0
+  ],
+  "block": "PIP 排气头"
+ },
+ "Expansion Joint Style": {
+  "bbox": [
+   -10.0,
+   -4.2,
+   10.0,
+   4.2
+  ],
+  "block": "PIP 膨胀节"
+ },
+ "External Floating Roof Tank Style": {
+  "bbox": [
+   0.0,
+   0.0,
+   110.0,
+   70.0
+  ],
+  "block": "PIP 外浮顶罐"
+ },
+ "Field Mounted DCS Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 现场安装 - DCS"
+ },
+ "Field Mounted Discrete Hardware Interlock Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 现场 - 离散式设备联锁"
+ },
+ "Field Mounted Discrete Instrument Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 现场安装 - 离散式"
+ },
+ "Field Mounted PLC Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 现场安装 - PLC"
+ },
+ "Filter Pipe Style": {
+  "bbox": [
+   -4.0,
+   -4.0,
+   4.0,
+   4.0
+  ],
+  "block": "PIP 过滤器"
+ },
+ "Filter Style": {
+  "bbox": [
+   -10.0,
+   -7.5,
+   90.0,
+   47.5
+  ],
+  "block": "板框式过滤器"
+ },
+ "Fired Heater Style": {
+  "bbox": [
+   -5.0,
+   0.0,
+   65.0,
+   150.0
+  ],
+  "block": "火焰加热器"
+ },
+ "Flame Arrestor Style": {
+  "bbox": [
+   -7.5,
+   -3.8,
+   7.5,
+   3.8
+  ],
+  "block": "PIP 阻火器"
+ },
+ "Flange Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   0.0,
+   2.5
+  ],
+  "block": "PIP 法兰"
+ },
+ "Flanged Nozzle Style": {
+  "bbox": [
+   0.0,
+   -2.5,
+   7.5,
+   2.5
+  ],
+  "block": "PIP 法兰管嘴"
+ },
+ "Flexible Hose Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "block": "PIP 挠性软管"
+ },
+ "Flow Arrow Style": {
+  "bbox": [
+   0.0,
+   -1.2,
+   4.7,
+   1.2
+  ],
+  "block": "流向箭头"
+ },
+ "Flow Conditioning Device Style": {
+  "bbox": [
+   -10.0,
+   -5.0,
+   10.0,
+   5.0
+  ],
+  "block": "PIP 流量调节器"
+ },
+ "Flow Nozzle Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 流量管嘴"
+ },
+ "Flume Style": {
+  "bbox": [
+   -7.5,
+   -5.0,
+   7.5,
+   5.0
+  ],
+  "block": "PIP 水槽"
+ },
+ "Four Way Valve Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 四通阀"
+ },
+ "Front Facing CNozzle Style": {
+  "bbox": [
+   -2.5,
+   -2.5,
+   2.2,
+   2.5
+  ],
+  "block": "C 正向管嘴"
+ },
+ "Front Facing Nozzle Style": {
+  "bbox": [
+   -2.5,
+   -2.5,
+   2.5,
+   2.5
+  ],
+  "block": "PIP 正向管嘴"
+ },
+ "Furnace Style": {
+  "bbox": [
+   -5.0,
+   0.0,
+   65.0,
+   150.0
+  ],
+  "block": "PIP 锅炉"
+ },
+ "Gap Style": {
+  "bbox": [
+   -0.4,
+   -1.4,
+   0.4,
+   1.4
+  ],
+  "block": "打断符号"
+ },
+ "Gate Valve Closed Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "block": "PIP 闸阀(闭合式)"
+ },
+ "Gate Valve Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "block": "PIP 闸阀"
+ },
+ "Generic Rotary Valve Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 通用旋转阀"
+ },
+ "Globe Valve Closed Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "block": "PIP 截止阀(闭合式)"
+ },
+ "Globe Valve Style": {
+  "bbox": [
+   -4.0,
+   -2.0,
+   4.0,
+   2.0
+  ],
+  "block": "PIP 截止阀"
+ },
+ "Hand Wheel With Actuator Style": {
+  "bbox": [
+   -3.1,
+   0.0,
+   3.8,
+   11.3
+  ],
+  "block": "PIP 带促动器的手轮"
+ },
+ "Horizontal Centrifugal Pump Style": {
+  "bbox": [
+   -12.5,
+   -15.0,
+   37.5,
+   20.0
+  ],
+  "block": "PIP 卧式离心泵"
+ },
+ "Hose Connection Style": {
+  "bbox": [
+   0.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "block": "PIP 软管连接"
+ },
+ "In Line Mixer Style": {
+  "bbox": [
+   -7.5,
+   -1.6,
+   7.5,
+   1.6
+  ],
+  "block": "PIP 嵌入式混合器"
+ },
+ "In Line Silencer Style": {
+  "bbox": [
+   -7.5,
+   -3.8,
+   7.5,
+   3.8
+  ],
+  "block": "PIP 嵌入式消音器"
+ },
+ "Internal Floating Roof Tank Style": {
+  "bbox": [
+   0.0,
+   0.0,
+   110.0,
+   82.5
+  ],
+  "block": "PIP 内浮顶罐"
+ },
+ "Knife Valve Style": {
+  "bbox": [
+   -1.3,
+   -3.7,
+   1.3,
+   7.5
+  ],
+  "block": "PIP 刀阀"
+ },
+ "Liquid Ring Vacuum Pump Style": {
+  "bbox": [
+   -12.5,
+   -12.5,
+   17.5,
+   47.5
+  ],
+  "block": "PIP 液环真空泵"
+ },
+ "Magnetic Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 电磁流量计"
+ },
+ "Manual Operator Style": {
+  "bbox": [
+   -0.9,
+   0.0,
+   0.9,
+   3.8
+  ],
+  "block": "PIP 手动操作器"
+ },
+ "Motor Operated Style": {
+  "bbox": [
+   -3.1,
+   0.0,
+   3.1,
+   15.0
+  ],
+  "block": "PIP 电动机驱动"
+ },
+ "Needle Valve Closed Style": {
+  "bbox": [
+   -4.0,
+   -3.9,
+   4.0,
+   2.0
+  ],
+  "block": "PIP 针阀(闭合式)"
+ },
+ "Needle Valve Style": {
+  "bbox": [
+   -4.0,
+   -3.9,
+   4.0,
+   2.0
+  ],
+  "block": "PIP 针阀"
+ },
+ "Open Drain No PID Style": {
+  "bbox": [
+   -7.8,
+   -10.2,
+   7.8,
+   0.0
+  ],
+  "block": "PIP 明渠(无 P&ID)"
+ },
+ "Open Figure8 Blind Style": {
+  "bbox": [
+   -2.5,
+   0.0,
+   2.5,
+   17.0
+  ],
+  "block": "PIP 开放式 8 字盲板"
+ },
+ "Open Top Tank Style": {
+  "bbox": [
+   0.0,
+   0.0,
+   110.0,
+   70.0
+  ],
+  "block": "PIP 敞口储罐"
+ },
+ "OpenFigure8BlindWithFlanges": {
+  "bbox": [
+   -2.5,
+   -2.5,
+   2.5,
+   17.0
+  ],
+  "block": "PIP 开放状态的法兰连接型 8 字盲板"
+ },
+ "Orifice In Quick Change Fitting Style": {
+  "bbox": [
+   -2.5,
+   -5.0,
+   2.5,
+   7.5
+  ],
+  "block": "PIP 快换配件中的孔板流量计"
+ },
+ "Orifice Style": {
+  "bbox": [
+   -1.9,
+   -3.8,
+   1.9,
+   3.8
+  ],
+  "block": "PIP 孔板"
+ },
+ "Paddle Agitator Style": {
+  "bbox": [
+   -21.0,
+   -24.0,
+   21.0,
+   0.0
+  ],
+  "block": "PIP 搅拌器"
+ },
+ "PilotLight Style": {
+  "bbox": [
+   -0.3,
+   -0.3,
+   0.3,
+   0.3
+  ],
+  "block": "PIP 信号灯或液位玻璃管照明器"
+ },
+ "PilotOperatedReliefValve Style": {
+  "bbox": [
+   -3.8,
+   -5.0,
+   5.0,
+   17.5
+  ],
+  "block": "PIP 带遥感器的先导式安全阀"
+ },
+ "Pinch Valve Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "block": "PIP 夹阀"
+ },
+ "Pitot Tube Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 皮托管流量计"
+ },
+ "Plate And Frame Exchanger Style": {
+  "bbox": [
+   -25.0,
+   -17.5,
+   25.0,
+   22.5
+  ],
+  "block": "PIP 板框式换热器"
+ },
+ "Plug Style": {
+  "bbox": [
+   0.0,
+   -1.2,
+   2.5,
+   1.2
+  ],
+  "block": "PIP 管堵"
+ },
+ "Plug Valve Closed Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "block": "PIP 旋塞阀(闭合式)"
+ },
+ "Plug Valve Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "block": "PIP 旋塞阀"
+ },
+ "PositionerAndSolenoid Style": {
+  "bbox": [
+   -26.4,
+   0.0,
+   3.1,
+   31.3
+  ],
+  "block": "PIP 定位器和螺线管"
+ },
+ "Positive Displacement Blower Style": {
+  "bbox": [
+   -12.5,
+   -17.5,
+   12.5,
+   52.5
+  ],
+  "block": "PIP 容积式鼓风机"
+ },
+ "Positive Displacement Pump Style": {
+  "bbox": [
+   -12.5,
+   -15.0,
+   12.5,
+   52.5
+  ],
+  "block": "PIP 容积式泵"
+ },
+ "Positive Displacement Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 容积式"
+ },
+ "Pressure And Vacuum Relief Valve Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   10.0
+  ],
+  "block": "PIP 压力和真空安全阀"
+ },
+ "Pressure Balanced Diaphragm Style": {
+  "bbox": [
+   -3.1,
+   0.0,
+   3.1,
+   13.8
+  ],
+  "block": "PIP 压力平衡隔膜"
+ },
+ "Pressure Relief Valve Style": {
+  "bbox": [
+   -2.5,
+   -5.0,
+   5.0,
+   10.0
+  ],
+  "block": "PIP 释放压力 - 安全阀"
+ },
+ "PressureReducingRegulator Style": {
+  "bbox": [
+   -1.5,
+   0.0,
+   2.2,
+   6.0
+  ],
+  "block": "PIP 减压调节器"
+ },
+ "PressureReducingRegulatorWithExternalTap Style": {
+  "bbox": [
+   -3.1,
+   0.0,
+   9.4,
+   14.1
+  ],
+  "block": "PIP 带外部旋塞的减压调节器"
+ },
+ "Primary Loc Accessible DCS Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 可从主要位置使用 - DCS"
+ },
+ "Primary Loc Accessible Discrete Instrument Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 可从主要位置使用 - 离散式"
+ },
+ "Primary Loc Accessible PLC Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 可从主要位置使用 - PLC"
+ },
+ "Primary Loc Inaccessible DCS Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 不可从主要位置使用 - DCS"
+ },
+ "Primary Loc Inaccessible Discrete Instrument Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 不可从主要位置使用 - 离散式"
+ },
+ "Primary Loc Inaccessible PLC Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 不可从主要位置使用 - PLC"
+ },
+ "Progressive Cavity Pump Style": {
+  "bbox": [
+   -25.0,
+   -7.5,
+   60.0,
+   10.0
+  ],
+  "block": "PIP 螺杆泵"
+ },
+ "Pulsation Damper Style": {
+  "bbox": [
+   -5.0,
+   0.0,
+   5.0,
+   29.0
+  ],
+  "block": "PIP 脉动阻尼器"
+ },
+ "Reciprocating Compressor Style": {
+  "bbox": [
+   -52.5,
+   -20.0,
+   25.0,
+   20.0
+  ],
+  "block": "PIP 往复式压缩机"
+ },
+ "Removable Spool Style": {
+  "bbox": [
+   -7.5,
+   -5.5,
+   7.5,
+   2.5
+  ],
+  "block": "PIP 可拆管段"
+ },
+ "Rotameter Style": {
+  "bbox": [
+   -10.0,
+   -10.0,
+   15.0,
+   10.0
+  ],
+  "block": "浮子流量计"
+ },
+ "Rotameter With Integral Valve Style": {
+  "bbox": [
+   -20.0,
+   -10.0,
+   15.0,
+   10.0
+  ],
+  "block": "PIP 积分阀浮子流量计"
+ },
+ "Rotary Valve Style": {
+  "bbox": [
+   -5.0,
+   -3.0,
+   5.0,
+   3.0
+  ],
+  "block": "PIP 旋转阀"
+ },
+ "Rupture Disc For Pressure Relief Style": {
+  "bbox": [
+   -2.5,
+   -5.0,
+   2.5,
+   5.0
+  ],
+  "block": "PIP 破裂膜片 - 释放压力"
+ },
+ "Rupture Disc For Vacuum Relief Style": {
+  "bbox": [
+   -2.5,
+   -5.0,
+   2.5,
+   5.0
+  ],
+  "block": "PIP 破裂膜片 - 释放真空"
+ },
+ "Screw Compressor Style": {
+  "bbox": [
+   -40.0,
+   -10.0,
+   77.5,
+   15.0
+  ],
+  "block": "PIP 螺旋式压缩机"
+ },
+ "Screw Pump Style": {
+  "bbox": [
+   -25.0,
+   -7.5,
+   60.0,
+   10.0
+  ],
+  "block": "PIP 螺旋泵"
+ },
+ "Segment Breaker Style": {
+  "bbox": [
+   -7.5,
+   0.0,
+   7.5,
+   12.5
+  ],
+  "block": "断线符 - 一对"
+ },
+ "Silo Style": {
+  "bbox": [
+   -25.0,
+   0.0,
+   25.0,
+   115.0
+  ],
+  "block": "筒仓"
+ },
+ "Single Line Nozzle Style": {
+  "bbox": [
+   0.0,
+   -2.5,
+   5.0,
+   2.5
+  ],
+  "block": "PIP 单线管嘴"
+ },
+ "Single Solenoid Style": {
+  "bbox": [
+   -1.9,
+   0.0,
+   1.9,
+   11.2
+  ],
+  "block": "PIP 单螺线管"
+ },
+ "Single Solenoid-Manual Reset Style": {
+  "bbox": [
+   -1.9,
+   0.0,
+   10.0,
+   11.2
+  ],
+  "block": "PIP 单螺线管 - 手动复位"
+ },
+ "Single Solenoid-Remote Reset Style": {
+  "bbox": [
+   -1.9,
+   0.0,
+   10.0,
+   11.2
+  ],
+  "block": "PIP 单螺线管 - 遥控复位"
+ },
+ "Spacer Style": {
+  "bbox": [
+   -2.5,
+   0.0,
+   2.5,
+   13.0
+  ],
+  "block": "PIP 垫环"
+ },
+ "SpacerWithFlanges": {
+  "bbox": [
+   -2.5,
+   -2.5,
+   2.5,
+   13.0
+  ],
+  "block": "PIP 带凸缘的垫环"
+ },
+ "Spec and Insulation Break Style": {
+  "bbox": [
+   -0.3,
+   0.0,
+   0.3,
+   0.5
+  ],
+  "block": "断线符 - 两对"
+ },
+ "Sphere Style": {
+  "bbox": [
+   -40.0,
+   -50.0,
+   40.0,
+   40.0
+  ],
+  "block": "PIP 球罐"
+ },
+ "Spiral Exchanger Style": {
+  "bbox": [
+   -25.0,
+   -20.0,
+   25.0,
+   25.0
+  ],
+  "block": "PIP 螺旋式换热器"
+ },
+ "Steam Trap Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 蒸汽疏水阀"
+ },
+ "Stop Check Valve Style": {
+  "bbox": [
+   -5.0,
+   -2.5,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 截止止回阀"
+ },
+ "T-type Strainer Style": {
+  "bbox": [
+   -2.5,
+   -7.5,
+   2.5,
+   2.5
+  ],
+  "block": "PIP T 型粗滤器"
+ },
+ "Target Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 靶式流量计"
+ },
+ "TEMA type AEL Style": {
+  "bbox": [
+   -22.5,
+   -5.0,
+   107.5,
+   32.5
+  ],
+  "block": "PIP TEMA 型 AEL 换热器"
+ },
+ "TEMA type AEM Style": {
+  "bbox": [
+   -22.5,
+   -5.0,
+   105.0,
+   32.5
+  ],
+  "block": "PIP TEMA 型 AEM 换热器"
+ },
+ "TEMA type BEM Style": {
+  "bbox": [
+   -22.5,
+   -5.0,
+   105.0,
+   32.5
+  ],
+  "block": "PIP TEMA 型 BEM 换热器"
+ },
+ "TEMA type BEU Style": {
+  "bbox": [
+   -22.5,
+   -5.0,
+   105.0,
+   32.5
+  ],
+  "block": "PIP TEMA 型 BEU 换热器"
+ },
+ "TEMA type BKU Style": {
+  "bbox": [
+   -20.0,
+   -5.0,
+   105.0,
+   35.0
+  ],
+  "block": "PIP TEMA 型 BKU 换热器"
+ },
+ "TEMA type NEN Style": {
+  "bbox": [
+   -25.0,
+   -5.0,
+   105.0,
+   32.5
+  ],
+  "block": "PIP TEMA 型 NEN 换热器"
+ },
+ "TemperatureRegulatorFilledSystemType Style": {
+  "bbox": [
+   -3.1,
+   0.0,
+   8.6,
+   14.8
+  ],
+  "block": "PIP 压力式温度调节器"
+ },
+ "Temporary Strainer Style": {
+  "bbox": [
+   -2.5,
+   -2.5,
+   2.5,
+   2.5
+  ],
+  "block": "PIP 临时粗滤器"
+ },
+ "Three Way Valve Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   2.5
+  ],
+  "block": "PIP 三通阀"
+ },
+ "Tie In Symbol Style": {
+  "bbox": [
+   -5.8,
+   -5.0,
+   5.8,
+   5.0
+  ],
+  "block": "PIP 束捆符号"
+ },
+ "Turbine Drive Style": {
+  "bbox": [
+   0.0,
+   -12.5,
+   37.5,
+   10.0
+  ],
+  "block": "PIP 汽轮机驱动器"
+ },
+ "Turbine Or Propeller Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 汽轮机或螺旋桨"
+ },
+ "Ultrasonic Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 超声波流量计"
+ },
+ "Undefined Interlock Logic": {
+  "bbox": [
+   -3.8,
+   -3.8,
+   3.8,
+   3.8
+  ],
+  "block": "PIP 未定义的联锁逻辑"
+ },
+ "Vacuum Relief Valve Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   2.5,
+   10.0
+  ],
+  "block": "PIP 真空安全阀"
+ },
+ "Vent Cover Style": {
+  "bbox": [
+   -5.0,
+   0.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 通气孔盖"
+ },
+ "Vent Silencer Style": {
+  "bbox": [
+   -4.0,
+   0.0,
+   4.0,
+   26.0
+  ],
+  "block": "PIP 排气消音器"
+ },
+ "Venturi Style": {
+  "bbox": [
+   -7.5,
+   -5.0,
+   7.5,
+   5.0
+  ],
+  "block": "PIP 文丘里管"
+ },
+ "Vertical Can Pump Style": {
+  "bbox": [
+   -10.0,
+   -55.0,
+   10.0,
+   40.0
+  ],
+  "block": "PIP 罐形水泵"
+ },
+ "Vertical Inline Pump Style": {
+  "bbox": [
+   -22.5,
+   -7.5,
+   22.5,
+   45.0
+  ],
+  "block": "PIP 立式管道泵"
+ },
+ "Vessel Style": {
+  "bbox": [
+   -45.0,
+   0.0,
+   45.0,
+   300.0
+  ],
+  "block": "PIP 容器"
+ },
+ "VesselWithPackedSection Style": {
+  "bbox": [
+   -45.0,
+   0.0,
+   45.0,
+   300.0
+  ],
+  "block": "PIP 容器(填料)"
+ },
+ "VesselWithTrayedInternals Style": {
+  "bbox": [
+   -45.0,
+   0.0,
+   45.0,
+   300.0
+  ],
+  "block": "PIP 容器(板式内件)"
+ },
+ "Vortex Style": {
+  "bbox": [
+   -5.0,
+   -5.0,
+   5.0,
+   5.0
+  ],
+  "block": "PIP 涡流传感器"
+ },
+ "Wedge Meter Style": {
+  "bbox": [
+   -7.5,
+   -5.0,
+   7.5,
+   5.0
+  ],
+  "block": "PIP 楔形流量计"
+ },
+ "Weir Style": {
+  "bbox": [
+   -7.5,
+   -5.0,
+   7.5,
+   5.0
+  ],
+  "block": "PIP 溢流表"
+ },
+ "Welded Connection Style": {
+  "bbox": [
+   -1.2,
+   -1.2,
+   1.2,
+   1.2
+  ],
+  "block": "PIP 焊接连接"
+ },
+ "Y-type Strainer Style": {
+  "bbox": [
+   -5.0,
+   -5.4,
+   5.4,
+   2.5
+  ],
+  "block": "PIP Y 型粗滤器"
+ }
+}
