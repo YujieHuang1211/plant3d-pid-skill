@@ -22,6 +22,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import symbol_geom  # noqa: E402
 
+try:
+    STYLE_SCALES = json.loads((Path(__file__).resolve().parent.parent / 'assets' / 'plant_style_scales.json').read_text(encoding='utf-8'))
+except Exception:
+    STYLE_SCALES = {}
 GEOM = symbol_geom.load()      # 非智能对象几何库（手工新增符号默认用它；--geom-all 时 Plant 库符号也用它）
 GEOM_ALL = False
 
@@ -51,6 +55,7 @@ GAP = 1.4            # 线交叉处打断：每侧留 1.4 mm（共 2.8 mm）
 RANK = {'信号-电': 0, '信号-软件': 0, '管线-次': 1, '管线-主': 2}   # 交叉时优先打断数字小（线宽更细）的线
 R_BUBBLE = 5.0
 H_TAG, H_LINE, H_EQ, H_BUB, H_OPC_L, H_OPC_D = 2.5, 2.5, 3.5, 2.4, 3.0, 2.0
+ON_LINE, OFF_V, OFF_H = 1.2, 1.5, 1.2     # 线号标注点离线 < ON_LINE 视为落在线上；文字基线离线的距离（竖线 / 横线）
 LAYER_TAG = '位号'
 
 
@@ -156,8 +161,15 @@ class Conv:
             pa, pb = [bb[0], 0], [bb[2], 0]
         r = it.get('rot', 0)
         x, y = it['at']
+        f = 1.0       # 符号按 spec 里的 scale 缩放时，连接点同比移动（Plant 库符号 scale 是绝对比例，手工符号是倍数）
+        if 'scale' in it:
+            if (GEOM.get(st) or {}).get('native'):
+                f = float(it['scale'])
+            else:
+                f = float(it['scale']) / float((STYLE_SCALES.get(st) or {}).get('scale') or it['scale'])
         out = []
         for p in (pa, pb):
+            p = [p[0] * f, p[1] * f]
             dx, dy = rot(p[0], p[1], r)
             out.append([x + dx, y + dy])
         return out
@@ -302,21 +314,37 @@ class Conv:
         else:   # 仪表圈
             texts.append({'k': 'poly', 'pts': [[round(x, 3), round(y, 3)] for x, y in circle(at[0], at[1], R_BUBBLE)], 'closed': True, 'layer': LAYER_TAG})
             self.bubble_text(tag, at, texts)
-            # 圈到符号的细连线：从圈边到符号外框边，沿两中心连线
-            ax, ay = it['at']
-            dx, dy = ax - at[0], ay - at[1]
+            # 圈到符号的细连线：从圈边画到符号外框边，沿圈心到外框中心的连线（外框按旋转和比例换算）
+            x0, y0, x1, y1 = self.world_box(it)
+            cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+            dx, dy = cx - at[0], cy - at[1]
             d = math.hypot(dx, dy)
             if d > R_BUBBLE + 0.5:
                 ux, uy = dx / d, dy / d
-                hx, hy = self.bbox_half(it)
-                # 外框半宽/半高沿连线方向的近似
-                tx = hx / abs(ux) if abs(ux) > 1e-6 else 1e9
-                ty = hy / abs(uy) if abs(uy) > 1e-6 else 1e9
-                back = min(tx, ty)
+                tin = 0.0
+                for o, u, lo, hi in ((at[0], ux, x0, x1), (at[1], uy, y0, y1)):
+                    if abs(u) > 1e-9:
+                        ta, tb = (lo - o) / u, (hi - o) / u
+                        tin = max(tin, min(ta, tb))
                 p0 = [at[0] + ux * R_BUBBLE, at[1] + uy * R_BUBBLE]
-                p1 = [ax - ux * back, ay - uy * back]
+                p1 = [at[0] + ux * tin, at[1] + uy * tin]
                 if seglen(p0, p1) > 0.3:
                     texts.append({'k': 'poly', 'pts': [[round(v, 3) for v in p0], [round(v, 3) for v in p1]], 'layer': LAYER_TAG})
+
+    def world_box(self, it):
+        """符号外框（世界坐标，含旋转和 spec 里的比例）"""
+        st = it.get('style') or it.get('body')
+        bb = (self.cat.get(st) or {}).get('bbox') or [-4, -2, 4, 2]
+        f = 1.0
+        if 'scale' in it:
+            if (GEOM.get(st) or {}).get('native'):
+                f = float(it['scale'])
+            else:
+                f = float(it['scale']) / float((STYLE_SCALES.get(st) or {}).get('scale') or it['scale'])
+        r = it.get('rot', 0)
+        cs = [rot(dx * f, dy * f, r) for dx, dy in ((bb[0], bb[1]), (bb[2], bb[3]), (bb[0], bb[3]), (bb[2], bb[1]))]
+        x, y = it['at']
+        return (x + min(c[0] for c in cs), y + min(c[1] for c in cs), x + max(c[0] for c in cs), y + max(c[1] for c in cs))
 
     def opc_text(self, it, texts):
         props = it.get('props', {})
@@ -406,11 +434,11 @@ class Conv:
             s, dist, seg = project(V, an)
             a, b = V[seg], V[seg + 1]
             vertical = abs(b[0] - a[0]) < abs(b[1] - a[1])
-            if dist < 0.8:   # 标注点落在线上：沿线贴着线的上方（竖线贴左侧）
+            if dist < ON_LINE:   # 标注点落在线上：沿线贴着线的上方（竖线贴左侧）
                 if vertical:
-                    texts.append(self.t([an[0] - 0.9, an[1]], txt, H_LINE, 'BC', 90))
+                    texts.append(self.t([an[0] - OFF_V, an[1]], txt, H_LINE, 'BC', 90))
                 else:
-                    texts.append(self.t([an[0], an[1] + 0.9], txt, H_LINE, 'BC'))
+                    texts.append(self.t([an[0], an[1] + OFF_H], txt, H_LINE, 'BC'))
             else:
                 texts.append(self.t(an, txt, H_LINE, 'MC', 90 if vertical else 0))
 
