@@ -35,7 +35,13 @@ def text_box(it):
     just = it.get('just', 'ML')
     top = y if just.startswith('T') else y + h / 2 if just.startswith('M') else y + h
     x0 = x - w / 2 if just.endswith('C') else x - w if just.endswith('R') else x
-    return x0, x0 + w, top - h * (1 + 1.6 * (n - 1)), top     # 单行高 h，多行行距 1.6h
+    x1, y0 = x0 + w, top - h * (1 + 1.6 * (n - 1))     # 单行高 h，多行行距 1.6h
+    ang = it.get('rot', 0) % 180
+    if ang == 90:     # 竖排文字：绕插入点转 90°，外框宽高互换
+        pts = [rot(px - x, py - y, 90) for px, py in ((x0, y0), (x1, y0), (x1, top), (x0, top))]
+        return (x + min(p[0] for p in pts), x + max(p[0] for p in pts),
+                y + min(p[1] for p in pts), y + max(p[1] for p in pts))
+    return x0, x1, y0, top
 
 
 def table_box(it):

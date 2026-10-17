@@ -194,6 +194,8 @@ class Conv:
                 self.cv(it, syms, texts)
             elif k == 'line':
                 self.line(it, byid, inline, polys, syms, texts)
+            elif k == 'sym' and (GEOM.get(it['style']) or {}).get('native'):
+                self.sym(it['style'], it, syms)      # 图例里直接写的手工新增符号：画成折线
             else:
                 out.append(it)
         return out + polys + self.native_polys + syms + texts

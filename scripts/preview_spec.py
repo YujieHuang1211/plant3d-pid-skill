@@ -107,6 +107,13 @@ def main(argv):
                 txt = str(it['text']).replace('\\S^2;', '2').replace('\\S^4;', '4')
                 for code in ('\\L', '\\l', '\\P'):
                     txt = txt.replace(code, '')
+                if it.get('rot', 0) % 180 == 90:     # 竖排文字：画到小图上旋转后贴回
+                    ang = 90 if it.get('rot', 0) % 360 == 90 else 270
+                    sub = Image.new('RGBA', (int((y1 - y0) * k) + 6, int((x1 - x0) * k) + 6), (255, 255, 255, 0))
+                    ImageDraw.Draw(sub).text((1, 1), txt.replace('\n', ' '), fill='black', font=font(h))
+                    sub = sub.rotate(ang, expand=True)
+                    im.paste(sub, (int(P(x0, y1)[0]), int(P(x0, y1)[1])), sub)
+                    continue
                 for n, ln in enumerate(txt.split('\n')):
                     d.text(P(x0, y1 - n * h * 1.6), ln, fill='black', font=font(h))
             elif kind == 'table':
