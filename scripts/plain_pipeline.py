@@ -4,10 +4,14 @@
 子命令
   prep   [图号 …]      离线（不需要 AutoCAD，数秒）：运行 sheets.py 生成 Plant 版 spec → lint → plain_convert →
                        lint 普通版 → check_plain → 预览 PNG（<工作底稿>/预览/）。任何一步失败都退出码 1
-  draw   [图号 …] [--redraw] [--wait]
+  draw   [图号 …] [--redraw] [--changed] [--wait]
                        写 run_set.ps1（带 BOM）并用 Windows PowerShell 5 启动：项目不存在先 setup_project，再
                        build_set -Plain。默认后台运行，日志在 <工作底稿>/_出图日志/；--wait 等它结束。
-                       已出过的图要重画，加 --redraw（先移除旧图再画）。draw 之前会再跑一遍 prep 的检查部分
+                       已出过的图要重画，加 --redraw（先移除旧图再画）；--changed 只画相对上次成功出图（_构建清单.json）
+                       输入有变化的图，都没变就不启动 AutoCAD。draw 之前会再跑一遍 prep 的检查部分
+  resume [--dry-run] [--wait]
+                       接着画：把上次没走完的出图里已完整出完、输入未变的图认进构建清单，再只画还需要画的图（= draw --changed）。
+                       输入变了的图一律重画，不沿用旧产物；--dry-run 只说明不启动 AutoCAD
   status               看最近一次出图记录（_出图日志/run_*.json）：退出码 0 完成 / 1 失败或无记录 / 2 运行中或已中断
   post                 出图后：PDF 转 PNG（<工作底稿>/终审PNG/）→ 清空 PDF 元数据 → 合并图集 → 扫描 PDF/DWG 里的
                        禁用词和作者信息 → 打项目 zip 备份。先核对产物（DWG 齐全、单张 PDF 恰 1 页 A3、不早于本次出图），
@@ -27,6 +31,7 @@
   ban          额外禁用词
 Plant 版 spec 与普通版 spec 放在 <引擎>/specs/<project> 与 <引擎>/specs/<project>_plain。
 """
+import hashlib
 import json
 import os
 import re
@@ -258,12 +263,122 @@ def verify_outputs(cfg, nos, since=None, need_dwg=True):
     return bad
 
 
+# ---------------------------------------------------------------- 构建清单与增量重画（--changed）
+def file_sha(path, n=16):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()[:n]
+
+
+def input_hashes(cfg, nos):
+    """每张图的输入身份：转换后的普通版 spec + 图签属性（含总张数、版次、日期）。配置、符号几何、模型变化都会改变转换结果，因此都体现在里面"""
+    out = {}
+    for n in nos:
+        h = hashlib.sha256()
+        for suf in ('.json', '.props.json'):
+            f = cfg['plain'] / f'{n}{suf}'
+            h.update(f.read_bytes() if f.exists() else b'')
+        out[n] = h.hexdigest()[:16]
+    return out
+
+
+def global_hash(cfg):
+    """spec 看不出来的全局输入：符号目录、项目样式/模板配置、引擎。任一变化则全部图重画"""
+    h = hashlib.sha256()
+    files = [HERE.parent / 'assets' / 'symbol_catalog.json'] + [Path(x) for x in cfg.get('catalogs', [])]
+    files += [Path(cfg[k]) for k in ('stylecfg', 'schema') if cfg.get(k)]
+    files += [ENGINE / 'bin' / 'core' / 'PidBot.Core.dll', ENGINE / 'scripts' / 'build_set.ps1']
+    for f in files:
+        h.update(f.read_bytes() if f.exists() else b'-')
+    return h.hexdigest()[:16]
+
+
+def manifest_path(cfg):
+    return cfg['work'] / '_构建清单.json'
+
+
+def load_manifest(cfg):
+    f = manifest_path(cfg)
+    return json.loads(f.read_text(encoding='utf-8')) if f.exists() else {}
+
+
+def changed_sheets(cfg, nos):
+    """相对上次成功出图（构建清单）需要重画的图：输入哈希变了、清单里没有、DWG/PDF 不在了；全局输入变了则全部"""
+    man = load_manifest(cfg)
+    cur = input_hashes(cfg, nos)
+    if man.get('global') != global_hash(cfg):
+        return list(nos), '符号库/样式配置/引擎有变化，全部重画' if man else '没有构建清单，全部画'
+    todo = []
+    for n in nos:
+        e = (man.get('sheets') or {}).get(n)
+        dwg = cfg['prj'] / 'PID DWG' / dwg_name(cfg, n)
+        if not e or e.get('input') != cur[n] or not dwg.exists() or not (cfg['pdf'] / f'{n}.pdf').exists():
+            todo.append(n)
+    return todo, ''
+
+
+def update_manifest(cfg, rec):
+    """出图成功后记录每张图的输入哈希和产物哈希"""
+    man = load_manifest(cfg)
+    man['global'] = rec.get('global', man.get('global'))
+    man.setdefault('sheets', {})
+    for n in rec['sheets']:
+        dwg = cfg['prj'] / 'PID DWG' / dwg_name(cfg, n)
+        pdf = cfg['pdf'] / f'{n}.pdf'
+        man['sheets'][n] = {'input': rec['inputs'][n], 'dwg_sha': file_sha(dwg) if dwg.exists() else None,
+                            'pdf_sha': file_sha(pdf) if pdf.exists() else None, 'run_id': rec['run_id'], 'saved_at': time.time(),
+                            'profile': cfg.get('profile')}
+    manifest_path(cfg).write_text(json.dumps(man, ensure_ascii=False, indent=1), encoding='utf-8')
+
+
+def salvage(cfg, rec):
+    """上次出图没走完（失败/中断）时，把已经完整出完的图记入构建清单：DWG 和 PDF 都晚于那次开始、PDF 合格，
+    且该图现在的输入哈希与那次出图时一致。输入变了的不认，留给 draw --changed 重画。返回已认定完成的图号"""
+    if not rec or rec.get('state') == 'ok' or not rec.get('inputs'):
+        return []
+    cur = input_hashes(cfg, list(rec['inputs']))
+    done = [n for n in rec['sheets']
+            if cur.get(n) == rec['inputs'].get(n) and not verify_outputs(cfg, [n], since=rec['started'] - 2)]
+    if done and global_hash(cfg) == rec.get('global'):
+        update_manifest(cfg, dict(rec, sheets=done))
+    else:
+        done = []
+    return done
+
+
+def cmd_resume(cfg, argv):
+    """接着画：先把上次没走完的出图里已完整出完且输入未变的图认进构建清单，再只画还需要画的图。
+    --dry-run 只说明会怎么做，不启动 AutoCAD。输入变了（模型、版面、配置、符号库、引擎）的图一律重画，不沿用旧产物"""
+    rec = latest_record(cfg)
+    dry = '--dry-run' in argv
+    if rec and rec.get('state') in ('failed', 'interrupted'):
+        done = salvage(cfg, rec) if not dry else [n for n in rec['sheets'] if input_hashes(cfg, list(rec['inputs'])).get(n) == rec['inputs'].get(n)
+                                                  and not verify_outputs(cfg, [n], since=rec['started'] - 2)]
+        print(f"上次出图（{rec['run_id']}）状态 {rec['state']}；已完整出完且输入未变的图：{', '.join(done) or '无'}")
+    elif rec and rec.get('state') == 'running':
+        raise SystemExit('上次出图还在运行（status 查看），不要同时续画')
+    nos = sheets_of(cfg, [a for a in argv if not a.startswith('--')])
+    if dry:
+        if not check_phase(cfg, sheets_of(cfg, []), preview=False):
+            raise SystemExit('检查未通过，续画前先修检查问题')
+        todo, why = changed_sheets(cfg, nos)
+        print('将重画：' + (', '.join(todo) or '无（不启动 AutoCAD）') + (f'（{why}）' if why else ''))
+        return True
+    return cmd_draw(cfg, [a for a in argv if a != '--dry-run'] + ['--changed'])
+
+
 def cmd_draw(cfg, argv):
     redraw = '--redraw' in argv
     wait = '--wait' in argv
+    changed = '--changed' in argv
     nos = sheets_of(cfg, [a for a in argv if not a.startswith('--')])
     if not check_phase(cfg, sheets_of(cfg, []), preview=False):
         raise SystemExit('检查未通过，未启动 AutoCAD')
+    if changed:      # 只画输入有变化的图；全都没变就不启动 AutoCAD
+        nos, why = changed_sheets(cfg, nos)
+        if not nos:
+            print('没有输入变化的图，不启动 AutoCAD（相对上次成功出图）')
+            return True
+        print(f'需要重画：{", ".join(nos)}' + (f'（{why}）' if why else ''))
+        redraw = any((cfg['prj'] / 'PID DWG' / dwg_name(cfg, n)).exists() for n in nos)
     pids = acad_running()
     if pids:
         raise SystemExit(f'已有 AutoCAD 在运行（PID {", ".join(pids)}）。请先保存关闭；引擎不会动不属于它的 AutoCAD')
@@ -274,7 +389,8 @@ def cmd_draw(cfg, argv):
     run_id = time.strftime('%m%d_%H%M%S')
     log = log_dir(cfg) / f'draw_{run_id}.log'
     write_record(cfg, {'run_id': run_id, 'state': 'running', 'started': time.time(), 'sheets': nos, 'redraw': redraw,
-                       'script': str(script), 'log': str(log), 'pid': None})
+                       'script': str(script), 'log': str(log), 'pid': None,
+                       'inputs': input_hashes(cfg, nos), 'global': global_hash(cfg)})
     flags = 0x08000000 | 0x00000200      # CREATE_NO_WINDOW | CREATE_NEW_PROCESS_GROUP（DETACHED_PROCESS 会丢掉输出）
     pr = subprocess.Popen([PY, str(Path(__file__).resolve()), str(cfg['work']), '_runner', run_id],
                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, creationflags=flags)
@@ -301,6 +417,8 @@ def cmd_runner(cfg, run_id):
         problems = [f'包装进程异常：{e}']
     state = 'ok' if rc == 0 and not problems else 'failed'
     write_record(cfg, {'run_id': run_id, 'state': state, 'returncode': rc, 'problems': problems, 'finished': time.time()})
+    if state == 'ok':
+        update_manifest(cfg, json.loads((log_dir(cfg) / f'run_{run_id}.json').read_text(encoding='utf-8')))
     return 0 if state == 'ok' else 1
 
 
@@ -414,6 +532,8 @@ def main(argv):
         return 0 if check_phase(cfg, sheets_of(cfg, [a for a in rest if not a.startswith('--')])) else 1
     if sub == 'draw':
         return 0 if cmd_draw(cfg, rest) else 1
+    if sub == 'resume':
+        return 0 if cmd_resume(cfg, rest) else 1
     if sub == 'status':
         return status_code(cfg)
     if sub == '_runner':
