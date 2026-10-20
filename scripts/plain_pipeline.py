@@ -14,6 +14,7 @@
                        不通过即中止。结果打印；不复制到交付目录（由人确认后再复制）
 
 工作底稿目录里放 pipeline.json（new_project.py 生成），字段：
+  profile      制图配置名（assets/profiles/*.json）；缺省 legacy-2026-10，new_project.py 对新项目写 pip-ref-a3
   project      Plant 项目名，也是 DWG 标题栏项目名（不得带“验证”“测试”等字样）
   parent       Plant 项目的父目录，默认 E:\\05p_id图绘制中心
   layout       版面模块，默认 sheets.py（用法 python sheets.py <specs 目录> [图号…]）
@@ -44,6 +45,7 @@ def load(work):
     cfg['stage'] = work.parent
     cfg.setdefault('parent', r'E:\05p_id图绘制中心')
     cfg.setdefault('layout', 'sheets.py')
+    cfg.setdefault('profile', 'legacy-2026-10')     # 老项目缺省沿用旧图面；new_project.py 对新项目写 pip-ref-a3
     cfg['specs'] = ENGINE / 'specs' / cfg['project']
     cfg['plain'] = ENGINE / 'specs' / (cfg['project'] + '_plain')
     cfg['catalogs'] = [str(p if Path(p).is_absolute() else work / p) for p in cfg.get('catalogs', [])]
@@ -99,19 +101,20 @@ def check_phase(cfg, nos, preview=True):
         return False
     # 2. lint（Plant 版：线端几何、压框、文字重叠、id 唯一）
     lcat = cat_plant
-    r = run([PY, HERE / 'lint_specs.py', cfg['specs']] + nos + lcat)
+    prof = ['--profile', cfg.get('profile', 'legacy-2026-10')]
+    r = run([PY, HERE / 'lint_specs.py', cfg['specs']] + nos + lcat + prof)
     ok &= step('lint（Plant 版 spec）', r)
     # 3. 转换
-    r = run([PY, HERE / 'plain_convert.py', cfg['specs'], cfg['plain']] + cat + nos)
+    r = run([PY, HERE / 'plain_convert.py', cfg['specs'], cfg['plain']] + cat + prof + nos)
     ok &= step('plain_convert', r, 2)
     # 4. lint 普通版
-    r = run([PY, HERE / 'lint_specs.py', cfg['plain']] + nos + lcat)
+    r = run([PY, HERE / 'lint_specs.py', cfg['plain']] + nos + lcat + prof)
     ok &= step('lint（普通版 spec）', r)
     # 5. 内容核查
     ban = ['--ban', ','.join(cfg['ban'])] if cfg.get('ban') else []
     r = run([PY, HERE / 'check_plain.py', cfg['specs'], cfg['plain']] + ban)
     ok &= step('check_plain（位号/线号齐全、唯一、禁用词）', r)
-    r = run([PY, HERE / 'check_numbering.py', cfg['work'] / 'pid_model.json', cfg['plain']])
+    r = run([PY, HERE / 'check_numbering.py', cfg['work'] / 'pid_model.json', cfg['plain']] + prof)
     ok &= step('check_numbering（线号分组连续、联锁编号连续、文字里的位号都在模型里）', r)
     if set(nos) >= {s['no'] for s in cfg['model']['sheets']}:       # 覆盖核对要看整套图；只跑子集时跳过
         r = run([PY, HERE / 'validate_views.py', cfg['work'] / 'pid_model.json', cfg['specs'], cfg['plain']])
@@ -120,7 +123,7 @@ def check_phase(cfg, nos, preview=True):
         print('SKIP validate_views（只处理了部分图，整套 prep 时才核对覆盖）')
     if preview and ok:
         pv = cfg['work'] / '预览'
-        r = run([PY, HERE / 'preview_spec.py', cfg['plain'], pv] + nos + cat + ['--scale', '3'])
+        r = run([PY, HERE / 'preview_spec.py', cfg['plain'], pv] + nos + cat + prof + ['--scale', '3'])
         ok &= step(f'预览 → {pv}', r, 1)
     return bool(ok)
 
@@ -223,6 +226,9 @@ def decode_log(b):
 def verify_outputs(cfg, nos, since=None, need_dwg=True):
     """目标图张的产物核对：DWG 在、单张 PDF 恰 1 页且为 A3 横向、都不早于本次出图开始。返回问题列表"""
     import fitz
+    import drawprofile
+    S = drawprofile.sheet(drawprofile.load(cfg.get('profile')))
+    want = (round(S['width']), round(S['height']))
     bad = []
     for n in nos:
         files = [(cfg['pdf'] / f'{n}.pdf', 'PDF')]
@@ -238,8 +244,8 @@ def verify_outputs(cfg, nos, since=None, need_dwg=True):
                 with fitz.open(f) as d:
                     if d.page_count != 1:
                         bad.append(f'{n}: PDF 有 {d.page_count} 页，应为 1 页')
-                    elif (round(d[0].rect.width / 72 * 25.4), round(d[0].rect.height / 72 * 25.4)) != (420, 297):
-                        bad.append(f'{n}: PDF 图幅不是 A3 横向')
+                    elif (round(d[0].rect.width / 72 * 25.4), round(d[0].rect.height / 72 * 25.4)) != want:
+                        bad.append(f'{n}: PDF 图幅不是 {S["name"]}（{want[0]}×{want[1]}）')
     return bad
 
 
@@ -341,7 +347,7 @@ def cmd_post(cfg, argv):
     ok = step('PDF → PNG', run([PY, HERE / 'render_pdfs.py', cfg['pdf'], png]), 1)
     ok &= step('清空 PDF 元数据', run([PY, HERE / 'clean_pdf_meta.py', cfg['work'] / 'pid_model.json', cfg['pdf']]), 1)
     atlas = cfg['stage'] / f"{cfg['project']}_P&ID图集_{cfg['model']['meta'].get('rev', 'R0')}.pdf"
-    ok &= step('合并图集', run([PY, HERE / 'pack_pdfs.py', cfg['work'] / 'pid_model.json', cfg['pdf'], atlas]), 1)
+    ok &= step('合并图集', run([PY, HERE / 'pack_pdfs.py', cfg['work'] / 'pid_model.json', cfg['pdf'], atlas, cfg.get('profile', 'legacy-2026-10')]), 1)
     # 扫描元数据与 DWG 里的敏感信息
     bad = ['Claude', 'Codex', 'GPT', 'Anthropic', 'OpenAI', 'PidBot', '验证', '测试']
     for f in [atlas] + [cfg['pdf'] / f'{n}.pdf' for n in nos]:

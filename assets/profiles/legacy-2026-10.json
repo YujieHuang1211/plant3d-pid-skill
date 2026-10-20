@@ -1,0 +1,31 @@
+{
+ "name": "legacy-2026-10",
+ "description": "2026-10-16 起项目沿用的图面数值（冻结）。老项目缺省使用它，复跑图面不变。线宽/断口/箭头是项目经验值，不是某一标准的原文要求。",
+ "sheet": {"name": "A3", "width": 420, "height": 297, "frame": [25, 5, 415, 292], "title_block": [235, 91]},
+ "layers": [
+  {"name": "管线-主", "color": 1, "lw": 70, "rank": 2},
+  {"name": "管线-次", "color": 2, "lw": 35, "rank": 1},
+  {"name": "信号-电", "color": 4, "lw": 18, "ltype": "DASHED2", "rank": 0},
+  {"name": "信号-软件", "color": 6, "lw": 18, "rank": 0},
+  {"name": "符号", "color": 7, "lw": 35},
+  {"name": "位号", "color": 3, "lw": 25}
+ ],
+ "lines": {
+  "Primary Style": {"layer": "管线-主"},
+  "Secondary Style": {"layer": "管线-次"},
+  "Electrical Style": {"layer": "信号-电"},
+  "Software Style": {"layer": "信号-软件", "circle": true},
+  "Pneumatic Style": {"layer": "信号-电"}
+ },
+ "crossing": {"same_rank_break": "horizontal", "gap_total": 2.8},
+ "arrows": {"mode": "last_segment", "length": 4.7},
+ "nozzle": {"default": "flange"},
+ "symbol_layers": null,
+ "psv_upright": false,
+ "numbering": {"mode": "continuous"},
+ "basis": [
+  {"item": "线宽层级", "origin": "project", "note": "主线 0.70、次线 0.35、符号 0.35、位号 0.25、信号 0.18；项目经验值"},
+  {"item": "交叉断线", "origin": "project", "note": "同级断横线，每侧 1.4 mm；与 ISO 10628-1 §5.3.4、PIP PIC001 §4.2.3.10 的断竖线规则相反，仅为保持历史图面"},
+  {"item": "流向箭头", "origin": "project", "note": "每条主管线只在末段一个"}
+ ]
+}

@@ -1,5 +1,6 @@
 """把 Plant 版 spec 转成“普通图元”spec：只含 sym / poly / text / table，不创建任何 Plant 智能对象。
-用法: python plain_convert.py <原 specs 目录> <输出目录> [--catalog symbol_catalog.json ...] [--geom-all] [图号 ...]
+用法: python plain_convert.py <原 specs 目录> <输出目录> [--catalog symbol_catalog.json ...] [--profile 配置名] [--geom-all] [图号 ...]
+        --profile：制图配置（assets/profiles/*.json，缺省 legacy-2026-10，老项目图面不变）
         --geom-all：Plant 库符号也用几何库画成折线（不依赖项目符号样式；默认只有手工新增的符号这样画）
         （--catalog 可重复，后者覆盖前者；不给图号则转换目录下全部图）
 
@@ -20,48 +21,55 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import drawprofile  # noqa: E402
+import geometry  # noqa: E402
 import symbol_geom  # noqa: E402
 
-try:
-    STYLE_SCALES = json.loads((Path(__file__).resolve().parent.parent / 'assets' / 'plant_style_scales.json').read_text(encoding='utf-8'))
-except Exception:
-    STYLE_SCALES = {}
-GEOM = symbol_geom.load()      # 非智能对象几何库（手工新增符号默认用它；--geom-all 时 Plant 库符号也用它）
+STYLE_SCALES = geometry.STYLE_SCALES
+GEOM = geometry.GEOM           # 非智能对象几何库（手工新增符号默认用它；--geom-all 时 Plant 库符号也用它）
 GEOM_ALL = False
 
 INSTR = {'Field Mounted Discrete Instrument Style', 'Primary Loc Accessible PLC Style',
          'Field Mounted Discrete Hardware Interlock Style', 'Primary Loc Accessible Discrete Instrument Style',
          'Field Mounted PLC Style'}
-# 图层：颜色（ACI）、线宽（0.01 mm）、线型。实体一律“随层”，线宽/颜色/线型只由图层决定，
-# 这样在 AutoCAD 里改图层即可整体调整；PDF 为黑白时按线宽区分层次
-LAYERS = [
-    {'name': '管线-主', 'color': 1, 'lw': 70},                       # 主工艺管线 0.70，红
-    {'name': '管线-次', 'color': 2, 'lw': 35},                       # 仪表接管、取样、排凝支线 0.35，黄
-    {'name': '信号-电', 'color': 4, 'lw': 18, 'ltype': 'DASHED2'},   # 电信号、气动信号 0.18，青，虚线
-    {'name': '信号-软件', 'color': 6, 'lw': 18},                     # 软件/通讯链路 0.18，洋红，实线+小圆
-    {'name': '符号', 'color': 7, 'lw': 35},                          # 阀门、仪表、设备、管嘴、连接器、箭头 0.35
-    {'name': '位号', 'color': 3, 'lw': 25},                          # 位号、线号、仪表圈、椭圆 0.25，绿
-]
-LINES = {
-    'Primary Style': dict(layer='管线-主'),
-    'Secondary Style': dict(layer='管线-次'),
-    'Electrical Style': dict(layer='信号-电'),
-    'Software Style': dict(layer='信号-软件', circle=True),
-    'Pneumatic Style': dict(layer='信号-电'),
-}
-ARROW_STYLE, ARROW_LEN = 'Flow Arrow Style', 4.7
+ARROW_STYLE = 'Flow Arrow Style'
 NECK, FLANGE_GAP, FLANGE_LEN = 3.0, 1.0, 5.2    # 管嘴：接管长度、法兰对间距、法兰线长（mm）
-GAP = 1.4            # 线交叉处打断：每侧留 1.4 mm（共 2.8 mm）
-RANK = {'信号-电': 0, '信号-软件': 0, '管线-次': 1, '管线-主': 2}   # 交叉时优先打断数字小（线宽更细）的线
+# 图层、线型映射、交叉断线、箭头、接管、图幅都来自制图配置（assets/profiles/*.json，见 drawprofile.py）；
+# 实体一律“随层”，线宽/颜色/线型只由图层决定，在 AutoCAD 里改图层即可整体调整；PDF 为黑白时按线宽区分层次
+PROFILE, LAYERS, LINES, RANK = {}, [], {}, {}
+GAP, ARROW_LEN, ARROW_MODE, ARROW_MIN_GAP = 1.4, 4.7, 'last_segment', 6.0
+SAME_RANK_BREAK, NOZZLE_DEFAULT, SYMBOL_LAYERS, TB = 'horizontal', 'flange', None, (235.0, 91.0)
+try:
+    NAMES_ZH = json.loads((geometry.ASSETS / 'symbol_names_zh.json').read_text(encoding='utf-8'))
+except Exception:
+    NAMES_ZH = {}
+
+
+def set_profile(profile):
+    """载入制图配置（名字、文件路径或已读入的 dict），刷新本模块的图层/线型/断线/箭头/接管参数"""
+    global PROFILE, LAYERS, LINES, RANK, GAP, ARROW_LEN, ARROW_MODE, ARROW_MIN_GAP, SAME_RANK_BREAK, NOZZLE_DEFAULT, SYMBOL_LAYERS, TB
+    P = profile if isinstance(profile, dict) else drawprofile.load(profile)
+    PROFILE = P
+    LAYERS = [{k: v for k, v in l.items() if k != 'rank'} for l in P['layers']]
+    RANK = {l['name']: l['rank'] for l in P['layers'] if 'rank' in l}      # 交叉时优先打断数字小（线宽更细）的线
+    LINES = {k: dict(v) for k, v in P['lines'].items()}
+    GAP = P['crossing']['gap_total'] / 2                                    # 配置记总间隙，每侧留一半
+    SAME_RANK_BREAK = P['crossing']['same_rank_break']
+    ARROW_LEN, ARROW_MODE = P['arrows']['length'], P['arrows']['mode']
+    ARROW_MIN_GAP = P['arrows'].get('min_gap', 6.0)
+    NOZZLE_DEFAULT = P['nozzle']['default']
+    SYMBOL_LAYERS = P.get('symbol_layers')
+    TB = tuple(float(v) for v in P['sheet']['title_block'])
+
+
+set_profile(drawprofile.DEFAULT)
 R_BUBBLE = 5.0
 H_TAG, H_LINE, H_EQ, H_BUB, H_OPC_L, H_OPC_D = 2.5, 2.5, 3.5, 2.4, 3.0, 2.0
 ON_LINE, OFF_V, OFF_H = 1.2, 1.5, 1.2     # 线号标注点离线 < ON_LINE 视为落在线上；文字基线离线的距离（竖线 / 横线）
 LAYER_TAG = '位号'
 
 
-def rot(dx, dy, deg):
-    a = math.radians(deg)
-    return dx * math.cos(a) - dy * math.sin(a), dx * math.sin(a) + dy * math.cos(a)
+rot = geometry.rot
 
 
 def seglen(a, b):
@@ -151,28 +159,7 @@ class Conv:
 
     def conn_pts(self, it):
         """内联符号两端连接点（绝对坐标）；目录无连接点时取外框左右中点"""
-        st = it.get('style') or it.get('body')
-        c = self.cat.get(st) or {}
-        att = c.get('att') or []
-        if len(att) >= 2:
-            pa, pb = att[0], att[-1]
-        else:
-            bb = c.get('bbox') or [-4, -2, 4, 2]
-            pa, pb = [bb[0], 0], [bb[2], 0]
-        r = it.get('rot', 0)
-        x, y = it['at']
-        f = 1.0       # 符号按 spec 里的 scale 缩放时，连接点同比移动（Plant 库符号 scale 是绝对比例，手工符号是倍数）
-        if 'scale' in it:
-            if (GEOM.get(st) or {}).get('native'):
-                f = float(it['scale'])
-            else:
-                f = float(it['scale']) / float((STYLE_SCALES.get(st) or {}).get('scale') or it['scale'])
-        out = []
-        for p in (pa, pb):
-            p = [p[0] * f, p[1] * f]
-            dx, dy = rot(p[0], p[1], r)
-            out.append([x + dx, y + dy])
-        return out
+        return geometry.inline_ports(self.cat, it)
 
     def bbox_half(self, it):
         st = it.get('style') or it.get('body')
@@ -189,8 +176,10 @@ class Conv:
         for it in items:
             if it['k'] == 'connect' and it.get('ctx') == 'inline':
                 inline.setdefault(it['line'], []).append(it['asset'])
+        self.tees = {(it['line'], it['to']) for it in items if it['k'] == 'tee'}                 # 真连接：几何相交也不打断
+        self.tee_starts = {it['line'] for it in items if it['k'] == 'tee' and it.get('start', True)}   # 起点接在别的线上的支线
         self.cross = self.find_crossings(items)
-        self.nozzles = [(n['at'], n.get('rot', 0)) for n in items if n['k'] == 'nozzle']
+        self.nozzles = [(n['at'], n.get('rot', 0), self.nozzle_reach(n)) for n in items if n['k'] == 'nozzle']
         self.native_polys = []
         syms, polys, texts = [], [], []
         for it in items:
@@ -219,6 +208,8 @@ class Conv:
         for i in range(len(L)):
             for j in range(i + 1, len(L)):
                 (ia, Va, la), (ib, Vb, lb) = L[i], L[j]
+                if (ia, ib) in self.tees or (ib, ia) in self.tees:
+                    continue
                 acc_a = 0.0
                 for m in range(len(Va) - 1):
                     la_seg = seglen(Va[m], Va[m + 1])
@@ -231,12 +222,12 @@ class Conv:
                             ra, rb = RANK[la], RANK[lb]
                             if ra != rb:
                                 brk_a = ra < rb
-                            else:   # 同级：打断横线
+                            else:   # 同级：按配置打断横线或竖线（ISO 10628-1 §5.3.4、PIP §4.2.3.10 是竖线）
                                 horiz_a = abs(Va[m + 1][0] - Va[m][0]) >= abs(Va[m + 1][1] - Va[m][1])
                                 horiz_b = abs(Vb[n + 1][0] - Vb[n][0]) >= abs(Vb[n + 1][1] - Vb[n][1])
                                 if horiz_a == horiz_b:
                                     continue
-                                brk_a = horiz_a
+                                brk_a = horiz_a if SAME_RANK_BREAK == 'horizontal' else not horiz_a
                             if brk_a:
                                 out.setdefault(ia, []).append(acc_a + ta * la_seg)
                             else:
@@ -245,27 +236,56 @@ class Conv:
                     acc_a += la_seg
         return out
 
+    @staticmethod
+    def nozzle_conn(it):
+        return it.get('conn') or NOZZLE_DEFAULT
+
+    def nozzle_reach(self, it):
+        """管嘴自器壁向外伸出的长度：法兰型含法兰对；其余只有接管；none 为 0"""
+        c = self.nozzle_conn(it)
+        return NECK + FLANGE_GAP if c == 'flange' else 0.0 if c == 'none' else NECK
+
     def nozzle(self, it, polys):
-        """管嘴：自设备壁沿 rot 方向伸出一小段接管，端部画一对法兰线（符号层）"""
+        """管嘴：自设备壁沿 rot 方向伸出一小段接管；conn=flange 时端部画一对法兰线（符号层）。
+        连接类型未确认（缺省按配置，PIP 配置下为 plain）时不默认加法兰"""
+        conn = self.nozzle_conn(it)
+        if conn == 'none':
+            return
         x, y = it['at']
         r = math.radians(it.get('rot', 0))
         dx, dy = math.cos(r), math.sin(r)
         px, py = -dy, dx
-        polys.append({'k': 'poly', 'pts': [[round(x, 3), round(y, 3)], [round(x + dx * (NECK + FLANGE_GAP), 3), round(y + dy * (NECK + FLANGE_GAP), 3)]], 'layer': '符号'})
+        reach = self.nozzle_reach(it)
+        polys.append({'k': 'poly', 'pts': [[round(x, 3), round(y, 3)], [round(x + dx * reach, 3), round(y + dy * reach, 3)]], 'layer': '符号'})
+        if conn != 'flange':
+            return
         for off in (NECK, NECK + FLANGE_GAP):
             cx, cy = x + dx * off, y + dy * off
             polys.append({'k': 'poly', 'pts': [[round(cx - px * FLANGE_LEN / 2, 3), round(cy - py * FLANGE_LEN / 2, 3)],
                                                [round(cx + px * FLANGE_LEN / 2, 3), round(cy + py * FLANGE_LEN / 2, 3)]], 'layer': '符号'})
 
     # ------------------------------------------------------------------ 符号与位号
+    def sym_layer(self, style):
+        """符号所在图层：配置没有分层时一律“符号”；有分层时设备轮廓、在线管件各用自己的线宽层"""
+        sl = SYMBOL_LAYERS
+        if not sl:
+            return '符号'
+        cat = (NAMES_ZH.get(style) or {}).get('cat')
+        if cat in sl.get('equipment_categories', ()):
+            return sl['equipment']
+        if cat in sl.get('fitting_categories', ()):
+            return sl['fitting']
+        return sl['default']
+
     def sym(self, style, it, syms):
+        layer = self.sym_layer(style)
         g = GEOM.get(style)
         if g is not None and (g.get('native') or GEOM_ALL):
             # 非智能对象几何库：直接画成折线，不依赖项目里的符号样式
             for pa in symbol_geom.polys(style, it['at'], it.get('rot', 0), it.get('scale', 1.0)):
-                self.native_polys.append({'k': 'poly', 'pts': pa['pts'], 'layer': '符号', **({'closed': True} if pa['closed'] and len(pa['pts']) > 3 else {})})
+                self.native_polys.append({'k': 'poly', 'pts': pa['pts'], 'layer': layer, **({'closed': True} if pa['closed'] and len(pa['pts']) > 3 else {})})
             return
-        d = {'k': 'sym', 'style': style, 'at': it['at'], 'rot': it.get('rot', 0), 'layer': '符号'}
+        d = {'k': 'sym', 'style': style, 'at': it['at'], 'rot': it.get('rot', 0), 'layer': layer}
         if 'scale' in it:
             d['scale'] = it['scale']
         syms.append(d)
@@ -333,18 +353,7 @@ class Conv:
 
     def world_box(self, it):
         """符号外框（世界坐标，含旋转和 spec 里的比例）"""
-        st = it.get('style') or it.get('body')
-        bb = (self.cat.get(st) or {}).get('bbox') or [-4, -2, 4, 2]
-        f = 1.0
-        if 'scale' in it:
-            if (GEOM.get(st) or {}).get('native'):
-                f = float(it['scale'])
-            else:
-                f = float(it['scale']) / float((STYLE_SCALES.get(st) or {}).get('scale') or it['scale'])
-        r = it.get('rot', 0)
-        cs = [rot(dx * f, dy * f, r) for dx, dy in ((bb[0], bb[1]), (bb[2], bb[3]), (bb[0], bb[3]), (bb[2], bb[1]))]
-        x, y = it['at']
-        return (x + min(c[0] for c in cs), y + min(c[1] for c in cs), x + max(c[0] for c in cs), y + max(c[1] for c in cs))
+        return geometry.item_box(self.cat, it)
 
     def opc_text(self, it, texts):
         props = it.get('props', {})
@@ -378,9 +387,28 @@ class Conv:
 
     @staticmethod
     def in_tb(x0, x1, y0, y1):
-        return x1 > 235.0 and y0 < 91.0
+        return x1 > TB[0] and y0 < TB[1]
 
     # ------------------------------------------------------------------ 管线
+    def corner_arrows(self, V, cuts, arrows, syms, branch_start):
+        """转角后（支线则含起点后）的流向箭头：放在离开该点的直段上，距该点 2.5 mm 起；段太短、压断口、
+        离已有箭头不足 min_gap 的不放"""
+        acc = [0.0]
+        for i in range(len(V) - 1):
+            acc.append(acc[-1] + seglen(V[i], V[i + 1]))
+        for i in range(0 if branch_start else 1, len(V) - 1):
+            a, b = V[i], V[i + 1]
+            L = seglen(a, b)
+            s0 = acc[i] + 2.5
+            if L - 2.5 < ARROW_LEN + 1.0 or any(c0 < s0 + ARROW_LEN + 0.5 and c1 > s0 - 0.5 for c0, c1 in cuts):
+                continue
+            if any(abs(s0 - sa) < ARROW_LEN + ARROW_MIN_GAP for sa in arrows):
+                continue
+            ux, uy = (b[0] - a[0]) / L, (b[1] - a[1]) / L
+            syms.append({'k': 'sym', 'style': ARROW_STYLE, 'at': [round(a[0] + ux * 2.5, 3), round(a[1] + uy * 2.5, 3)],
+                         'rot': round(math.degrees(math.atan2(uy, ux)), 3), 'layer': '符号'})
+            arrows.append(s0)
+
     def line(self, it, byid, inline, polys, syms, texts):
         sty = LINES[it['style']]
         V = [list(p) for p in it['pts']]
@@ -405,28 +433,49 @@ class Conv:
             pts = subpath(V, s0, s1)
             if len(pts) >= 2:
                 polys.append({'k': 'poly', 'pts': [[round(v, 3) for v in p] for p in pts], 'layer': sty['layer']})
-        # 流向箭头：Primary 线只在末段放一个（流入方向）。末段上有朝向来流的管嘴（线在管嘴处或穿过器壁继续到设备内部）时，
-        # 箭头尖放在该管嘴法兰外侧；否则放在线端
+        # 流向箭头（Primary 线）。arrows.mode：last_segment = 只在末段放一个（流入方向）；corners = 末段一个 + 每个转角后 +
+        # 支线起点后（PIP §4.2.3.9），相邻箭头至少隔 min_gap。末段上有朝向来流的管嘴（线在管嘴处或穿过器壁继续到设备内部）时，
+        # 箭头尖放在该管嘴外侧；否则放在线端
+        arrows = []          # 已放箭头的起点弧长
         if it['style'] == 'Primary Style' and len(V) >= 2 and not it.get('noarrow'):
             a, b = V[-2], V[-1]
             L = seglen(a, b)
             ux, uy = (b[0] - a[0]) / L, (b[1] - a[1]) / L
             t_tip = L
-            for (nx, ny), nr in self.nozzles:
+            for (nx, ny), nr, reach in self.nozzles:
                 t = (nx - a[0]) * ux + (ny - a[1]) * uy
                 off = abs(-(nx - a[0]) * uy + (ny - a[1]) * ux)
                 ox, oy = math.cos(math.radians(nr)), math.sin(math.radians(nr))
                 if off < 0.8 and 0.5 < t <= L + 0.8 and ox * ux + oy * uy < -0.9:
-                    t_tip = min(t_tip, t - (NECK + FLANGE_GAP + 0.4)) if t_tip < L else t - (NECK + FLANGE_GAP + 0.4)
+                    t_tip = min(t_tip, t - (reach + 0.4)) if t_tip < L else t - (reach + 0.4)
             s_tip = total - L + t_tip
             if t_tip - ARROW_LEN >= 1.0 and not any(c0 < s_tip and c1 > s_tip - ARROW_LEN for c0, c1 in cuts):
                 ang = math.degrees(math.atan2(uy, ux))
                 syms.append({'k': 'sym', 'style': ARROW_STYLE, 'at': [round(a[0] + ux * (t_tip - ARROW_LEN), 3), round(a[1] + uy * (t_tip - ARROW_LEN), 3)], 'rot': round(ang, 3), 'layer': '符号'})
-        # 信号线（软件/通讯）中点小圆
+                arrows.append(s_tip - ARROW_LEN)
+            if ARROW_MODE == 'corners':
+                self.corner_arrows(V, cuts, arrows, syms, it['id'] in self.tee_starts)
+        # 信号线标记：气动信号每隔 pitch 画一对斜线（ISA-5.1 表 10）；软件/通讯（legacy）中点小圆
+        tk = sty.get('ticks')
+        if tk and total > tk['pitch'] * 0.6:
+            s_ = tk['pitch'] / 2
+            while s_ < total - 3:
+                if not any(c0 - 1 < s_ < c1 + 1 for c0, c1 in cuts):
+                    q = subpath(V, s_ - 0.01, s_ + 0.01)
+                    ux, uy = q[-1][0] - q[0][0], q[-1][1] - q[0][1]
+                    n_ = math.hypot(ux, uy)
+                    if n_ > 1e-9:
+                        ux, uy = ux / n_, uy / n_
+                        cx, cy = (q[0][0] + q[-1][0]) / 2, (q[0][1] + q[-1][1]) / 2
+                        for off in (-tk['spacing'] / 2, tk['spacing'] / 2):
+                            mx, my = cx + ux * off, cy + uy * off
+                            polys.append({'k': 'poly', 'pts': [[round(mx - uy * tk['half'] - ux * tk['slant'], 3), round(my + ux * tk['half'] - uy * tk['slant'], 3)],
+                                                               [round(mx + uy * tk['half'] + ux * tk['slant'], 3), round(my - ux * tk['half'] + uy * tk['slant'], 3)]], 'layer': sty['layer']})
+                s_ += tk['pitch']
         if sty.get('circle') and total > 3:
             mid = subpath(V, total / 2 - 0.01, total / 2 + 0.01)
             cx, cy = ((mid[0][0] + mid[-1][0]) / 2, (mid[0][1] + mid[-1][1]) / 2)
-            polys.append({'k': 'poly', 'pts': [[round(x, 3), round(y, 3)] for x, y in circle(cx, cy, 1.0, 16)], 'closed': True, 'layer': '信号-软件'})
+            polys.append({'k': 'poly', 'pts': [[round(x, 3), round(y, 3)] for x, y in circle(cx, cy, 1.0, 16)], 'closed': True, 'layer': sty['layer']})
         # 线号
         g, an = it.get('group'), it.get('anno')
         if g and an:
@@ -451,6 +500,8 @@ def main(argv):
             cats.append(argv[i + 1]); i += 2; continue
         if argv[i] == '--geom-all':
             GEOM_ALL = True; i += 1; continue
+        if argv[i] == '--profile':
+            set_profile(argv[i + 1]); i += 2; continue
         args.append(argv[i]); i += 1
     src, dst, sheets = Path(args[0]), Path(args[1]), args[2:]
     cat = {}

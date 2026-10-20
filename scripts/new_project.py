@@ -69,7 +69,7 @@ def main(stage, name, parent=r'E:\05p_id图绘制中心'):
     pj = w / 'pipeline.json'
     if not pj.exists():
         pj.write_text(json.dumps({'project': name, 'parent': str(parent).replace(chr(92), '/'), 'layout': 'sheets.py',
-                                  'catalogs': [], 'dwg': {}, 'ban': []}, ensure_ascii=False, indent=1), encoding='utf-8')
+                                  'catalogs': [], 'dwg': {}, 'ban': [], 'profile': 'pip-ref-a3'}, ensure_ascii=False, indent=1), encoding='utf-8')
         print('写出', pj)
     sc = SKILL / 'scripts'
     pp_ = sc / 'plain_pipeline.py'

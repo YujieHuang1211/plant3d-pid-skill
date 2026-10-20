@@ -11,6 +11,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
+import lint_specs
 from lint_specs import DEFAULT_CATALOG, FRAME, TB, placed, table_box, text_box
 import symbol_geom
 
@@ -30,6 +31,11 @@ def main(argv):
                 cat_path = Path(argv[i + 1])
             else:
                 cat_extra.append(argv[i + 1])
+            i += 2; continue
+        if argv[i] == '--profile':
+            lint_specs.set_profile(argv[i + 1])
+            global FRAME, TB
+            FRAME, TB = lint_specs.FRAME, lint_specs.TB
             i += 2; continue
         if argv[i] == '--scale':
             k = float(argv[i + 1]); i += 2; continue
@@ -84,7 +90,7 @@ def main(argv):
                             d.line(gp, fill=(60, 60, 60), width=1)
                     if kind == 'sym':
                         continue
-                pl = placed(cat, st, it['at'], it.get('rot', 0))
+                pl = placed(cat, st, it['at'], it.get('rot', 0), it.get('scale'))
                 if pl:
                     (x0, y0, x1, y1), att = pl
                     d.rectangle([P(x0, y1), P(x1, y0)], outline=(0, 120, 0), width=1)
@@ -146,7 +152,7 @@ def main(argv):
                 else:
                     d.line(pts, fill=col, width=wpx)
             elif kind == 'sym':
-                pl = placed(cat, it.get('style', ''), it['at'], it.get('rot', 0))
+                pl = placed(cat, it.get('style', ''), it['at'], it.get('rot', 0), it.get('scale'))
                 if pl:
                     (x0, y0, x1, y1), att = pl
                     d.rectangle([P(x0, y1), P(x1, y0)], outline=(120, 120, 120), width=1)

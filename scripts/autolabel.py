@@ -39,20 +39,8 @@ def label_w(txt):
 
 
 def sym_box(it, conv):
-    st = it.get('style')
-    c = conv.cat.get(st) or {}
-    bb = c.get('bbox') or [-4, -2, 4, 2]
-    f = 1.0
-    if 'scale' in it:
-        if (pc.GEOM.get(st) or {}).get('native'):
-            f = float(it['scale'])
-        else:
-            f = float(it['scale']) / float((pc.STYLE_SCALES.get(st) or {}).get('scale') or it['scale'])
-    x0, y0, x1, y1 = (v * f for v in bb)
-    r = it.get('rot', 0)
-    cs = [_rot(dx, dy, r) for dx, dy in ((x0, y0), (x1, y1), (x0, y1), (x1, y0))]
-    x, y = it['at']
-    return (x + min(p[0] for p in cs), x + max(p[0] for p in cs), y + min(p[1] for p in cs), y + max(p[1] for p in cs))
+    x0, y0, x1, y1 = pc.geometry.item_box(conv.cat, it)
+    return (x0, x1, y0, y1)
 
 
 def seg_hits_rect(a, b, r, pad=0.0):

@@ -56,7 +56,7 @@ def validate(model, plant, plain):
     objs = model_objects(model)
     reps = {}            # 位号 → [(图号, item)]
     lines = {}           # 线 id → 线号（按图）
-    opcs = {}
+    refs = []            # 引用表示（ref_of 指向主表示的位号）
     connects = []        # (图号, 线号, 对象 id, ctx)
     spec_line_nos = set()
     for no, items in plant.items():
@@ -68,7 +68,10 @@ def validate(model, plant, plain):
                 if ln:
                     spec_line_nos.add(ln)
             elif it['k'] in ('asset', 'cv'):
-                reps.setdefault(it['id'], []).append((no, it))
+                if it.get('ref_of'):
+                    refs.append((no, it))
+                else:
+                    reps.setdefault(it['id'], []).append((no, it))
         for it in items:
             if it['k'] == 'connect' and ln_of.get(it['line']):
                 connects.append((no, ln_of[it['line']], it['asset'], it.get('ctx')))
@@ -86,6 +89,9 @@ def validate(model, plant, plain):
     for tag, got in reps.items():
         if tag not in objs and not tag.startswith('OPC-'):
             errs.append(f'{tag}: 图面（{got[0][0]}）上有，模型里没有，属未批准新增')
+    for no, it in refs:
+        if it['ref_of'] not in reps and not (objs.get(it['ref_of']) or {}).get('omitted'):
+            errs.append(f'{no} {it["id"]}: 引用的 {it["ref_of"]} 没有主表示')
     # 2. 位号绑定
     for tag, got in reps.items():
         if tag not in objs or tag.startswith(('BL-', 'OPC-')):

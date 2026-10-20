@@ -3,7 +3,7 @@
 检查：
   1. 每个设备/阀门/仪表位号都有对应文字；仪表圈内两行（类别 / 回路号）都在
   2. 每条带线号的管线，线号文字存在
-  3. 位号全套唯一（同一位号不得画在两处，跨图连接器和图例除外）
+  3. 位号全套唯一（同一物理对象只有一个主表示，不得画在两处；跨图连接器、图例和带 ref_of 的引用实例除外）
   4. 全部文字不含乱码（U+FFFD）、连续问号、禁用词（AI 参与痕迹、工具名、数据文件名、内部编号等）
 退出码：全部通过 0，否则 1。
 """
@@ -52,6 +52,8 @@ def main(argv):
             if it['k'] in ('asset', 'cv'):
                 st = it.get('style') or it.get('body')
                 if st in SKIP_STYLES or it['id'].startswith(('BL-', 'OPC-')):
+                    continue
+                if it.get('ref_of'):          # 引用表示（详图/局部引用同一物理对象）：不查位号文字、不参与全套唯一
                     continue
                 tag = it['id']
                 a, _, b = tag.partition('-')

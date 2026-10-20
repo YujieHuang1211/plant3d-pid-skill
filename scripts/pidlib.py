@@ -64,15 +64,14 @@ def split_tag(tag):
     return a, b
 
 
-def attach(style, at, side, rot=0):
+def attach(style, at, side, rot=0, scale=None):
     """符号实测连接点（世界坐标）。side：'L' 'R' 'T' 'B' 取最左/右/上/下的连接点，或整数下标。
-    仪表圈、联锁菱形：中心 ±5 mm 四个顶点；阀门：插入点 ±4 mm 两端。目录无此样式时抛 KeyError。"""
-    import math
-    c = CATALOG[style]
-    pts = []
-    for dx, dy in c['att']:
-        a = math.radians(rot)
-        pts.append((round(at[0] + dx * math.cos(a) - dy * math.sin(a), 2), round(at[1] + dx * math.sin(a) + dy * math.cos(a), 2)))
+    仪表圈、联锁菱形：中心 ±5 mm 四个顶点；阀门：插入点 ±4 mm 两端。目录无此样式时抛 KeyError。
+    符号按 spec 的 scale 缩放时必须传同一个 scale（含义见 geometry.py）。"""
+    import geometry
+    if style not in CATALOG:
+        raise KeyError(style)
+    pts = [(round(x, 2), round(y, 2)) for x, y in geometry.ports(CATALOG, style, at, rot, scale)]
     if isinstance(side, int):
         return list(pts[side])
     key = {'L': lambda p: p[0], 'R': lambda p: -p[0], 'B': lambda p: p[1], 'T': lambda p: -p[1]}[side]

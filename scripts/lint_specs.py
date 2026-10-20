@@ -19,10 +19,29 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import geometry  # noqa: E402
+
 TB = (235.0, 91.0)          # A3：标题栏+修订栏占 x>235、y<89（修订栏 3 行，留 2 mm）
 FRAME = (25.0, 5.0, 415.0, 292.0)
 TOL = 0.5
+PSV_UPRIGHT = False
 DEFAULT_CATALOG = Path(__file__).resolve().parent.parent / 'assets' / 'symbol_catalog.json'
+
+
+def set_profile(name):
+    """按制图配置设置图框、标题栏禁区和安全阀直立规则（缺省 legacy-2026-10 = 模块默认值）"""
+    global FRAME, TB, PSV_UPRIGHT
+    import drawprofile
+    P = drawprofile.load(name)
+    FRAME = tuple(float(v) for v in P['sheet']['frame'])
+    TB = tuple(float(v) for v in P['sheet']['title_block'])
+    PSV_UPRIGHT = bool(P.get('psv_upright'))
+    return P
+
+
+def is_psv(style):
+    return ('Relief Valve' in style or 'Safety Valve' in style) and 'Rupture' not in style
 
 
 def text_box(it):
@@ -55,16 +74,9 @@ def rot(dx, dy, ang):
     return dx * math.cos(a) - dy * math.sin(a), dx * math.sin(a) + dy * math.cos(a)
 
 
-def placed(cat, style, at, ang=0):
-    """符号实际外框与连接点（世界坐标）；目录无此样式返回 None。"""
-    c = cat.get(style)
-    if not c:
-        return None
-    x0, y0, x1, y1 = c['bbox']
-    cs = [rot(dx, dy, ang) for dx, dy in ((x0, y0), (x1, y1), (x0, y1), (x1, y0))]
-    box = (at[0] + min(p[0] for p in cs), at[1] + min(p[1] for p in cs), at[0] + max(p[0] for p in cs), at[1] + max(p[1] for p in cs))
-    att = [(at[0] + rot(dx, dy, ang)[0], at[1] + rot(dx, dy, ang)[1]) for dx, dy in c['att']]
-    return box, att
+def placed(cat, style, at, ang=0, scale=None):
+    """符号实际外框与连接点（世界坐标，含旋转和比例）；目录无此样式返回 None。几何在 geometry.py"""
+    return geometry.placed(cat, style, at, ang, scale)
 
 
 def dist_box(p, b):
@@ -129,7 +141,11 @@ def lint_sheet(no, items, cat, all_ids, errs, warns):
             here.add(it['id'])
             if k in ('asset', 'cv'):
                 st = it.get('style') or it.get('body')
-                pl = placed(cat, st, it['at'], it.get('rot', 0))
+                if PSV_UPRIGHT and is_psv(st) and it.get('rot', 0) % 360:
+                    errs.append(f'{no} {it["id"]}：安全阀“{st}”旋转了 {it["rot"]}°；按配置（PIP §4.2.1.16）安全阀须直立，不旋转符号凑空间，改支路或分图')
+                pl = placed(cat, st, it['at'], it.get('rot', 0), it.get('scale'))
+                if it.get('scale') is not None and (cat.get(st) or {}).get('plant_lib') and not geometry.factor(st, it['scale'])[1]:
+                    errs.append(f'{no} {it["id"]}：Plant 库样式“{st}”没有默认比例记录（plant_style_scales.json），scale={it["scale"]} 无法换算，连接点会算错')
                 if pl is None:
                     warns.append(f'{no} {it["id"]}：目录无样式“{st}”，未检几何')
                 objs[it['id']] = (st, it['at'], pl)
@@ -190,6 +206,8 @@ def main(argv):
     while i < len(argv):
         if argv[i] == '--catalog':
             cat_paths.append(Path(argv[i + 1])); i += 2; continue
+        if argv[i] == '--profile':
+            set_profile(argv[i + 1]); i += 2; continue
         if argv[i] == '--strict':
             strict = True; i += 1; continue
         args.append(argv[i]); i += 1
