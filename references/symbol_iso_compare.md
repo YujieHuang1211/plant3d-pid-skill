@@ -11,7 +11,7 @@
 | 弹簧安全阀 QMZ Safety Valve | 14 | 23.1（X2124） | 已换 | 弹簧在上、阀座实心点加粗线。PIP 要求直立：版面用 `mirror` 保持 |
 | 阻火器 Flame Arrestor | 3 | 23.4（2036） | 已换 | ISO 是格栅方框，不是带 F 的方框；防爆轰另有 23.6 |
 | 管道过滤器 Filter Pipe | 8 | 24.6（X8090） | 已换 | 方框加斜虚线 |
-| 止回阀 Check Valve | 15 | 22.1（X8077） | 暂不换 | ISO 是菱形加实心点；实心点与流向的对应关系原件页面没有文字，未核对前沿用 PIP 画法 |
+| 止回阀 Check Valve | 15 | 22.1（X8077） | 保留 PIP | 已决定：PIP 画法自带明确流向标记；ISO 版（菱形加实心点）流向含义原件页面没有文字，未核对前不用 |
 | 仪表圈、PLC 方框、联锁菱形 | 112 / 41 / 2 | —（ISA-5.1） | 同 | ISO 10628-2 不含仪表符号；形状、位置前缀按 ISA-5.1 |
 | 立式容器 Vessel | 19 | 1.5（2062） | 可选 | Plant 容器尺寸和接口因项目而异，不自动换；`ISO Vertical Vessel Style` 供新版面使用 |
 | 卧式容器 Horizontal Drum | 5 | 1.5 横置 | 可选 | `ISO Horizontal Vessel Style` |
