@@ -4,6 +4,7 @@
 spec 里 scale 的含义（沿用转换器现行规则，不得改变，否则已有版面模块会变形）：
   · 手工新增（native）符号：scale 是倍数
   · Plant 库符号：scale 是绝对比例，倍数 = scale ÷ plant_style_scales.json 里该样式的默认比例
+spec 的 mirror=true：符号先沿自身 x 轴镜像再旋转（安全阀保持直立，进出口左右互换），不改 rot。
 样式不在 plant_style_scales.json 时倍数无法确定：factor() 返回 known=False（lint 报错），按 1 计。
 """
 import json
@@ -42,30 +43,33 @@ def item_factor(it):
     return factor(st, it.get('scale'))[0]
 
 
-def ports(cat, style, at, ang=0, scale=None):
-    """连接点（世界坐标）。目录无此样式返回 []"""
+def ports(cat, style, at, ang=0, scale=None, mirror=False):
+    """连接点（世界坐标）。mirror：先沿符号自身 x 轴镜像再旋转（符号保持直立而进出口左右互换）。目录无此样式返回 []"""
     c = cat.get(style)
     if not c:
         return []
     f = factor(style, scale)[0]
-    return [(at[0] + rot(dx * f, dy * f, ang)[0], at[1] + rot(dx * f, dy * f, ang)[1]) for dx, dy in c['att']]
+    m = -1 if mirror else 1
+    return [(at[0] + rot(dx * f * m, dy * f, ang)[0], at[1] + rot(dx * f * m, dy * f, ang)[1]) for dx, dy in c['att']]
 
 
-def box(cat, style, at, ang=0, scale=None):
+def box(cat, style, at, ang=0, scale=None, mirror=False):
     """符号外框 (x0, y0, x1, y1)（世界坐标，含旋转和比例）；目录无此样式返回 None"""
     c = cat.get(style)
     if not c:
         return None
     f = factor(style, scale)[0]
     x0, y0, x1, y1 = (v * f for v in c['bbox'])
+    if mirror:
+        x0, x1 = -x1, -x0
     cs = [rot(dx, dy, ang) for dx, dy in ((x0, y0), (x1, y1), (x0, y1), (x1, y0))]
     return (at[0] + min(p[0] for p in cs), at[1] + min(p[1] for p in cs), at[0] + max(p[0] for p in cs), at[1] + max(p[1] for p in cs))
 
 
-def placed(cat, style, at, ang=0, scale=None):
+def placed(cat, style, at, ang=0, scale=None, mirror=False):
     """(外框, 连接点)；目录无此样式返回 None"""
-    b = box(cat, style, at, ang, scale)
-    return None if b is None else (b, ports(cat, style, at, ang, scale))
+    b = box(cat, style, at, ang, scale, mirror)
+    return None if b is None else (b, ports(cat, style, at, ang, scale, mirror))
 
 
 def inline_ports(cat, it):
@@ -79,10 +83,11 @@ def inline_ports(cat, it):
         bb = c.get('bbox') or [-4, -2, 4, 2]
         pa, pb = [bb[0], 0], [bb[2], 0]
     f = item_factor(it)
+    m = -1 if it.get('mirror') else 1
     x, y = it['at']
     out = []
     for p in (pa, pb):
-        dx, dy = rot(p[0] * f, p[1] * f, it.get('rot', 0))
+        dx, dy = rot(p[0] * f * m, p[1] * f, it.get('rot', 0))
         out.append([x + dx, y + dy])
     return out
 
@@ -91,9 +96,11 @@ def item_box(cat, it):
     """spec 条目（asset/cv/sym）的外框；目录无样式时按默认 ±4×±2"""
     st = it.get('style') or it.get('body')
     if (cat.get(st) or {}).get('bbox'):
-        return box(cat, st, it['at'], it.get('rot', 0), it.get('scale'))
+        return box(cat, st, it['at'], it.get('rot', 0), it.get('scale'), it.get('mirror', False))
     bb = [-4, -2, 4, 2]
     f = item_factor(it)
+    if it.get('mirror'):
+        bb = [-bb[2], bb[1], -bb[0], bb[3]]
     cs = [rot(dx * f, dy * f, it.get('rot', 0)) for dx, dy in ((bb[0], bb[1]), (bb[2], bb[3]), (bb[0], bb[3]), (bb[2], bb[1]))]
     x, y = it['at']
     return (x + min(c[0] for c in cs), y + min(c[1] for c in cs), x + max(c[0] for c in cs), y + max(c[1] for c in cs))

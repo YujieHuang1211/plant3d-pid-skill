@@ -90,7 +90,7 @@ def main(argv):
                             d.line(gp, fill=(60, 60, 60), width=1)
                     if kind == 'sym':
                         continue
-                pl = placed(cat, st, it['at'], it.get('rot', 0), it.get('scale'))
+                pl = placed(cat, st, it['at'], it.get('rot', 0), it.get('scale'), it.get('mirror', False))
                 if pl:
                     (x0, y0, x1, y1), att = pl
                     d.rectangle([P(x0, y1), P(x1, y0)], outline=(0, 120, 0), width=1)
@@ -152,7 +152,7 @@ def main(argv):
                 else:
                     d.line(pts, fill=col, width=wpx)
             elif kind == 'sym':
-                pl = placed(cat, it.get('style', ''), it['at'], it.get('rot', 0), it.get('scale'))
+                pl = placed(cat, it.get('style', ''), it['at'], it.get('rot', 0), it.get('scale'), it.get('mirror', False))
                 if pl:
                     (x0, y0, x1, y1), att = pl
                     d.rectangle([P(x0, y1), P(x1, y0)], outline=(120, 120, 120), width=1)

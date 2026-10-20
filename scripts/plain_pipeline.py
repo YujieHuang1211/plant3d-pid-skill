@@ -15,6 +15,9 @@
 
 工作底稿目录里放 pipeline.json（new_project.py 生成），字段：
   profile      制图配置名（assets/profiles/*.json）；缺省 legacy-2026-10，new_project.py 对新项目写 pip-ref-a3
+  profile_overrides / profile_override_note
+               对制图配置的项目级覆盖（如 {"psv_upright": ["P&ID-107"]}）及理由；合并结果写入 _profile_effective.json
+  views        "warn" 时模型核对（validate_views）只列问题不挡出图（老项目补录期间用），缺省为必须通过
   project      Plant 项目名，也是 DWG 标题栏项目名（不得带“验证”“测试”等字样）
   parent       Plant 项目的父目录，默认 E:\\05p_id图绘制中心
   layout       版面模块，默认 sheets.py（用法 python sheets.py <specs 目录> [图号…]）
@@ -46,6 +49,10 @@ def load(work):
     cfg.setdefault('parent', r'E:\05p_id图绘制中心')
     cfg.setdefault('layout', 'sheets.py')
     cfg.setdefault('profile', 'legacy-2026-10')     # 老项目缺省沿用旧图面；new_project.py 对新项目写 pip-ref-a3
+    if cfg.get('profile_overrides'):                # 项目对配置的明确偏离：合并后写成文件，各脚本按路径载入
+        import drawprofile
+        cfg['profile'] = drawprofile.effective(cfg['profile'], cfg['profile_overrides'], work / '_profile_effective.json',
+                                               cfg.get('profile_override_note', ''))
     cfg['specs'] = ENGINE / 'specs' / cfg['project']
     cfg['plain'] = ENGINE / 'specs' / (cfg['project'] + '_plain')
     cfg['catalogs'] = [str(p if Path(p).is_absolute() else work / p) for p in cfg.get('catalogs', [])]
@@ -118,7 +125,8 @@ def check_phase(cfg, nos, preview=True):
     r = run([PY, HERE / 'check_numbering.py', cfg['work'] / 'pid_model.json', cfg['plain']] + prof)
     ok &= step('check_numbering（线号分组连续、联锁编号连续、文字里的位号都在模型里）', r)
     if set(nos) >= {s['no'] for s in cfg['model']['sheets']}:       # 覆盖核对要看整套图；只跑子集时跳过
-        r = run([PY, HERE / 'validate_views.py', cfg['work'] / 'pid_model.json', cfg['specs'], cfg['plain']])
+        r = run([PY, HERE / 'validate_views.py', cfg['work'] / 'pid_model.json', cfg['specs'], cfg['plain']]
+                + (['--warn-only'] if cfg.get('views') == 'warn' else []))
         ok &= step('validate_views（模型对象与连接都画进图、位号贴在对象旁、跨图成对）', r)
     else:
         print('SKIP validate_views（只处理了部分图，整套 prep 时才核对覆盖）')

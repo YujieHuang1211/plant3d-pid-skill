@@ -135,5 +135,35 @@ class Arrows(unittest.TestCase):
         self.assertFalse([a for a in ar if abs(a['at'][0] - 120) < 1e-6])   # 5 mm 短竖段上不放
 
 
+
+class Overrides(unittest.TestCase):
+    def test_effective_profile_merges_and_records_override(self):
+        import tempfile
+        import drawprofile
+        with tempfile.TemporaryDirectory() as t:
+            f = drawprofile.effective('pip-ref-a3', {'psv_upright': ['P&ID-107'], 'crossing': {'gap_total': 3.0}}, f'{t}/p.json', '试验')
+            P = drawprofile.load(f)
+            self.assertEqual(P['psv_upright'], ['P&ID-107'])
+            self.assertEqual(P['crossing'], {'same_rank_break': 'vertical', 'gap_total': 3.0})      # 只改了间隙，其余保留
+            self.assertEqual(P['overridden']['base'], 'pip-ref-a3')
+            self.assertEqual(P['layers'], drawprofile.load('pip-ref-a3')['layers'])
+
+    def test_psv_rule_only_on_listed_sheets(self):
+        import tempfile
+        import drawprofile
+        import lint_specs
+        item = [{'k': 'asset', 'id': 'PSV-1', 'style': 'QMZ Safety Valve Style', 'at': [100, 100], 'rot': 90}]
+        with tempfile.TemporaryDirectory() as t:
+            f = drawprofile.effective('pip-ref-a3', {'psv_upright': ['P&ID-107']}, f'{t}/p.json')
+            lint_specs.set_profile(f)
+            try:
+                for no, want in (('P&ID-101', 0), ('P&ID-107', 1)):
+                    errs, warns = [], []
+                    lint_specs.lint_sheet(no, item, CAT, {'PSV-1'}, errs, warns)
+                    self.assertEqual(len([e for e in errs if '安全阀' in e]), want, no)
+            finally:
+                lint_specs.set_profile('legacy-2026-10')
+
+
 if __name__ == '__main__':
     unittest.main()

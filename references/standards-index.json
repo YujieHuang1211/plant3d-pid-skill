@@ -1,0 +1,19 @@
+{
+ "note": "本地标准资料位置、版本和已对原件核对的条款。只记索引和自己的转述，不复制标准正文；需要具体条款时按这里的页码去读原件对应页，不整本读入。",
+ "local_dir": "G:/My Drive/04_书架/P&ID规范",
+ "files": {
+  "PIP PIC001-2018": {"original": "PIP PIC001-2018.pdf", "rebuilt_ocr": "output/pdf/OCR数字化重建_R1_20261019/PIP PIC001-2018_重建_R1.pdf", "version": "August 2018 Technical Correction", "note": "PIP 官方目录已有 2023 年版，未审读，不得写成“最新版”"},
+  "ISO 10628-1:2014": {"original": "ISO 10628-1-2014.pdf", "rebuilt_ocr": "output/pdf/OCR数字化重建_R1_20261019/ISO 10628-1-2014_重建_R1.pdf", "version": "2014"},
+  "ISO 10628-2:2012": {"original": "ISO 10628-2-2012.pdf", "rebuilt_ocr": "output/pdf/OCR数字化重建_R1_20261019/ISO 10628-2-2012_重建_R1.pdf", "version": "2012", "note": "符号图形须看原件，不用 OCR 文字猜"},
+  "ANSI/ISA-5.1-2024": {"original": "ANSI_ISA-5.1-2024.pdf", "rebuilt_ocr": "output/pdf/OCR数字化重建_R1_20261019/ANSI_ISA-5.1-2024_重建_R1.pdf", "version": "2024"}
+ },
+ "verified_clauses": [
+  {"std": "PIP PIC001-2018", "clause": "4.2.3.1–4.2.3.3", "topic": "主线、次线、仪表线线宽", "pdf_page": 11, "printed_page": 9},
+  {"std": "PIP PIC001-2018", "clause": "4.2.3.5/4.2.3.6/4.2.3.9/4.2.3.10/4.2.3.11", "topic": "设备轮廓与在线管件线宽、流向箭头、交叉断线、断口间隙", "pdf_page": 12, "printed_page": 10},
+  {"std": "PIP PIC001-2018", "clause": "4.2.1.16", "topic": "安全阀直立", "pdf_page": 11, "printed_page": 9},
+  {"std": "PIP PIC001-2018", "clause": "4.2.2.3/4.2.2.4", "topic": "接管法兰与焊接连接表示", "pdf_page": 11, "printed_page": 9},
+  {"std": "ISO 10628-1:2014", "clause": "5.3.3.3/5.3.4", "topic": "流向箭头位置、同宽线交叉断竖线", "pdf_page": 10, "printed_page": 6},
+  {"std": "ANSI/ISA-5.1-2024", "clause": "表 10 第 5/6/12 行", "topic": "气动、电、通信链路信号线型", "pdf_page": 42, "printed_page": 41}
+ ],
+ "not_yet_verified": ["ISO 10628-1 §5.3.1 线宽 1.0/0.5/0.25 mm（建议书引用，本次编码前未再看原件，iso-10628-1 配置未建）", "PIP 附录 B 符号细节", "ISO 10628-2 符号图形"]
+}

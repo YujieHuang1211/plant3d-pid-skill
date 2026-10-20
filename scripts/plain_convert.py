@@ -282,12 +282,14 @@ class Conv:
         g = GEOM.get(style)
         if g is not None and (g.get('native') or GEOM_ALL):
             # 非智能对象几何库：直接画成折线，不依赖项目里的符号样式
-            for pa in symbol_geom.polys(style, it['at'], it.get('rot', 0), it.get('scale', 1.0)):
+            for pa in symbol_geom.polys(style, it['at'], it.get('rot', 0), it.get('scale', 1.0), bool(it.get('mirror'))):
                 self.native_polys.append({'k': 'poly', 'pts': pa['pts'], 'layer': layer, **({'closed': True} if pa['closed'] and len(pa['pts']) > 3 else {})})
             return
         d = {'k': 'sym', 'style': style, 'at': it['at'], 'rot': it.get('rot', 0), 'layer': layer}
         if 'scale' in it:
             d['scale'] = it['scale']
+        if it.get('mirror'):
+            d['mirror'] = True
         syms.append(d)
 
     def asset(self, it, syms, texts):

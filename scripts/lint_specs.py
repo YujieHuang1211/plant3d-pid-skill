@@ -29,7 +29,7 @@ import geometry  # noqa: E402
 TB = (235.0, 91.0)          # A3：标题栏+修订栏占 x>235、y<89（修订栏 3 行，留 2 mm）
 FRAME = (25.0, 5.0, 415.0, 292.0)
 TOL = 0.5
-PSV_UPRIGHT = False
+PSV_UPRIGHT = False          # True=全部图张；列表=只在这些图号上执行
 DEFAULT_CATALOG = Path(__file__).resolve().parent.parent / 'assets' / 'symbol_catalog.json'
 
 
@@ -40,7 +40,7 @@ def set_profile(name):
     P = drawprofile.load(name)
     FRAME = tuple(float(v) for v in P['sheet']['frame'])
     TB = tuple(float(v) for v in P['sheet']['title_block'])
-    PSV_UPRIGHT = bool(P.get('psv_upright'))
+    PSV_UPRIGHT = P.get('psv_upright') or False
     return P
 
 
@@ -78,9 +78,9 @@ def rot(dx, dy, ang):
     return dx * math.cos(a) - dy * math.sin(a), dx * math.sin(a) + dy * math.cos(a)
 
 
-def placed(cat, style, at, ang=0, scale=None):
-    """符号实际外框与连接点（世界坐标，含旋转和比例）；目录无此样式返回 None。几何在 geometry.py"""
-    return geometry.placed(cat, style, at, ang, scale)
+def placed(cat, style, at, ang=0, scale=None, mirror=False):
+    """符号实际外框与连接点（世界坐标，含旋转、比例、镜像）；目录无此样式返回 None。几何在 geometry.py"""
+    return geometry.placed(cat, style, at, ang, scale, mirror)
 
 
 def dist_box(p, b):
@@ -145,9 +145,9 @@ def lint_sheet(no, items, cat, all_ids, errs, warns):
             here.add(it['id'])
             if k in ('asset', 'cv'):
                 st = it.get('style') or it.get('body')
-                if PSV_UPRIGHT and is_psv(st) and it.get('rot', 0) % 360:
+                if PSV_UPRIGHT and (PSV_UPRIGHT is True or no in PSV_UPRIGHT) and is_psv(st) and it.get('rot', 0) % 360:
                     errs.append(f'{no} {it["id"]}：安全阀“{st}”旋转了 {it["rot"]}°；按配置（PIP §4.2.1.16）安全阀须直立，不旋转符号凑空间，改支路或分图')
-                pl = placed(cat, st, it['at'], it.get('rot', 0), it.get('scale'))
+                pl = placed(cat, st, it['at'], it.get('rot', 0), it.get('scale'), it.get('mirror', False))
                 if it.get('scale') is not None and (cat.get(st) or {}).get('plant_lib') and not geometry.factor(st, it['scale'])[1]:
                     errs.append(f'{no} {it["id"]}：Plant 库样式“{st}”没有默认比例记录（plant_style_scales.json），scale={it["scale"]} 无法换算，连接点会算错')
                 if pl is None:
