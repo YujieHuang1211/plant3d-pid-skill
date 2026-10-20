@@ -95,7 +95,7 @@ class Layers(unittest.TestCase):
         out = convert(items, 'pip-ref-a3')
         lay = {i['style']: i['layer'] for i in out if i['k'] == 'sym'}
         self.assertEqual(lay['Vessel Style'], '设备')
-        self.assertEqual(lay['Ball Valve Style'], '管件')
+        self.assertEqual(lay['ISO Ball Valve Style'], '管件')     # pip 配置按 symbol_map 换成 ISO 球阀
         out = convert(items, 'legacy-2026-10')
         self.assertEqual({i['layer'] for i in out if i['k'] == 'sym'}, {'符号'})
 

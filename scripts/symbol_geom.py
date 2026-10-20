@@ -145,22 +145,28 @@ def _bbox(paths):
 
 
 def build_native():
+    from iso_symbols import ISO_DEFS      # ISO 10628-2 风格符号（块、带依据），晚导入避免循环
+    ALL = {**DEFS, **ISO_DEFS}
     out = {}
-    for st, d in DEFS.items():
+    for st, d in ALL.items():
         out[st] = {'paths': d['paths'], 'bbox': _bbox(d['paths']), 'ports': {k: list(v) for k, v in d.get('ports', {}).items()}}
+        if d.get('block'):
+            out[st]['block'] = True
+        if d.get('basis'):
+            out[st]['basis'] = d['basis']
     cat_p = ASSETS / 'symbol_catalog.json'
     cat = json.loads(cat_p.read_text(encoding='utf-8'))
-    for st, d in DEFS.items():      # 同步到符号目录，lint 和预览才认得这些样式
+    for st, d in ALL.items():      # 同步到符号目录，lint 和预览才认得这些样式
         att = [list(v) for v in d.get('ports', {}).values()]
         cat[st] = {'bbox': out[st]['bbox'], 'att': att, 'scale': 1.0, 'from_ang': 0, 'native': True}
     cat_p.write_text(json.dumps(dict(sorted(cat.items())), ensure_ascii=False, indent=1), encoding='utf-8')
     (ASSETS / 'native_symbols.json').write_text(json.dumps(out, ensure_ascii=False, indent=0), encoding='utf-8')
     names_p = ASSETS / 'symbol_names_zh.json'
     names = json.loads(names_p.read_text(encoding='utf-8'))
-    for st, d in DEFS.items():
+    for st, d in ALL.items():
         names[st] = {'zh': d['zh'], 'cat': d['cat'], 'use': d['use'], 'native': True}
     names_p.write_text(json.dumps(names, ensure_ascii=False, indent=1), encoding='utf-8')
-    print('写出', len(out), '个新增符号 → assets/native_symbols.json，并更新中文名表')
+    print('写出', len(out), '个新增符号（含 ISO 块符号 %d）' % sum(1 for v in out.values() if v.get('block')), ' → assets/native_symbols.json，并更新中文名表')
 
 
 # ------------------------------------------------------------------ 画 PNG（PIL）：目测检查与离线图集

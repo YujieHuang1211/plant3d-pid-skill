@@ -19,6 +19,7 @@ description: Use when drawing, revising or checking P&IDs (管道及仪表流程
 | 写/改版面 | `references/layout_rules.md`、`scripts/patterns.py`（气源支路、控制回路）、`assets/example/` |
 | 图面规则、标准依据 | `references/drawing-rules.md`、`references/standards-index.json`（按条款查原件，不整本读） |
 | 找/加符号 | `references/symbol_library.md`、`python scripts\symbol_atlas.py find <关键词>` |
+| 符号是否符合标准 | `references/symbol_iso_compare.md`（ISO 10628-2 对照）；ISO 符号定义在 `scripts/iso_symbols.py` |
 | 出图中断、失败、闪退 | `references/recovery.md`；`references/pitfalls.md`、`references/engine.md`（故障时才读） |
 | 质检与交付 | `references/qa.md` |
 

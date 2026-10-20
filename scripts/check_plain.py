@@ -1,5 +1,5 @@
 """普通图元模式的内容核查（替代 verify_topology / check_orphans）：对照 Plant 版 spec（数据源）检查普通版 spec 的文字。
-用法: python check_plain.py <Plant 版 specs 目录> <普通版 specs 目录> [--ban 词1,词2,…]
+用法: python check_plain.py <Plant 版 specs 目录> <普通版 specs 目录> [--ban 词1,词2,…] [--only 图号1,图号2,…]
 检查：
   1. 每个设备/阀门/仪表位号都有对应文字；仪表圈内两行（类别 / 回路号）都在
   2. 每条带线号的管线，线号文字存在
@@ -25,9 +25,12 @@ def strip_code(s):
 
 def main(argv):
     ban = list(BAN)
+    only = None
     args = []
     i = 0
     while i < len(argv):
+        if argv[i] == '--only':
+            only = {w for w in argv[i + 1].split(',') if w}; i += 2; continue
         if argv[i] == '--ban':
             ban += [w for w in argv[i + 1].split(',') if w]; i += 2; continue
         args.append(argv[i]); i += 1
@@ -38,6 +41,8 @@ def main(argv):
         if f.name.endswith(('.props.json', '.ids.json')):
             continue
         no = f.stem
+        if only is not None and no not in only:
+            continue
         orig = json.loads(f.read_text(encoding='utf-8'))['items']
         pf = dst / f.name
         if not pf.exists():

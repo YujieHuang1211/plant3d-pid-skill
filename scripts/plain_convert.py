@@ -39,6 +39,7 @@ NECK, FLANGE_GAP, FLANGE_LEN = 3.0, 1.0, 5.2    # 管嘴：接管长度、法兰
 PROFILE, LAYERS, LINES, RANK = {}, [], {}, {}
 GAP, ARROW_LEN, ARROW_MODE, ARROW_MIN_GAP = 1.4, 4.7, 'last_segment', 6.0
 SAME_RANK_BREAK, NOZZLE_DEFAULT, SYMBOL_LAYERS, TB = 'horizontal', 'flange', None, (235.0, 91.0)
+SYMBOL_MAP = {}
 try:
     NAMES_ZH = json.loads((geometry.ASSETS / 'symbol_names_zh.json').read_text(encoding='utf-8'))
 except Exception:
@@ -47,7 +48,7 @@ except Exception:
 
 def set_profile(profile):
     """载入制图配置（名字、文件路径或已读入的 dict），刷新本模块的图层/线型/断线/箭头/接管参数"""
-    global PROFILE, LAYERS, LINES, RANK, GAP, ARROW_LEN, ARROW_MODE, ARROW_MIN_GAP, SAME_RANK_BREAK, NOZZLE_DEFAULT, SYMBOL_LAYERS, TB
+    global PROFILE, LAYERS, LINES, RANK, GAP, ARROW_LEN, ARROW_MODE, ARROW_MIN_GAP, SAME_RANK_BREAK, NOZZLE_DEFAULT, SYMBOL_LAYERS, SYMBOL_MAP, TB
     P = profile if isinstance(profile, dict) else drawprofile.load(profile)
     PROFILE = P
     LAYERS = [{k: v for k, v in l.items() if k != 'rank'} for l in P['layers']]
@@ -59,6 +60,8 @@ def set_profile(profile):
     ARROW_MIN_GAP = P['arrows'].get('min_gap', 6.0)
     NOZZLE_DEFAULT = P['nozzle']['default']
     SYMBOL_LAYERS = P.get('symbol_layers')
+    m = P.get('symbol_map') or {}                                           # Plant 库样式 → ISO 10628-2 风格符号（端口一致的在线件）
+    SYMBOL_MAP = {} if ('*' in m and not m['*']) else {k: v for k, v in m.items() if v}     # 项目覆盖：{"*": null} 全关，{"某样式": null} 单关
     TB = tuple(float(v) for v in P['sheet']['title_block'])
 
 
@@ -195,7 +198,7 @@ class Conv:
                 self.cv(it, syms, texts)
             elif k == 'line':
                 self.line(it, byid, inline, polys, syms, texts)
-            elif k == 'sym' and (GEOM.get(it['style']) or {}).get('native'):
+            elif k == 'sym' and ((GEOM.get(it['style']) or {}).get('native') or it['style'] in SYMBOL_MAP):
                 self.sym(it['style'], it, syms)      # 图例里直接写的手工新增符号：画成折线
             else:
                 out.append(it)
@@ -278,8 +281,21 @@ class Conv:
         return sl['default']
 
     def sym(self, style, it, syms):
+        mapped = SYMBOL_MAP.get(style)
+        if mapped and mapped in GEOM:
+            it = {**it, 'scale': symbol_geom.eff_scale(style, it.get('scale'))}      # Plant 样式的 scale 是绝对比例，换成倍数
+            style = mapped
         layer = self.sym_layer(style)
         g = GEOM.get(style)
+        if g is not None and g.get('block'):
+            d = {'k': 'sym', 'style': style, 'at': it['at'], 'rot': it.get('rot', 0), 'layer': layer,
+                 'geom': [{'pl': pa['pts'], 'c': bool(pa['closed']), **({'fill': True} if pa.get('fill') else {})} for pa in g['paths']]}
+            if it.get('scale') not in (None, 1, 1.0):
+                d['scale'] = it['scale']
+            if it.get('mirror'):
+                d['mirror'] = True
+            syms.append(d)
+            return
         if g is not None and (g.get('native') or GEOM_ALL):
             # 非智能对象几何库：直接画成折线，不依赖项目里的符号样式
             for pa in symbol_geom.polys(style, it['at'], it.get('rot', 0), it.get('scale', 1.0), bool(it.get('mirror'))):

@@ -127,7 +127,7 @@ def check_phase(cfg, nos, preview=True):
     ok &= step('lint（普通版 spec）', r)
     # 5. 内容核查
     ban = ['--ban', ','.join(cfg['ban'])] if cfg.get('ban') else []
-    r = run([PY, HERE / 'check_plain.py', cfg['specs'], cfg['plain']] + ban)
+    r = run([PY, HERE / 'check_plain.py', cfg['specs'], cfg['plain']] + ban + (['--only', ','.join(nos)] if nos else []))
     ok &= step('check_plain（位号/线号齐全、唯一、禁用词）', r)
     r = run([PY, HERE / 'check_numbering.py', cfg['work'] / 'pid_model.json', cfg['plain']] + prof)
     ok &= step('check_numbering（线号分组连续、联锁编号连续、文字里的位号都在模型里）', r)

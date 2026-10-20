@@ -2,42 +2,246 @@
  "name": "pip-ref-a3",
  "description": "参照 PIP PIC001-2018（August 2018 Technical Correction）的项目 A3 制图配置。A3 图幅是项目选择，不声明全面符合 PIP；PIP 官方目录另有 2023 年版，未审读。信号线型参照 ISA-5.1-2024 表 10。",
  "legend_basis": "参照 PIP PIC001-2018；信号线型参照 ISA-5.1-2024 表 10；A3 为项目选择",
- "sheet": {"name": "A3", "width": 420, "height": 297, "frame": [25, 5, 415, 292], "title_block": [235, 91]},
+ "sheet": {
+  "name": "A3",
+  "width": 420,
+  "height": 297,
+  "frame": [
+   25,
+   5,
+   415,
+   292
+  ],
+  "title_block": [
+   235,
+   91
+  ]
+ },
  "layers": [
-  {"name": "管线-主", "color": 1, "lw": 70, "rank": 2},
-  {"name": "管线-次", "color": 2, "lw": 35, "rank": 1},
-  {"name": "信号-电", "color": 4, "lw": 25, "ltype": "DASHED2", "rank": 0},
-  {"name": "信号-气动", "color": 5, "lw": 25, "rank": 0},
-  {"name": "信号-数据", "color": 6, "lw": 25, "ltype": "DASHED", "rank": 0},
-  {"name": "设备", "color": 7, "lw": 50},
-  {"name": "管件", "color": 7, "lw": 25},
-  {"name": "符号", "color": 7, "lw": 35},
-  {"name": "位号", "color": 3, "lw": 25}
+  {
+   "name": "管线-主",
+   "color": 1,
+   "lw": 70,
+   "rank": 2
+  },
+  {
+   "name": "管线-次",
+   "color": 2,
+   "lw": 35,
+   "rank": 1
+  },
+  {
+   "name": "信号-电",
+   "color": 4,
+   "lw": 25,
+   "ltype": "DASHED2",
+   "rank": 0
+  },
+  {
+   "name": "信号-气动",
+   "color": 5,
+   "lw": 25,
+   "rank": 0
+  },
+  {
+   "name": "信号-数据",
+   "color": 6,
+   "lw": 25,
+   "ltype": "DASHED",
+   "rank": 0
+  },
+  {
+   "name": "设备",
+   "color": 7,
+   "lw": 50
+  },
+  {
+   "name": "管件",
+   "color": 7,
+   "lw": 25
+  },
+  {
+   "name": "符号",
+   "color": 7,
+   "lw": 35
+  },
+  {
+   "name": "位号",
+   "color": 3,
+   "lw": 25
+  }
  ],
  "lines": {
-  "Primary Style": {"layer": "管线-主"},
-  "Secondary Style": {"layer": "管线-次"},
-  "Electrical Style": {"layer": "信号-电"},
-  "Software Style": {"layer": "信号-数据"},
-  "Pneumatic Style": {"layer": "信号-气动", "ticks": {"pitch": 15.0, "spacing": 1.4, "half": 1.2, "slant": 0.6}}
+  "Primary Style": {
+   "layer": "管线-主"
+  },
+  "Secondary Style": {
+   "layer": "管线-次"
+  },
+  "Electrical Style": {
+   "layer": "信号-电"
+  },
+  "Software Style": {
+   "layer": "信号-数据"
+  },
+  "Pneumatic Style": {
+   "layer": "信号-气动",
+   "ticks": {
+    "pitch": 15.0,
+    "spacing": 1.4,
+    "half": 1.2,
+    "slant": 0.6
+   }
+  }
  },
- "crossing": {"same_rank_break": "vertical", "gap_total": 3.302},
- "arrows": {"mode": "corners", "length": 4.7, "min_gap": 6.0},
- "nozzle": {"default": "plain"},
- "symbol_layers": {"equipment_categories": ["容器与储罐", "设备", "换热器", "泵与压缩机"], "fitting_categories": ["手动阀", "调节阀与执行机构", "减压与安全", "过滤", "流量与测量元件", "管件与连接"], "equipment": "设备", "fitting": "管件", "default": "符号"},
+ "crossing": {
+  "same_rank_break": "vertical",
+  "gap_total": 3.302
+ },
+ "arrows": {
+  "mode": "corners",
+  "length": 4.7,
+  "min_gap": 6.0
+ },
+ "nozzle": {
+  "default": "plain"
+ },
+ "symbol_layers": {
+  "equipment_categories": [
+   "容器与储罐",
+   "设备",
+   "换热器",
+   "泵与压缩机"
+  ],
+  "fitting_categories": [
+   "手动阀",
+   "调节阀与执行机构",
+   "减压与安全",
+   "过滤",
+   "流量与测量元件",
+   "管件与连接"
+  ],
+  "equipment": "设备",
+  "fitting": "管件",
+  "default": "符号"
+ },
  "psv_upright": true,
- "numbering": {"mode": "stable"},
+ "numbering": {
+  "mode": "stable"
+ },
  "basis": [
-  {"item": "主工艺线 0.70 mm", "origin": "standard", "std": "PIP PIC001-2018", "clause": "4.2.3.1", "pdf_page": 11, "printed_page": 9, "verified_original": true},
-  {"item": "次要/公用/预留线 0.35 mm", "origin": "standard", "std": "PIP PIC001-2018", "clause": "4.2.3.2", "pdf_page": 11, "printed_page": 9, "verified_original": true},
-  {"item": "仪表线 0.25 mm", "origin": "standard", "std": "PIP PIC001-2018", "clause": "4.2.3.3", "pdf_page": 11, "printed_page": 9, "verified_original": true},
-  {"item": "设备轮廓 0.50 mm、在线管件 0.25 mm", "origin": "standard", "std": "PIP PIC001-2018", "clause": "4.2.3.5/4.2.3.6", "pdf_page": 12, "printed_page": 10, "verified_original": true},
-  {"item": "交叉断线：同级断竖线；次要线与公用线跨主线时断次要线；仪表线跨工艺线时断仪表线", "origin": "standard", "std": "PIP PIC001-2018", "clause": "4.2.3.10", "pdf_page": 12, "printed_page": 10, "verified_original": true},
-  {"item": "断口总间隙 0.13 in = 3.302 mm", "origin": "standard", "std": "PIP PIC001-2018", "clause": "4.2.3.11", "pdf_page": 12, "printed_page": 10, "verified_original": true},
-  {"item": "流向箭头放在转角和汇合处", "origin": "standard", "std": "PIP PIC001-2018", "clause": "4.2.3.9", "pdf_page": 12, "printed_page": 10, "verified_original": true, "note": "ISO 10628-1 §5.3.3.3 另允许只放在设备入口和支管上游；A3 小图下转角箭头可能过密，第三批按实际图面复核"},
-  {"item": "安全阀直立", "origin": "standard", "std": "PIP PIC001-2018", "clause": "4.2.1.16", "pdf_page": 11, "printed_page": 9, "verified_original": true},
-  {"item": "接管：对接管法兰在 0.06 in 处；焊接连接须表示", "origin": "standard", "std": "PIP PIC001-2018", "clause": "4.2.2.3/4.2.2.4", "pdf_page": 11, "printed_page": 9, "verified_original": true, "note": "连接类型未确认时采用方案阶段的简单接管，不默认加法兰"},
-  {"item": "信号线型：电信号虚线；气动信号带双斜线；通信链路/系统总线为长短划线", "origin": "standard", "std": "ANSI/ISA-5.1-2024", "clause": "表 10 第 5、6、12 行", "pdf_page": 42, "printed_page": 41, "verified_original": true, "note": "具体线型间距由项目取值；颜色仅屏幕区分"},
-  {"item": "A3 图幅、图框、标题栏位置", "origin": "project", "note": "客户/项目选择；PIP 按 22×34 in 图幅给出尺寸，A3 下不能声称满足原字高线距要求"}
- ]
+  {
+   "item": "主工艺线 0.70 mm",
+   "origin": "standard",
+   "std": "PIP PIC001-2018",
+   "clause": "4.2.3.1",
+   "pdf_page": 11,
+   "printed_page": 9,
+   "verified_original": true
+  },
+  {
+   "item": "次要/公用/预留线 0.35 mm",
+   "origin": "standard",
+   "std": "PIP PIC001-2018",
+   "clause": "4.2.3.2",
+   "pdf_page": 11,
+   "printed_page": 9,
+   "verified_original": true
+  },
+  {
+   "item": "仪表线 0.25 mm",
+   "origin": "standard",
+   "std": "PIP PIC001-2018",
+   "clause": "4.2.3.3",
+   "pdf_page": 11,
+   "printed_page": 9,
+   "verified_original": true
+  },
+  {
+   "item": "设备轮廓 0.50 mm、在线管件 0.25 mm",
+   "origin": "standard",
+   "std": "PIP PIC001-2018",
+   "clause": "4.2.3.5/4.2.3.6",
+   "pdf_page": 12,
+   "printed_page": 10,
+   "verified_original": true
+  },
+  {
+   "item": "交叉断线：同级断竖线；次要线与公用线跨主线时断次要线；仪表线跨工艺线时断仪表线",
+   "origin": "standard",
+   "std": "PIP PIC001-2018",
+   "clause": "4.2.3.10",
+   "pdf_page": 12,
+   "printed_page": 10,
+   "verified_original": true
+  },
+  {
+   "item": "断口总间隙 0.13 in = 3.302 mm",
+   "origin": "standard",
+   "std": "PIP PIC001-2018",
+   "clause": "4.2.3.11",
+   "pdf_page": 12,
+   "printed_page": 10,
+   "verified_original": true
+  },
+  {
+   "item": "流向箭头放在转角和汇合处",
+   "origin": "standard",
+   "std": "PIP PIC001-2018",
+   "clause": "4.2.3.9",
+   "pdf_page": 12,
+   "printed_page": 10,
+   "verified_original": true,
+   "note": "ISO 10628-1 §5.3.3.3 另允许只放在设备入口和支管上游；A3 小图下转角箭头可能过密，第三批按实际图面复核"
+  },
+  {
+   "item": "安全阀直立",
+   "origin": "standard",
+   "std": "PIP PIC001-2018",
+   "clause": "4.2.1.16",
+   "pdf_page": 11,
+   "printed_page": 9,
+   "verified_original": true
+  },
+  {
+   "item": "接管：对接管法兰在 0.06 in 处；焊接连接须表示",
+   "origin": "standard",
+   "std": "PIP PIC001-2018",
+   "clause": "4.2.2.3/4.2.2.4",
+   "pdf_page": 11,
+   "printed_page": 9,
+   "verified_original": true,
+   "note": "连接类型未确认时采用方案阶段的简单接管，不默认加法兰"
+  },
+  {
+   "item": "信号线型：电信号虚线；气动信号带双斜线；通信链路/系统总线为长短划线",
+   "origin": "standard",
+   "std": "ANSI/ISA-5.1-2024",
+   "clause": "表 10 第 5、6、12 行",
+   "pdf_page": 42,
+   "printed_page": 41,
+   "verified_original": true,
+   "note": "具体线型间距由项目取值；颜色仅屏幕区分"
+  },
+  {
+   "item": "A3 图幅、图框、标题栏位置",
+   "origin": "project",
+   "note": "客户/项目选择；PIP 按 22×34 in 图幅给出尺寸，A3 下不能声称满足原字高线距要求"
+  }
+ ],
+ "symbol_map": {
+  "Ball Valve Style": "ISO Ball Valve Style",
+  "Ball Valve Closed Style": "ISO Ball Valve Closed Style",
+  "Gate Valve Style": "ISO Gate Valve Style",
+  "Gate Valve Closed Style": "ISO Gate Valve Closed Style",
+  "Globe Valve Style": "ISO Globe Valve Style",
+  "Globe Valve Closed Style": "ISO Globe Valve Closed Style",
+  "Needle Valve Style": "ISO Needle Valve Style",
+  "Needle Valve Closed Style": "ISO Needle Valve Closed Style",
+  "Butterfly Valve Style": "ISO Butterfly Valve Style",
+  "QMZ Safety Valve Style": "ISO Safety Valve Style",
+  "Flame Arrestor Style": "ISO Flame Arrestor Style",
+  "Filter Pipe Style": "ISO Strainer Style"
+ },
+ "symbol_basis": "阀门、安全阀、阻火器、管道过滤器的图形采用 ISO 10628-2:2012（见 assets/native_symbols.json 各符号的 basis）；止回阀暂保留 PIP 画法（ISO 实心点的流向含义待核）"
 }

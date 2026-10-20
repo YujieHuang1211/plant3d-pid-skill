@@ -38,3 +38,6 @@
 
 ## 已停用（Plant 智能对象路线）
 `verify_topology.py`（连接、三通、跨图配对、位号唯一）、`check_orphans.py`（空线组、孤立位号登记）、`-Reopen` 重开核对：只在建了 Plant 对象时才有意义，普通图元模式不用。
+
+## 2026-10-20 ISO 符号块（示范项目验证副本，两张图）
+pip-ref-a3 的 symbol_map 生效后真实出图：运行 1020_090615 ok；`reopen` 通过（两张图的 MText / Polyline / BlockReference 数与 spec 一致，符号以块参照存在）；`post` 通过。终审图中 ISO 球阀、针阀（关位实心）、弹簧安全阀、过滤器、阻火器均正常显示。

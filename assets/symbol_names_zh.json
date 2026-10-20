@@ -1081,5 +1081,227 @@
   "cat": "设备",
   "use": "热等离子体电源、直流电源、加热电源",
   "native": true
+ },
+ "ISO Valve General Style": {
+  "zh": "阀门（通用）",
+  "cat": "手动阀",
+  "use": "未指明型式的阀",
+  "native": true
+ },
+ "ISO Globe Valve Style": {
+  "zh": "截止阀",
+  "cat": "手动阀",
+  "use": "截止阀（开）",
+  "native": true
+ },
+ "ISO Globe Valve Closed Style": {
+  "zh": "截止阀（关）",
+  "cat": "手动阀",
+  "use": "截止阀（关）",
+  "native": true
+ },
+ "ISO Ball Valve Style": {
+  "zh": "球阀",
+  "cat": "手动阀",
+  "use": "球阀（开）",
+  "native": true
+ },
+ "ISO Ball Valve Closed Style": {
+  "zh": "球阀（关）",
+  "cat": "手动阀",
+  "use": "球阀（关）",
+  "native": true
+ },
+ "ISO Gate Valve Style": {
+  "zh": "闸阀",
+  "cat": "手动阀",
+  "use": "闸阀（开）",
+  "native": true
+ },
+ "ISO Gate Valve Closed Style": {
+  "zh": "闸阀（关）",
+  "cat": "手动阀",
+  "use": "闸阀（关）",
+  "native": true
+ },
+ "ISO Butterfly Valve Style": {
+  "zh": "蝶阀",
+  "cat": "手动阀",
+  "use": "蝶阀（形式 1）",
+  "native": true
+ },
+ "ISO Needle Valve Style": {
+  "zh": "针阀",
+  "cat": "手动阀",
+  "use": "针阀（开）",
+  "native": true
+ },
+ "ISO Needle Valve Closed Style": {
+  "zh": "针阀（关）",
+  "cat": "手动阀",
+  "use": "针阀（关）",
+  "native": true
+ },
+ "ISO Check Valve Style": {
+  "zh": "止回阀",
+  "cat": "手动阀",
+  "use": "止回阀（通用）。实心点一侧的流向含义未核对原件文字，暂不自动替换 PIP 止回阀",
+  "native": true
+ },
+ "ISO Safety Valve Style": {
+  "zh": "弹簧安全阀",
+  "cat": "减压与安全",
+  "use": "弹簧式安全阀（直立：弹簧在上，入口在左、出口在右）",
+  "native": true
+ },
+ "ISO Rupture Disc Style": {
+  "zh": "爆破片",
+  "cat": "减压与安全",
+  "use": "爆破片（在线）",
+  "native": true
+ },
+ "ISO Flame Arrestor Style": {
+  "zh": "阻火器",
+  "cat": "减压与安全",
+  "use": "阻火器（在线，格栅）",
+  "native": true
+ },
+ "ISO Flame Arrestor Detonation Style": {
+  "zh": "爆轰阻火器",
+  "cat": "减压与安全",
+  "use": "防爆轰阻火器",
+  "native": true
+ },
+ "ISO Strainer Style": {
+  "zh": "过滤器（管道）",
+  "cat": "过滤",
+  "use": "管道过滤器/粗滤器（斜虚线）",
+  "native": true
+ },
+ "ISO Compensator Style": {
+  "zh": "补偿器（膨胀节）",
+  "cat": "管件与连接",
+  "use": "管道补偿器",
+  "native": true
+ },
+ "ISO Reducer Style": {
+  "zh": "异径管",
+  "cat": "管件与连接",
+  "use": "同心异径管（尖端朝小口）",
+  "native": true
+ },
+ "ISO Flanged Connection Style": {
+  "zh": "法兰连接",
+  "cat": "管嘴与法兰",
+  "use": "法兰连接（两短竖线）",
+  "native": true
+ },
+ "ISO Viewing Glass Style": {
+  "zh": "视镜",
+  "cat": "流量与测量元件",
+  "use": "视镜",
+  "native": true
+ },
+ "ISO Hose Style": {
+  "zh": "软管",
+  "cat": "管件与连接",
+  "use": "软管（波形）",
+  "native": true
+ },
+ "ISO Pump Style": {
+  "zh": "液体泵（通用）",
+  "cat": "泵与压缩机",
+  "use": "液体泵，通用；入口左、出口右",
+  "native": true
+ },
+ "ISO Centrifugal Pump Style": {
+  "zh": "离心泵",
+  "cat": "泵与压缩机",
+  "use": "离心泵",
+  "native": true
+ },
+ "ISO Gear Pump Style": {
+  "zh": "齿轮泵",
+  "cat": "泵与压缩机",
+  "use": "齿轮泵",
+  "native": true
+ },
+ "ISO Piston Pump Style": {
+  "zh": "往复柱塞泵",
+  "cat": "泵与压缩机",
+  "use": "往复式柱塞泵",
+  "native": true
+ },
+ "ISO Compressor Style": {
+  "zh": "压缩机/真空泵（通用）",
+  "cat": "泵与压缩机",
+  "use": "压缩机、真空泵（通用）；入口左、出口右（收口侧为高压）",
+  "native": true
+ },
+ "ISO Centrifugal Compressor Style": {
+  "zh": "离心压缩机",
+  "cat": "泵与压缩机",
+  "use": "离心压缩机",
+  "native": true
+ },
+ "ISO Piston Compressor Style": {
+  "zh": "往复压缩机",
+  "cat": "泵与压缩机",
+  "use": "往复式压缩机",
+  "native": true
+ },
+ "ISO Fan Style": {
+  "zh": "风机/鼓风机",
+  "cat": "泵与压缩机",
+  "use": "风机、鼓风机（三叶）",
+  "native": true
+ },
+ "ISO Electric Motor Style": {
+  "zh": "电动机",
+  "cat": "设备",
+  "use": "电动机（圆内 M）；轴接口左右",
+  "native": true
+ },
+ "ISO Heat Exchanger Fixed Tube Style": {
+  "zh": "固定管板换热器",
+  "cat": "换热器",
+  "use": "直管换热器（固定管板）；壳程接口上右/下左，管程接口上左/下右",
+  "native": true
+ },
+ "ISO Heat Exchanger U-Tube Style": {
+  "zh": "U 形管换热器",
+  "cat": "换热器",
+  "use": "U 形管换热器",
+  "native": true
+ },
+ "ISO Plate Heat Exchanger Style": {
+  "zh": "板式换热器",
+  "cat": "换热器",
+  "use": "板式换热器（矩形 + X）",
+  "native": true
+ },
+ "ISO Vertical Vessel Style": {
+  "zh": "立式容器（椭圆封头）",
+  "cat": "容器与储罐",
+  "use": "立式容器，椭圆封头；顶/底中心及左右侧接口",
+  "native": true
+ },
+ "ISO Horizontal Vessel Style": {
+  "zh": "卧式容器（椭圆封头）",
+  "cat": "容器与储罐",
+  "use": "卧式容器，椭圆封头；左右端及顶/底接口",
+  "native": true
+ },
+ "ISO Tray Column Style": {
+  "zh": "板式塔",
+  "cat": "容器与储罐",
+  "use": "板式塔（通用，虚线塔板）",
+  "native": true
+ },
+ "ISO Fixed Bed Column Style": {
+  "zh": "固定床塔/反应器",
+  "cat": "容器与储罐",
+  "use": "固定床塔（X 填料层）",
+  "native": true
  }
 }

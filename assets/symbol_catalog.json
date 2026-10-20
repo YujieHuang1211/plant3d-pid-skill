@@ -1308,6 +1308,851 @@
   "from_ang": 0,
   "plant_lib": true
  },
+ "ISO Ball Valve Closed Style": {
+  "bbox": [
+   -4.0,
+   -2.0,
+   4.0,
+   2.0
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Ball Valve Style": {
+  "bbox": [
+   -4.0,
+   -2.0,
+   4.0,
+   2.0
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Butterfly Valve Style": {
+  "bbox": [
+   -4.0,
+   -2.0,
+   4.0,
+   2.0
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Centrifugal Compressor Style": {
+  "bbox": [
+   -6.0,
+   -6.0,
+   6.0,
+   6.0
+  ],
+  "att": [
+   [
+    -6.0,
+    0
+   ],
+   [
+    6.0,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Centrifugal Pump Style": {
+  "bbox": [
+   -6.5,
+   -6.5,
+   6.5,
+   6.5
+  ],
+  "att": [
+   [
+    -6.5,
+    0
+   ],
+   [
+    6.5,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Check Valve Style": {
+  "bbox": [
+   -5.1,
+   -2.0,
+   4.0,
+   3.1
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Compensator Style": {
+  "bbox": [
+   -4,
+   -4.0,
+   4,
+   4.0
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Compressor Style": {
+  "bbox": [
+   -6.0,
+   -6.0,
+   6.0,
+   6.0
+  ],
+  "att": [
+   [
+    -6.0,
+    0
+   ],
+   [
+    6.0,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Electric Motor Style": {
+  "bbox": [
+   -4.0,
+   -4.0,
+   4.0,
+   4.0
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Fan Style": {
+  "bbox": [
+   -6.0,
+   -6.0,
+   6.0,
+   6.0
+  ],
+  "att": [
+   [
+    -6.0,
+    0
+   ],
+   [
+    6.0,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Fixed Bed Column Style": {
+  "bbox": [
+   -6.0,
+   -16.0,
+   6.0,
+   16.0
+  ],
+  "att": [
+   [
+    0,
+    16.0
+   ],
+   [
+    0,
+    -16.0
+   ],
+   [
+    -6.0,
+    10.0
+   ],
+   [
+    6.0,
+    -10.0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Flame Arrestor Detonation Style": {
+  "bbox": [
+   -7.5,
+   -8.0,
+   7.5,
+   8.0
+  ],
+  "att": [
+   [
+    -7.5,
+    0
+   ],
+   [
+    7.5,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Flame Arrestor Style": {
+  "bbox": [
+   -7.5,
+   -4.0,
+   7.5,
+   4.0
+  ],
+  "att": [
+   [
+    -7.5,
+    0
+   ],
+   [
+    7.5,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Flanged Connection Style": {
+  "bbox": [
+   -4,
+   -2.0,
+   4,
+   2.0
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Gate Valve Closed Style": {
+  "bbox": [
+   -4.0,
+   -2.0,
+   4.0,
+   2.0
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Gate Valve Style": {
+  "bbox": [
+   -4.0,
+   -2.0,
+   4.0,
+   2.0
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Gear Pump Style": {
+  "bbox": [
+   -6.5,
+   -6.5,
+   6.5,
+   6.5
+  ],
+  "att": [
+   [
+    -6.5,
+    0
+   ],
+   [
+    6.5,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Globe Valve Closed Style": {
+  "bbox": [
+   -4.0,
+   -2.0,
+   4.0,
+   2.0
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Globe Valve Style": {
+  "bbox": [
+   -4.0,
+   -2.0,
+   4.0,
+   2.0
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Heat Exchanger Fixed Tube Style": {
+  "bbox": [
+   -12.0,
+   -6.0,
+   12.0,
+   6.0
+  ],
+  "att": [
+   [
+    -10.4,
+    3.5
+   ],
+   [
+    7.0,
+    3.5
+   ],
+   [
+    -7.0,
+    -3.5
+   ],
+   [
+    10.4,
+    -3.5
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Heat Exchanger U-Tube Style": {
+  "bbox": [
+   -12.0,
+   -6.0,
+   12.0,
+   6.0
+  ],
+  "att": [
+   [
+    -10.4,
+    3.5
+   ],
+   [
+    -7.0,
+    3.5
+   ],
+   [
+    7.0,
+    3.5
+   ],
+   [
+    10.4,
+    -3.5
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Horizontal Vessel Style": {
+  "bbox": [
+   -14.0,
+   -8.0,
+   14.0,
+   8.0
+  ],
+  "att": [
+   [
+    -14.0,
+    0
+   ],
+   [
+    14.0,
+    0
+   ],
+   [
+    -6.0,
+    8.0
+   ],
+   [
+    6.0,
+    8.0
+   ],
+   [
+    0,
+    -8.0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Hose Style": {
+  "bbox": [
+   -10,
+   -1.09,
+   10,
+   1.1
+  ],
+  "att": [
+   [
+    -10,
+    0
+   ],
+   [
+    10,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Needle Valve Closed Style": {
+  "bbox": [
+   -4.0,
+   -2.0,
+   4.0,
+   3.8
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Needle Valve Style": {
+  "bbox": [
+   -4.0,
+   -2.0,
+   4.0,
+   3.8
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Piston Compressor Style": {
+  "bbox": [
+   -6.0,
+   -6.0,
+   6.0,
+   6.0
+  ],
+  "att": [
+   [
+    -6.0,
+    0
+   ],
+   [
+    6.0,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Piston Pump Style": {
+  "bbox": [
+   -6.5,
+   -6.5,
+   6.5,
+   6.5
+  ],
+  "att": [
+   [
+    -6.5,
+    0
+   ],
+   [
+    6.5,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Plate Heat Exchanger Style": {
+  "bbox": [
+   -10.0,
+   -6.6,
+   10.0,
+   6.6
+  ],
+  "att": [
+   [
+    -9.0,
+    4.0
+   ],
+   [
+    -9.0,
+    -4.0
+   ],
+   [
+    9.0,
+    -4.0
+   ],
+   [
+    9.0,
+    4.0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Pump Style": {
+  "bbox": [
+   -6.5,
+   -6.5,
+   6.5,
+   6.5
+  ],
+  "att": [
+   [
+    -6.5,
+    0
+   ],
+   [
+    6.5,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Reducer Style": {
+  "bbox": [
+   -4,
+   -2.0,
+   4,
+   2.0
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Rupture Disc Style": {
+  "bbox": [
+   -4.0,
+   -4.0,
+   4.0,
+   4.0
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Safety Valve Style": {
+  "bbox": [
+   -5,
+   -2.5,
+   5,
+   9.8
+  ],
+  "att": [
+   [
+    -5,
+    0
+   ],
+   [
+    5,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Strainer Style": {
+  "bbox": [
+   -4,
+   -4.16,
+   4,
+   4.0
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Tray Column Style": {
+  "bbox": [
+   -5.0,
+   -22.0,
+   5.0,
+   22.0
+  ],
+  "att": [
+   [
+    0,
+    22.0
+   ],
+   [
+    0,
+    -22.0
+   ],
+   [
+    -5.0,
+    14.0
+   ],
+   [
+    5.0,
+    -14.0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Valve General Style": {
+  "bbox": [
+   -4.0,
+   -2.0,
+   4.0,
+   2.0
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Vertical Vessel Style": {
+  "bbox": [
+   -8.0,
+   -14.0,
+   8.0,
+   14.0
+  ],
+  "att": [
+   [
+    0,
+    14.0
+   ],
+   [
+    0,
+    -14.0
+   ],
+   [
+    -8.0,
+    6.0
+   ],
+   [
+    8.0,
+    -6.0
+   ],
+   [
+    -8.0,
+    -6.0
+   ],
+   [
+    8.0,
+    6.0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISO Viewing Glass Style": {
+  "bbox": [
+   -4,
+   -2.0,
+   4,
+   2.0
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
  "In Line Mixer Style": {
   "bbox": [
    -7.5,
