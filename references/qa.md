@@ -11,13 +11,18 @@
 工作文件（脚本、spec、预览与终审 PNG、出图日志、备份）放 `_工作底稿/`；项目 zip 备份放项目外的 `_恢复备份/`。
 
 ## 出图前（`plain_pipeline.py prep`，全部 OK 才能出图）
+0. 制图配置：`pipeline.json` 的 `profile`（新项目 `pip-ref-a3`，老项目缺省 `legacy-2026-10`）；有项目级偏离时 `profile_overrides` 和理由已写明。
 1. `lint_specs.py` 0 ERROR（线端落在符号连接点或管嘴上、压禁区、文字重叠、线 id 全套唯一）。WARN 逐条看。
 2. `plain_convert` 转换成功；普通版 spec 再 lint 通过。
 3. `check_numbering.py`：线号序号按主项分组连续、联锁编号连续、图上文字里出现的位号和联锁编号都在模型里（删了元件漏改注释、联锁表、图例会在这里报出）。
 3b. `check_plain.py`：模型里的每个设备、阀门、仪表位号和每条线号在普通版里都有文字；位号全套唯一；无乱码、无禁用词（短英文词整词匹配，AIT 等仪表代号不会误报）。
+3c. `validate_views.py`（整套 prep 时）：模型对象有主表示或写了 `omitted`、位号文字贴在对象旁、线号与对象连接、跨图连接器成对。
+3d. lint 警告带编号：文字重叠（W-TEXT-TEXT / W-TEXT-SYM）默认必须处置或在 `accepted_warnings.json` 登记理由；符号外框互相压住（W-SYM-SYM）逐条看。
 4. 预览 PNG 逐张看：外框、管线、文字框、禁区。
 
 ## 出图后（`plain_pipeline.py post`）
+0. `reopen`：已变更的图在全新 AutoCAD 会话里重开，MText/Polyline/BlockReference 数量、文字、图层、图框范围与 spec 一致（`_工作底稿/_重开核查/`）。
+0b. `status` 退出码 0；`post` 先核对产物（DWG 齐全、单张 PDF 恰 1 页且图幅对、不早于本次出图），未通过会中止。
 1. 日志：每张“完成：成功 N，失败 0”。
 2. PDF → PNG 逐张看（`终审PNG/`）：截断、压框、重叠、线是否落在符号和管嘴上、流向箭头、线号位置、标题栏字段（项目名、版次、日期、角色栏“—”、设计单位空白）。
 3. PDF 元数据：作者、创建者、生成器为空；DWG 敏感词扫描；DWG“最后保存者”会报告（Windows 用户名，无法由脚本清除，外发 DWG 前请用户决定）。
@@ -27,6 +32,9 @@
 ## 记录（`_工作底稿/交付检查记录.md`）
 每轮写一节：日期与版次；检查项、结果、证据文件；本轮发现的问题（现象、原因、处理、复测）；边界。
 边界写法固定为一句：图纸与数据检查不等于 HAZOP、安全验收或实物验证；注“暂定”的设定值在 FAT 前确定。
+
+## 恢复与增量
+见 `references/recovery.md`：`status`、`resume`、`draw --changed`、检查点清单。
 
 ## 已停用（Plant 智能对象路线）
 `verify_topology.py`（连接、三通、跨图配对、位号唯一）、`check_orphans.py`（空线组、孤立位号登记）、`-Reopen` 重开核对：只在建了 Plant 对象时才有意义，普通图元模式不用。

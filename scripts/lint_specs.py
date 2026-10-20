@@ -11,7 +11,7 @@ WARN（不阻断；--strict 时也算失败）：
   - 线端落在符号外框内但不在连接点上
   - 文字与文字、文字与符号外框重叠
   - 目录中没有的样式（未检几何）
-警告带稳定编号 [W-…]：W-FRAME-BOTTOM、W-NO-STYLE、W-OFF-PORT、W-TEXT-TEXT、W-TEXT-SYM。
+警告带稳定编号 [W-…]：W-FRAME-BOTTOM、W-NO-STYLE、W-OFF-PORT、W-TEXT-TEXT、W-TEXT-SYM、W-SYM-SYM。
   --block 编号,…   这些编号的警告若没被接受就算 ERROR（出图前必须处置）
   --accept 文件    已接受警告清单 JSON：[{"code": "W-TEXT-SYM", "match": "位号或图号片段", "reason": "理由", "sheet_sha": "该图 spec 的 sha256 前 12 位（可省）"}]；
                    图 spec 变了（sha 不符）清单即失效，需重新判断
@@ -201,6 +201,13 @@ def lint_sheet(no, items, cat, all_ids, errs, warns):
                 b = pl[0]
                 if overlap(tb, (b[0], b[2], b[1], b[3])):
                     warns.append(f'[W-TEXT-SYM] {no} 文字第 {n} 项与 {oid} 符号重叠')
+    # 符号与符号重叠（提示）：两个对象的外框互相压进去超过 1 mm（仪表圈标注、管嘴不算）
+    boxes = [(oid, pl[0]) for oid, (st, at, pl) in objs.items() if pl and st != 'nozzle']
+    for i in range(len(boxes)):
+        for j in range(i + 1, len(boxes)):
+            a, b = boxes[i][1], boxes[j][1]
+            if a[0] < b[2] - 1.0 and b[0] < a[2] - 1.0 and a[1] < b[3] - 1.0 and b[1] < a[3] - 1.0:
+                warns.append(f'[W-SYM-SYM] {no} {boxes[i][0]} 与 {boxes[j][0]} 符号外框重叠')
     return here
 
 

@@ -12,6 +12,7 @@
   resume [--dry-run] [--wait]
                        接着画：把上次没走完的出图里已完整出完、输入未变的图认进构建清单，再只画还需要画的图（= draw --changed）。
                        输入变了的图一律重画，不沿用旧产物；--dry-run 只说明不启动 AutoCAD
+  reopen [图号 …]      在全新 AutoCAD 会话里重新打开已出的 DWG，核对数量、文字、图层、越框（不保存、不改图），约 4 分钟
   status               看最近一次出图记录（_出图日志/run_*.json）：退出码 0 完成 / 1 失败或无记录 / 2 运行中或已中断
   post                 出图后：PDF 转 PNG（<工作底稿>/终审PNG/）→ 清空 PDF 元数据 → 合并图集 → 扫描 PDF/DWG 里的
                        禁用词和作者信息 → 打项目 zip 备份。先核对产物（DWG 齐全、单张 PDF 恰 1 页 A3、不早于本次出图），
@@ -22,6 +23,7 @@
   profile_overrides / profile_override_note
                对制图配置的项目级覆盖（如 {"psv_upright": ["P&ID-107"]}）及理由；合并结果写入 _profile_effective.json
   views        "warn" 时模型核对（validate_views）只列问题不挡出图（老项目补录期间用），缺省为必须通过
+  max_retry    偶发故障（崩溃/卡死/超时）自动重试次数，缺省 1；模型或规则错误不重试
   project      Plant 项目名，也是 DWG 标题栏项目名（不得带“验证”“测试”等字样）
   parent       Plant 项目的父目录，默认 E:\\05p_id图绘制中心
   layout       版面模块，默认 sheets.py（用法 python sheets.py <specs 目录> [图号…]）
@@ -130,7 +132,8 @@ def check_phase(cfg, nos, preview=True):
     r = run([PY, HERE / 'check_numbering.py', cfg['work'] / 'pid_model.json', cfg['plain']] + prof)
     ok &= step('check_numbering（线号分组连续、联锁编号连续、文字里的位号都在模型里）', r)
     if set(nos) >= {s['no'] for s in cfg['model']['sheets']}:       # 覆盖核对要看整套图；只跑子集时跳过
-        r = run([PY, HERE / 'validate_views.py', cfg['work'] / 'pid_model.json', cfg['specs'], cfg['plain']]
+        r = run([PY, HERE / 'validate_views.py', cfg['work'] / 'pid_model.json', cfg['specs'], cfg['plain'],
+                 '--json', cfg['work'] / '_validate_views.json']
                 + (['--warn-only'] if cfg.get('views') == 'warn' else []))
         ok &= step('validate_views（模型对象与连接都画进图、位号贴在对象旁、跨图成对）', r)
     else:
@@ -146,7 +149,7 @@ def ps_quote(s):
     return "'" + str(s).replace("'", "''") + "'"
 
 
-def write_run_script(cfg, nos, redraw):
+def write_run_script(cfg, nos, redraw, run_id=''):
     sheets = ';'.join(f'{n}|{dwg_name(cfg, n)}' for n in nos)
     sc = ENGINE / 'scripts'
     lines = ["$ErrorActionPreference = 'Stop'", "$env:PYTHONIOENCODING = 'utf-8'",
@@ -165,6 +168,7 @@ def write_run_script(cfg, nos, redraw):
         cmd += f" -StyleCfg {ps_quote(cfg['stylecfg'])}"
     if redraw:
         cmd += ' -Redraw'
+    cmd += f" -MaxRetry {int(cfg.get('max_retry', 1))} -RunId {ps_quote(run_id)}"      # 偶发故障默认只自动重试 1 次；运行编号写进检查点清单
     lines.append(cmd)
     p = cfg['work'] / 'run_set.ps1'
     p.write_bytes(b'\xef\xbb\xbf' + '\r\n'.join(lines).encode('utf-8'))     # 带 BOM，Windows PowerShell 5 才能读中文路径
@@ -385,8 +389,8 @@ def cmd_draw(cfg, argv):
     exists = [n for n in nos if (cfg['prj'] / 'PID DWG' / dwg_name(cfg, n)).exists()]
     if exists and not redraw:
         raise SystemExit(f'这些图已在项目里：{exists}。重画请加 --redraw')
-    script = write_run_script(cfg, nos, redraw)
     run_id = time.strftime('%m%d_%H%M%S')
+    script = write_run_script(cfg, nos, redraw, run_id)
     log = log_dir(cfg) / f'draw_{run_id}.log'
     write_record(cfg, {'run_id': run_id, 'state': 'running', 'started': time.time(), 'sheets': nos, 'redraw': redraw,
                        'script': str(script), 'log': str(log), 'pid': None,
@@ -447,6 +451,28 @@ def show_status(cfg):
     return status_code(cfg) == 0
 
 
+def cmd_reopen(cfg, argv):
+    """在全新 AutoCAD 会话里重新打开已出的普通 DWG，核对模型空间清单与 spec（数量、文字、图层、越框）。不保存、不改图纸。
+    结果在 _工作底稿/_重开核查/；约 4 分钟（含 AutoCAD 启动）。出图后、交付前对已变更的图做一次"""
+    nos = sheets_of(cfg, [a for a in argv if not a.startswith('--')])
+    pids = acad_running()
+    if pids:
+        raise SystemExit(f'已有 AutoCAD 在运行（PID {", ".join(pids)}）。请先保存关闭；引擎不会动不属于它的 AutoCAD')
+    missing = [n for n in nos if not (cfg['prj'] / 'PID DWG' / dwg_name(cfg, n)).exists()]
+    if missing:
+        raise SystemExit(f'没有 DWG：{missing}')
+    sheets = ';'.join(f'{n}|{dwg_name(cfg, n)}' for n in nos)
+    out = cfg['work'] / '_重开核查'
+    r = subprocess.run(['powershell.exe', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(ENGINE / 'scripts' / 'reopen_plain.ps1'),
+                        '-Project', str(cfg['prj'] / 'Project.xml'), '-Specs', str(cfg['plain']), '-Sheets', sheets, '-OutDir', str(out),
+                        '-Profile', str(cfg.get('profile', 'legacy-2026-10'))], capture_output=True)
+    text = decode_log(r.stdout)
+    for ln in [x for x in text.splitlines() if 'REOPEN' in x or x.startswith('   ') or '失败' in x][-30:]:
+        print(ln[:170])
+    print('重开核查：' + ('全部通过' if r.returncode == 0 else '有图未通过，见 ' + str(out)))
+    return r.returncode == 0
+
+
 def scan_text(blob, words):
     return [w for w in words if re.search(r'(?<![A-Za-z0-9])' + re.escape(w) + r'(?![A-Za-z0-9])', blob)] if blob else []
 
@@ -474,10 +500,14 @@ def cmd_post(cfg, argv):
     ok = step('PDF → PNG', run([PY, HERE / 'render_pdfs.py', cfg['pdf'], png]), 1)
     ok &= step('清空 PDF 元数据', run([PY, HERE / 'clean_pdf_meta.py', cfg['work'] / 'pid_model.json', cfg['pdf']]), 1)
     atlas = cfg['stage'] / f"{cfg['project']}_P&ID图集_{cfg['model']['meta'].get('rev', 'R0')}.pdf"
-    ok &= step('合并图集', run([PY, HERE / 'pack_pdfs.py', cfg['work'] / 'pid_model.json', cfg['pdf'], atlas, cfg.get('profile', 'legacy-2026-10')]), 1)
+    full = set(nos) >= {x['no'] for x in cfg['model']['sheets']}
+    if full:
+        ok &= step('合并图集', run([PY, HERE / 'pack_pdfs.py', cfg['work'] / 'pid_model.json', cfg['pdf'], atlas, cfg.get('profile', 'legacy-2026-10')]), 1)
+    else:
+        print('SKIP 合并图集（只收尾了部分图；整套收尾时才合并）')
     # 扫描元数据与 DWG 里的敏感信息
     bad = ['Claude', 'Codex', 'GPT', 'Anthropic', 'OpenAI', 'PidBot', '验证', '测试']
-    for f in [atlas] + [cfg['pdf'] / f'{n}.pdf' for n in nos]:
+    for f in ([atlas] if full else []) + [cfg['pdf'] / f'{n}.pdf' for n in nos]:
         m = fitz.open(f).metadata
         extra = [k for k in ('author', 'creator', 'producer', 'subject', 'keywords') if m.get(k)]
         hits = scan_text(' '.join(str(v) for v in m.values()), bad)
@@ -532,6 +562,8 @@ def main(argv):
         return 0 if check_phase(cfg, sheets_of(cfg, [a for a in rest if not a.startswith('--')])) else 1
     if sub == 'draw':
         return 0 if cmd_draw(cfg, rest) else 1
+    if sub == 'reopen':
+        return 0 if cmd_reopen(cfg, rest) else 1
     if sub == 'resume':
         return 0 if cmd_resume(cfg, rest) else 1
     if sub == 'status':

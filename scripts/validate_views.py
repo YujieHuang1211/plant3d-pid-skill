@@ -189,8 +189,10 @@ def main(argv):
         warns, errs = errs + warns, []
     for e in errs:
         print('ERROR', e)
-    for w in warns:
+    for w in warns[:5]:
         print('WARN ', w)
+    if len(warns) > 5:
+        print(f'WARN  …另有 {len(warns) - 5} 条提示（用 --json 文件看全部）')
     print('VIEWS', 'PASS' if not errs else f'FAIL {len(errs)}', 'warn', len(warns))
     if js:
         Path(js).write_text(json.dumps({'errors': errs, 'warnings': warns}, ensure_ascii=False, indent=1), encoding='utf-8')

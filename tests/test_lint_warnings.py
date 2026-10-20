@@ -54,5 +54,22 @@ class Warnings(unittest.TestCase):
         self.assertFalse(ok)
 
 
+
+class SymbolOverlap(unittest.TestCase):
+    CAT = {'S': {'bbox': [-5, -5, 5, 5], 'att': []}}
+
+    def lint(self, ats):
+        errs, warns = [], []
+        items = [{'k': 'asset', 'id': f'X-{i}', 'style': 'S', 'at': at} for i, at in enumerate(ats)]
+        lint_specs.lint_sheet('P&ID-101', items, self.CAT, {i['id'] for i in items}, errs, warns)
+        return [w for w in warns if 'W-SYM-SYM' in w]
+
+    def test_overlapping_symbols_flagged(self):
+        self.assertEqual(len(self.lint([[100, 100], [104, 100]])), 1)
+
+    def test_touching_or_apart_not_flagged(self):
+        self.assertEqual(self.lint([[100, 100], [110, 100], [140, 100]]), [])
+
+
 if __name__ == '__main__':
     unittest.main()
