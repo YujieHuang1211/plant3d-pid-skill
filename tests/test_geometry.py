@@ -62,5 +62,21 @@ class Ports(unittest.TestCase):
         self.assertTrue(any('默认比例' in e for e in errs), errs)
 
 
+
+
+class Legend(unittest.TestCase):
+    def test_legend_rows_follow_profile(self):
+        leg = pidlib.legend_rows('legacy-2026-10')
+        pip = pidlib.legend_rows('pip-ref-a3')
+        d = {r[0]: r for r in leg}
+        p = {r[0]: r for r in pip}
+        self.assertEqual(d['主工艺管线'][1], 0.7)
+        self.assertEqual(d['电信号'][1], 0.18)
+        self.assertEqual(p['电信号'][1], 0.25)
+        self.assertEqual(p['气动信号'][2], '实线加双斜线')
+        self.assertEqual(p['通信/数据链路'][2], '虚线')
+        self.assertEqual({r[0] for r in pidlib.legend_rows('pip-ref-a3', {'Primary Style'})}, {'主工艺管线'})
+
+
 if __name__ == '__main__':
     unittest.main()

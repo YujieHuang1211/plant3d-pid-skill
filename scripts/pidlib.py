@@ -52,6 +52,27 @@ def use_model(model, catalog=None, **props_default):
     return M
 
 
+KIND_STYLE = {'electric': 'Electrical Style', 'pneumatic': 'Pneumatic Style', 'data': 'Software Style', 'software': 'Software Style'}
+LINE_NAMES = {'Primary Style': '主工艺管线', 'Secondary Style': '次要/公用/仪表接管线', 'Electrical Style': '电信号',
+              'Pneumatic Style': '气动信号', 'Software Style': '通信/数据链路'}
+
+
+def legend_rows(profile=None, used=None):
+    """图例的线型行 [(名称, 线宽 mm, 线型, 依据)]，由制图配置生成，与图面使用同一配置（不要手写线宽数字）。
+    used：本图集实际用到的 spec 线样式集合（如 {'Primary Style', 'Electrical Style'}）；None 表示全部。"""
+    import drawprofile
+    P = drawprofile.load(profile)
+    lw = {l['name']: l for l in P['layers']}
+    rows = []
+    for st, spec in P['lines'].items():
+        if used is not None and st not in used:
+            continue
+        ly = lw[spec['layer']]
+        pat = '实线加双斜线' if spec.get('ticks') else '实线加中点小圆' if spec.get('circle') else ly.get('ltype', '实线')
+        rows.append((LINE_NAMES.get(st, st), ly['lw'] / 100, '虚线' if pat.startswith('DASH') else pat, P.get('legend_basis', '')))
+    return rows
+
+
 def shx(t):
     """SHX 字体（gbenor/gbcbig）无下标字符与 en dash：改用 MText 堆叠与 ~"""
     for a, b in (('₂', r'\S^2;'), ('₄', r'\S^4;'), ('²', r'\S2^;'), ('–', '~'), ('Ø', '%%c')):
@@ -229,6 +250,10 @@ class Sheet:
         # 软件联锁在 PLC 中执行：ISA-5.1 PLC 逻辑符号（方框内菱形），PIP 的 Undefined Interlock Logic 为无位号类，不用
         st = 'Field Mounted Discrete Hardware Interlock Style' if hardware else 'Primary Loc Accessible PLC Style'
         self.items.append({'k': 'asset', 'id': iid, 'style': st, 'at': at, 'props': p, 'auto': True})
+
+    def signal(self, lid, pts, kind, a=None, b=None):
+        """信号线：kind = electric / pneumatic / data（线型由信号含义决定，不由“都经过 PLC”决定）"""
+        self.sigc(lid, pts, KIND_STYLE[kind], a, b)
 
     def sigc(self, lid, pts, style, a=None, b=None):
         self.items.append({'k': 'line', 'id': lid, 'style': style, 'pts': pts})

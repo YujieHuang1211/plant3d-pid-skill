@@ -108,7 +108,8 @@ def check_phase(cfg, nos, preview=True):
     r = run([PY, HERE / 'plain_convert.py', cfg['specs'], cfg['plain']] + cat + prof + nos)
     ok &= step('plain_convert', r, 2)
     # 4. lint 普通版
-    r = run([PY, HERE / 'lint_specs.py', cfg['plain']] + nos + lcat + prof)
+    acc = cfg['work'] / 'accepted_warnings.json'
+    r = run([PY, HERE / 'lint_specs.py', cfg['plain']] + nos + lcat + prof + ['--block', 'W-TEXT-TEXT,W-TEXT-SYM', '--accept', acc])
     ok &= step('lint（普通版 spec）', r)
     # 5. 内容核查
     ban = ['--ban', ','.join(cfg['ban'])] if cfg.get('ban') else []

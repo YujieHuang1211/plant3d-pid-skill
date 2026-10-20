@@ -63,3 +63,20 @@ if __name__ == '__main__':
 - `meta.rev`：版次（如 R0、R1），写进封面、目录和每张标题栏的“版次”；`meta.rev_note`：修订栏“修订说明”（缺省“首版，供审查”）；`meta.date`：发布日期。版次递增时三项同步改。
 - 版面模块里 `S.line(..., noarrow=True)`：该线不放流向箭头（设备内部连线用）。`S.nozzle(owner, id, at, rot)`：设备管嘴，`at` 在器壁上，`rot` 为向外方向；管线端点落在 `at` 上，或管线穿过它进入设备内部。
 - 仪表条目的 `src` 为“工程假设”且无联锁、无操作用途的，出图前删掉（见 SKILL.md “仪表精简原则”），并同步模型、版面、联锁表。
+
+## 补充（2026-10-20）：核对与编号相关的可选字段
+都是可选字段，旧模型不写照常通过。
+- 对象（equipment / inline / instruments / boundary / interlocks）：
+  - `sheet`：该对象应画在哪张图。写了就核对（`validate_views.py`），没写只核对“整套图里有主表示”。
+  - `omitted`：有意不画时写原因（如“炉自带热偶，随 TIC-301 注释表示”）。有这个字段才不报“没有主表示”。
+- `signals[].kind`：`electric` / `pneumatic` / `data`。线型由信号含义决定：电信号虚线、气动信号带双斜线、通信/数据链路长划线（ISA-5.1-2024 表 10）。版面里用 `Sheet.signal(lid, pts, kind, a, b)`。
+- `loops[]`：`{id, measure, control, final, signal}`，测量、控制功能、最终元件的位号。`check_numbering.py` 核对三者都在模型里；主图简化某个回路时在图注里引用典型回路详图。
+- `retired`：`{line_seq: ["0103"], interlocks: ["I-02"], tags: ["PT-105"]}`，修订中作废的编号。stable 模式下缺号只提示，登记后不再提示；作废位号仍出现在旧注释里时不报“不在模型里”。
+- `conventions.tag_pattern`：位号正则，缺省 `[A-Z]{1,4}-\d{3}[A-Z]?`（需要连字符）。项目用 `V101` 这类写法时写 `[A-Z]{1,4}-?\d{3}[A-Z]?`。
+- 同一物理对象只定义一次、只有一个主表示。局部详图/第二张图要再画出来时，spec 里用另一个 id 加 `ref_of: "<位号>"`（如 `PT-102@103`），它不参与全套唯一和位号文字检查；`validate_views.py` 检查被引用对象有主表示。
+- spec `nozzle` 的 `conn`：`flange` / `weld` / `thread` / `none`；不写则按制图配置（`pip-ref-a3` 为简单接管，不默认加法兰；`legacy-2026-10` 加一对法兰线）。
+
+## 制图配置与编号模式
+- `pipeline.json` 的 `profile`：`legacy-2026-10`（缺省，老项目图面不变）或 `pip-ref-a3`（`new_project.py` 对新项目写入）。数值与依据见 `assets/profiles/*.json`，图例线型行用 `pidlib.legend_rows(profile, used)` 生成。
+- 编号模式随配置：`legacy` 为 continuous（每主项从 01 连续，联锁 I-01 连续），`pip-ref-a3` 为 stable（缺号只提示，重号报错）。
+- 仪表精简（修订上述“仪表精简原则”）：依据是“工程假设”且没有联锁、操作用途的仪表，先列入 `open_points` 请用户确认，不因来源是工程假设就直接删；用户确认不要后才删，并同步模型、版面、联锁表、设计依据表。

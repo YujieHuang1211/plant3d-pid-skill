@@ -6,6 +6,9 @@ import json
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'scripts'))
+import patterns  # noqa: E402
+
 HERE = Path(__file__).resolve().parent
 M = json.loads((HERE / 'pid_model.json').read_text(encoding='utf-8'))
 INL = {x['tag']: x for x in M['inline']}
@@ -240,20 +243,10 @@ def sheet_101():
 
     for i, (fl, y, num, bid, label) in enumerate(rows):
         n = num[-1]
-        ln = f'{fl}-{num}-6-S1'
         L = f'L{fl}'
-        s.line(L, [[X['bl'] + 10, y], [XH, y]], ln, anno=[285, y])
-        s.tie(bid, [X['bl'], y], L, 'start', label=label, label_at=[X['bl'] - 10, y + 6.5])
-        s.hand(f'HV-10{n}', [X['hv'], y], L, anno=oval(X['hv'], y - 11))
-        s.special(f'FL-10{n}', [X['fl'], y], L, anno=oval(X['fl'], y - 11))
-        s.pcv(f'PCV-10{n}', [X['pcv'], y], L, anno=ib(X['pcv'] - 2, y + 15))
-        s.bubble(f'PI-10{n}', [X['pi'], y + 14])
-        s.line(f'LPI{n}', [[X['pi'], y], [X['pi'], y + 9]], ln, style='Secondary Style')
-        s.tee(f'LPI{n}', L, True)
-        s.items.append({'k': 'connect', 'line': f'LPI{n}', 'asset': f'PI-10{n}', 'ctx': 'end'})
-        s.xv(f'XV-10{n}', [X['xv'], y], L, anno=ib(X['xv'], y + 15), fail_text_at=[X['xv'] - 7, y + 6])
-        s.inst_inline(f'FIC-10{n}', [X['mfc'], y], L, anno=ib(X['mfc'], y + 14))
-        s.hand(f'CK-10{n}', [X['ck'], y], L, anno=oval(X['ck'], y - 11))
+        # 气源处理支路用声明式模块（scripts/patterns.py）：只写有哪些元件，间距和标注由模块安排
+        patterns.gas_branch(s, y, fl, num, bl=bid, label=label, hv=f'HV-10{n}', fl=f'FL-10{n}', pcv=f'PCV-10{n}', pi=f'PI-10{n}',
+                            xv=f'XV-10{n}', mfc=f'FIC-10{n}', ck=f'CK-10{n}', x_end=XH, x=X, tap_id=f'LPI{n}')
         if i == 0:
             s.tee('FG', L, True)
         else:

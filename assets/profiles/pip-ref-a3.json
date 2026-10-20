@@ -1,6 +1,7 @@
 {
  "name": "pip-ref-a3",
  "description": "参照 PIP PIC001-2018（August 2018 Technical Correction）的项目 A3 制图配置。A3 图幅是项目选择，不声明全面符合 PIP；PIP 官方目录另有 2023 年版，未审读。信号线型参照 ISA-5.1-2024 表 10。",
+ "legend_basis": "参照 PIP PIC001-2018；信号线型参照 ISA-5.1-2024 表 10；A3 为项目选择",
  "sheet": {"name": "A3", "width": 420, "height": 297, "frame": [25, 5, 415, 292], "title_block": [235, 91]},
  "layers": [
   {"name": "管线-主", "color": 1, "lw": 70, "rank": 2},

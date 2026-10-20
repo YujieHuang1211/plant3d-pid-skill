@@ -11,6 +11,10 @@ WARN（不阻断；--strict 时也算失败）：
   - 线端落在符号外框内但不在连接点上
   - 文字与文字、文字与符号外框重叠
   - 目录中没有的样式（未检几何）
+警告带稳定编号 [W-…]：W-FRAME-BOTTOM、W-NO-STYLE、W-OFF-PORT、W-TEXT-TEXT、W-TEXT-SYM。
+  --block 编号,…   这些编号的警告若没被接受就算 ERROR（出图前必须处置）
+  --accept 文件    已接受警告清单 JSON：[{"code": "W-TEXT-SYM", "match": "位号或图号片段", "reason": "理由", "sheet_sha": "该图 spec 的 sha256 前 12 位（可省）"}]；
+                   图 spec 变了（sha 不符）清单即失效，需重新判断
 符号几何来自 symbol_catalog.json（catalog_from_info.py 由实测 info 导出生成）。
 """
 import json
@@ -121,7 +125,7 @@ def lint_sheet(no, items, cat, all_ids, errs, warns):
             if x0 < FRAME[0] or x1 > FRAME[2] or y0 < FRAME[1] or y1 > FRAME[3]:
                 errs.append(f'{no} 第 {n} 项 {k} 超出图框：x {x0:.0f}~{x1:.0f}，y {y0:.0f}~{y1:.0f}')
             elif y0 < FRAME[1] + 5 and k == 'text':
-                warns.append(f'{no} 第 {n} 项 text 下沿距图框不足 5 mm（y={y0:.1f}）：注释太长时精简文字或上移起点（lint 估算偏小，实际更低）')
+                warns.append(f'[W-FRAME-BOTTOM] {no} 第 {n} 项 text 下沿距图框不足 5 mm（y={y0:.1f}）：注释太长时精简文字或上移起点（lint 估算偏小，实际更低）')
         if k == 'poly' and it.get('pts'):       # 转换后的折线也要在图框内、不进标题栏（普通图元版没有 Plant 的智能检查）
             xs, ys = [p[0] for p in it['pts']], [p[1] for p in it['pts']]
             x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
@@ -147,7 +151,7 @@ def lint_sheet(no, items, cat, all_ids, errs, warns):
                 if it.get('scale') is not None and (cat.get(st) or {}).get('plant_lib') and not geometry.factor(st, it['scale'])[1]:
                     errs.append(f'{no} {it["id"]}：Plant 库样式“{st}”没有默认比例记录（plant_style_scales.json），scale={it["scale"]} 无法换算，连接点会算错')
                 if pl is None:
-                    warns.append(f'{no} {it["id"]}：目录无样式“{st}”，未检几何')
+                    warns.append(f'[W-NO-STYLE] {no} {it["id"]}：目录无样式“{st}”，未检几何')
                 objs[it['id']] = (st, it['at'], pl)
             elif k == 'nozzle':
                 p = tuple(it['at'])
@@ -177,7 +181,7 @@ def lint_sheet(no, items, cat, all_ids, errs, warns):
             if d_box > TOL:
                 errs.append(f'{no} {it["line"]} {ctx} 端 ({p[0]:g},{p[1]:g}) 离 {it["asset"]} 外框 {d_box:.1f} mm，图面未连上')
             elif att:
-                warns.append(f'{no} {it["line"]} {ctx} 端 ({p[0]:g},{p[1]:g}) 在 {it["asset"]} 上但不在连接点（最近 {d_att:.1f} mm）')
+                warns.append(f'[W-OFF-PORT] {no} {it["line"]} {ctx} 端 ({p[0]:g},{p[1]:g}) 在 {it["asset"]} 上但不在连接点（最近 {d_att:.1f} mm）')
         elif it['k'] == 'tee' and it['line'] in lines and it['to'] in lines:
             pts = lines[it['line']]
             p = pts[0] if it.get('start', True) else pts[-1]
@@ -190,24 +194,55 @@ def lint_sheet(no, items, cat, all_ids, errs, warns):
     for i in range(len(texts)):
         for j in range(i + 1, len(texts)):
             if overlap(texts[i][1], texts[j][1]):
-                warns.append(f'{no} 文字第 {texts[i][0]} 项与第 {texts[j][0]} 项重叠')
+                warns.append(f'[W-TEXT-TEXT] {no} 文字第 {texts[i][0]} 项与第 {texts[j][0]} 项重叠')
     for n, tb in texts:
         for oid, (st, at, pl) in objs.items():
             if pl and st != 'nozzle':
                 b = pl[0]
                 if overlap(tb, (b[0], b[2], b[1], b[3])):
-                    warns.append(f'{no} 文字第 {n} 项与 {oid} 符号重叠')
+                    warns.append(f'[W-TEXT-SYM] {no} 文字第 {n} 项与 {oid} 符号重叠')
     return here
 
 
+def classify(warns, errs, specdir, block, accept):
+    """已接受的警告去掉；--block 里的编号若未被接受则升为 ERROR。返回 (warns, errs, 已接受条数)"""
+    import hashlib
+    sha = {}
+
+    def sheet_sha(no):
+        if no not in sha:
+            f = Path(specdir) / f'{no}.json'
+            sha[no] = hashlib.sha256(f.read_bytes()).hexdigest()[:12] if f.exists() else ''
+        return sha[no]
+
+    keep, n_acc = [], 0
+    for w in warns:
+        m = re.match(r'\[(W-[A-Z-]+)\] (P&ID-\w+)?', w)
+        code, no = (m.group(1), m.group(2)) if m else (None, None)
+        hit = next((a for a in accept if a.get('code') == code and a.get('match', '') in w and a.get('reason')
+                    and (not a.get('sheet_sha') or a['sheet_sha'] == sheet_sha(no))), None)
+        if hit:
+            n_acc += 1
+        elif code in block:
+            errs = errs + [w + '（必须处置：改版面，或在 accepted_warnings.json 登记理由）']
+        else:
+            keep.append(w)
+    return keep, errs, n_acc
+
+
 def main(argv):
-    args, cat_paths, strict = [], [DEFAULT_CATALOG], False
+    args, cat_paths, strict, block, accept = [], [DEFAULT_CATALOG], False, set(), []
     i = 0
     while i < len(argv):
         if argv[i] == '--catalog':
             cat_paths.append(Path(argv[i + 1])); i += 2; continue
         if argv[i] == '--profile':
             set_profile(argv[i + 1]); i += 2; continue
+        if argv[i] == '--block':
+            block = set(x for x in argv[i + 1].split(',') if x); i += 2; continue
+        if argv[i] == '--accept':
+            accept = json.loads(Path(argv[i + 1]).read_text(encoding='utf-8')) if Path(argv[i + 1]).exists() else []
+            i += 2; continue
         if argv[i] == '--strict':
             strict = True; i += 1; continue
         args.append(argv[i]); i += 1
@@ -233,10 +268,13 @@ def main(argv):
     for no in sheets:
         items = json.loads((specdir / f'{no}.json').read_text(encoding='utf-8'))['items']
         lint_sheet(no, items, cat, all_ids, errs, warns)
+    warns, errs, accepted = classify(warns, errs, specdir, block, accept)
     for e in errs:
         print('ERROR', e)
     for w in warns:
         print('WARN ', w)
+    if accepted:
+        print(f'INFO 已接受的警告 {accepted} 条（见 accepted_warnings.json）')
     ok = not errs and not (strict and warns)
     print('LINT', 'PASS' if ok else f'FAIL {len(errs)}', 'warn', len(warns), 'sheets', len(sheets))
     return ok
