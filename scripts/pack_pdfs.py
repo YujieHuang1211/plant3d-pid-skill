@@ -19,11 +19,15 @@ def main(model, src, out):
         if not f.exists():
             raise SystemExit(f'缺少 {f.name}')
         d = fitz.open(f)
+        if d.page_count != 1:
+            raise SystemExit(f'{f.name} 有 {d.page_count} 页，每张图的 PDF 应恰为 1 页')
         r = d[0].rect
         if (round(r.width / 72 * 25.4), round(r.height / 72 * 25.4)) != (420, 297):
             raise SystemExit(f'{f.name} 图幅不是 A3 横向')
         toc.append([1, f"{sh['no']}  {sh['title']}", book.page_count + 1])
         book.insert_pdf(d)
+    if book.page_count != len(M['sheets']):
+        raise SystemExit(f'图集 {book.page_count} 页，模型有 {len(M["sheets"])} 张图')
     book.set_toc(toc)
     book.set_metadata({'title': f"{M['meta']['project']} P&ID 图集", 'author': '', 'subject': '', 'creator': '', 'producer': ''})
     book.save(out, garbage=3, deflate=True)

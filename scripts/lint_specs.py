@@ -110,6 +110,19 @@ def lint_sheet(no, items, cat, all_ids, errs, warns):
                 errs.append(f'{no} 第 {n} 项 {k} 超出图框：x {x0:.0f}~{x1:.0f}，y {y0:.0f}~{y1:.0f}')
             elif y0 < FRAME[1] + 5 and k == 'text':
                 warns.append(f'{no} 第 {n} 项 text 下沿距图框不足 5 mm（y={y0:.1f}）：注释太长时精简文字或上移起点（lint 估算偏小，实际更低）')
+        if k == 'poly' and it.get('pts'):       # 转换后的折线也要在图框内、不进标题栏（普通图元版没有 Plant 的智能检查）
+            xs, ys = [p[0] for p in it['pts']], [p[1] for p in it['pts']]
+            x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
+            if x0 < FRAME[0] - 0.01 or x1 > FRAME[2] + 0.01 or y0 < FRAME[1] - 0.01 or y1 > FRAME[3] + 0.01:
+                errs.append(f'{no} 第 {n} 项 poly 超出图框：x {x0:.0f}~{x1:.0f}，y {y0:.0f}~{y1:.0f}')
+            elif x1 > TB[0] and y0 < TB[1]:
+                errs.append(f'{no} 第 {n} 项 poly 压标题栏/修订栏：x {x0:.0f}~{x1:.0f}，下沿 y={y0:.0f}')
+        elif k == 'sym' and it.get('at'):
+            sx, sy = it['at']
+            if sx > TB[0] and sy < TB[1]:
+                errs.append(f'{no} 第 {n} 项 sym 在标题栏/修订栏内：({sx:g},{sy:g})')
+            elif not (FRAME[0] <= sx <= FRAME[2] and FRAME[1] <= sy <= FRAME[3]):
+                errs.append(f'{no} 第 {n} 项 sym 插入点超出图框：({sx:g},{sy:g})')
         if it.get('id'):
             if it['id'] in here:
                 errs.append(f'{no} 第 {n} 项 id 重复：{it["id"]}')

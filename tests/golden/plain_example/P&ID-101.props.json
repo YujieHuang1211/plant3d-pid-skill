@@ -1,0 +1,17 @@
+{
+ "PnID": "P&ID-101",
+ "Title": "五路燃料、备用口与 N2 保护旁路配气",
+ "Description": "H2/N2/CO/CH4/CO2/SP 六支路至混气集管；N2 支路含保护旁路 XV-201/HV-202/FSL-201；驱动气取气点 T-IN",
+ "Area": "—",
+ "Author": "—",
+ "Revision": "A",
+ "Stage": "方案设计",
+ "Scale": "NTS",
+ "SheetNo": "3",
+ "SheetTotal": "9",
+ "Checker": "—",
+ "Reviewer": "—",
+ "Approver": "—",
+ "IssueDate": "2026-10-06",
+ "RevNote": "首版，供审查"
+}

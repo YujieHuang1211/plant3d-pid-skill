@@ -8,9 +8,10 @@
                        写 run_set.ps1（带 BOM）并用 Windows PowerShell 5 启动：项目不存在先 setup_project，再
                        build_set -Plain。默认后台运行，日志在 <工作底稿>/_出图日志/；--wait 等它结束。
                        已出过的图要重画，加 --redraw（先移除旧图再画）。draw 之前会再跑一遍 prep 的检查部分
-  status               看最近一次出图日志的进度和结果
+  status               看最近一次出图记录（_出图日志/run_*.json）：退出码 0 完成 / 1 失败或无记录 / 2 运行中或已中断
   post                 出图后：PDF 转 PNG（<工作底稿>/终审PNG/）→ 清空 PDF 元数据 → 合并图集 → 扫描 PDF/DWG 里的
-                       禁用词和作者信息 → 打项目 zip 备份。结果打印；不复制到交付目录（由人确认后再复制）
+                       禁用词和作者信息 → 打项目 zip 备份。先核对产物（DWG 齐全、单张 PDF 恰 1 页 A3、不早于本次出图），
+                       不通过即中止。结果打印；不复制到交付目录（由人确认后再复制）
 
 工作底稿目录里放 pipeline.json（new_project.py 生成），字段：
   project      Plant 项目名，也是 DWG 标题栏项目名（不得带“验证”“测试”等字样）
@@ -112,11 +113,16 @@ def check_phase(cfg, nos, preview=True):
     ok &= step('check_plain（位号/线号齐全、唯一、禁用词）', r)
     r = run([PY, HERE / 'check_numbering.py', cfg['work'] / 'pid_model.json', cfg['plain']])
     ok &= step('check_numbering（线号分组连续、联锁编号连续、文字里的位号都在模型里）', r)
+    if set(nos) >= {s['no'] for s in cfg['model']['sheets']}:       # 覆盖核对要看整套图；只跑子集时跳过
+        r = run([PY, HERE / 'validate_views.py', cfg['work'] / 'pid_model.json', cfg['specs'], cfg['plain']])
+        ok &= step('validate_views（模型对象与连接都画进图、位号贴在对象旁、跨图成对）', r)
+    else:
+        print('SKIP validate_views（只处理了部分图，整套 prep 时才核对覆盖）')
     if preview and ok:
         pv = cfg['work'] / '预览'
         r = run([PY, HERE / 'preview_spec.py', cfg['plain'], pv] + nos + cat + ['--scale', '3'])
-        step(f'预览 → {pv}', r, 1)
-    return ok
+        ok &= step(f'预览 → {pv}', r, 1)
+    return bool(ok)
 
 
 def ps_quote(s):
@@ -126,7 +132,8 @@ def ps_quote(s):
 def write_run_script(cfg, nos, redraw):
     sheets = ';'.join(f'{n}|{dwg_name(cfg, n)}' for n in nos)
     sc = ENGINE / 'scripts'
-    lines = ["$ErrorActionPreference = 'Stop'", "$env:PYTHONIOENCODING = 'utf-8'"]
+    lines = ["$ErrorActionPreference = 'Stop'", "$env:PYTHONIOENCODING = 'utf-8'",
+             "[Console]::OutputEncoding = [Text.UTF8Encoding]::new($false); $OutputEncoding = [Console]::OutputEncoding"]
     if not (cfg['prj'] / 'Project.xml').exists():
         pp = cfg.get('projprops') or str(cfg['work'] / 'projprops.json')
         cmd = f"& {ps_quote(sc / 'setup_project.ps1')} -Name {ps_quote(cfg['project'])} -Parent {ps_quote(cfg['parent'])} -ProjProps {ps_quote(pp)}"
@@ -155,6 +162,87 @@ def acad_running():
     return [x.strip() for x in r.stdout.splitlines() if x.strip().isdigit()]
 
 
+# ---------------------------------------------------------------- 运行记录（出图成败只认记录，不认日志里的字样）
+def log_dir(cfg):
+    d = cfg['work'] / '_出图日志'
+    d.mkdir(exist_ok=True)
+    return d
+
+
+def write_record(cfg, rec):
+    """合并写入 _出图日志/run_<编号>.json"""
+    f = log_dir(cfg) / f"run_{rec['run_id']}.json"
+    old = json.loads(f.read_text(encoding='utf-8')) if f.exists() else {}
+    old.update(rec)
+    f.write_text(json.dumps(old, ensure_ascii=False, indent=1), encoding='utf-8')
+    return old
+
+
+def pid_alive(pid):
+    if not pid:
+        return False
+    if os.name == 'nt':
+        import ctypes
+        k = ctypes.windll.kernel32
+        h = k.OpenProcess(0x1000, False, int(pid))       # PROCESS_QUERY_LIMITED_INFORMATION
+        if not h:
+            return False
+        code = ctypes.c_ulong()
+        ok = k.GetExitCodeProcess(h, ctypes.byref(code))
+        k.CloseHandle(h)
+        return bool(ok) and code.value == 259            # STILL_ACTIVE
+    try:
+        os.kill(int(pid), 0)
+        return True
+    except OSError:
+        return False
+
+
+def latest_record(cfg):
+    """最近一次出图记录；记录写着 running 而进程已不在，改记为 interrupted"""
+    d = cfg['work'] / '_出图日志'
+    fs = sorted(d.glob('run_*.json')) if d.exists() else []
+    if not fs:
+        return None
+    rec = json.loads(fs[-1].read_text(encoding='utf-8'))
+    if rec.get('state') == 'running':
+        young = not rec.get('pid') and time.time() - rec.get('started', 0) < 30      # 包装进程刚启动，还没登记 PID
+        if not young and not pid_alive(rec.get('pid')):
+            rec = write_record(cfg, {'run_id': rec['run_id'], 'state': 'interrupted', 'finished': time.time()})
+    return rec
+
+
+def decode_log(b):
+    """日志统一写 UTF-8；旧日志是 GBK，先试 UTF-8 再回退"""
+    try:
+        return b.decode('utf-8')
+    except UnicodeDecodeError:
+        return b.decode('gbk', 'replace')
+
+
+def verify_outputs(cfg, nos, since=None, need_dwg=True):
+    """目标图张的产物核对：DWG 在、单张 PDF 恰 1 页且为 A3 横向、都不早于本次出图开始。返回问题列表"""
+    import fitz
+    bad = []
+    for n in nos:
+        files = [(cfg['pdf'] / f'{n}.pdf', 'PDF')]
+        if need_dwg:
+            files.insert(0, (cfg['prj'] / 'PID DWG' / dwg_name(cfg, n), 'DWG'))
+        for f, kind in files:
+            if not f.exists():
+                bad.append(f'{n}: 缺 {kind} {f.name}')
+                continue
+            if since and f.stat().st_mtime < since:
+                bad.append(f'{n}: {kind} {f.name} 早于本次出图开始，疑为旧文件')
+            if kind == 'PDF':
+                with fitz.open(f) as d:
+                    if d.page_count != 1:
+                        bad.append(f'{n}: PDF 有 {d.page_count} 页，应为 1 页')
+                    elif (round(d[0].rect.width / 72 * 25.4), round(d[0].rect.height / 72 * 25.4)) != (420, 297):
+                        bad.append(f'{n}: PDF 图幅不是 A3 横向')
+    return bad
+
+
 def cmd_draw(cfg, argv):
     redraw = '--redraw' in argv
     wait = '--wait' in argv
@@ -168,40 +256,62 @@ def cmd_draw(cfg, argv):
     if exists and not redraw:
         raise SystemExit(f'这些图已在项目里：{exists}。重画请加 --redraw')
     script = write_run_script(cfg, nos, redraw)
-    logdir = cfg['work'] / '_出图日志'
-    logdir.mkdir(exist_ok=True)
-    log = logdir / time.strftime('draw_%m%d_%H%M%S.log')
-    f = open(log, 'wb')
+    run_id = time.strftime('%m%d_%H%M%S')
+    log = log_dir(cfg) / f'draw_{run_id}.log'
+    write_record(cfg, {'run_id': run_id, 'state': 'running', 'started': time.time(), 'sheets': nos, 'redraw': redraw,
+                       'script': str(script), 'log': str(log), 'pid': None})
     flags = 0x08000000 | 0x00000200      # CREATE_NO_WINDOW | CREATE_NEW_PROCESS_GROUP（DETACHED_PROCESS 会丢掉输出）
-    pr = subprocess.Popen(['powershell.exe', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(script)],
-                          stdout=f, stderr=subprocess.STDOUT, creationflags=flags)
-    print(f'已启动（PID {pr.pid}），日志 {log}')
+    pr = subprocess.Popen([PY, str(Path(__file__).resolve()), str(cfg['work']), '_runner', run_id],
+                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, creationflags=flags)
+    print(f'已启动（运行 {run_id}，PID {pr.pid}），日志 {log}')
     print('整套 6 张约 5~6 分钟（含启动）。期间不要打开 AutoCAD。用 status 看进度。')
     if wait:
         pr.wait()
-        f.close()
         return show_status(cfg)
     return True
 
 
-def last_log(cfg):
-    logs = sorted((cfg['work'] / '_出图日志').glob('draw_*.log'))
-    return logs[-1] if logs else None
+def cmd_runner(cfg, run_id):
+    """后台包装进程：启动 PowerShell 出图，等它结束，按返回码和产物核对写最终状态"""
+    rec = json.loads((log_dir(cfg) / f'run_{run_id}.json').read_text(encoding='utf-8'))
+    write_record(cfg, {'run_id': run_id, 'pid': os.getpid()})
+    rc, problems = -1, []
+    try:
+        with open(rec['log'], 'wb') as f:
+            rc = subprocess.run(['powershell.exe', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', rec['script']],
+                                stdout=f, stderr=subprocess.STDOUT).returncode
+        if rc == 0:
+            problems = verify_outputs(cfg, rec['sheets'], since=rec['started'] - 2)
+    except Exception as e:
+        problems = [f'包装进程异常：{e}']
+    state = 'ok' if rc == 0 and not problems else 'failed'
+    write_record(cfg, {'run_id': run_id, 'state': state, 'returncode': rc, 'problems': problems, 'finished': time.time()})
+    return 0 if state == 'ok' else 1
+
+
+def status_code(cfg):
+    """0 完成；1 失败或没有记录；2 运行中或已中断。只看运行记录，日志只用来展示"""
+    rec = latest_record(cfg)
+    if not rec:
+        print('还没有出图记录')
+        return 1
+    st = rec.get('state')
+    lg = Path(rec['log']) if rec.get('log') else None
+    if lg and lg.exists():
+        t = decode_log(lg.read_bytes())
+        lines = [ln for ln in t.splitlines() if re.search(r'项目配置完成|===|已画完|!!|错误|超时|全部完成|失败|异常', ln)]
+        print(lg)
+        print('\n'.join(ln[:150] for ln in lines[-30:]))
+    for p in rec.get('problems', []):
+        print('问题:', p)
+    label = {'ok': '全部完成', 'failed': f"失败（返回码 {rec.get('returncode')}），见上", 'running': '进行中',
+             'interrupted': '已中断（进程已不在，未见完成记录）'}.get(st, st)
+    print(f"结果：{label}（运行 {rec.get('run_id')}）")
+    return {'ok': 0, 'failed': 1, 'running': 2, 'interrupted': 2}.get(st, 1)
 
 
 def show_status(cfg):
-    lg = last_log(cfg)
-    if not lg:
-        print('还没有出图日志')
-        return False
-    t = lg.read_bytes().decode('gbk', 'replace')
-    lines = [ln for ln in t.splitlines() if re.search(r'项目配置完成|===|已画完|!!|错误|超时|全部完成|失败|异常', ln)]
-    print(lg)
-    print('\n'.join(ln[:150] for ln in lines[-30:]))
-    done = '全部完成' in t
-    failed = bool(re.search(r'绘图失败|spec 静态检查未通过|^.*错误:', t, re.M)) and not done
-    print('结果：' + ('全部完成' if done else ('失败，见上' if failed else '进行中或已中断')))
-    return done
+    return status_code(cfg) == 0
 
 
 def scan_text(blob, words):
@@ -211,6 +321,19 @@ def scan_text(blob, words):
 def cmd_post(cfg, argv):
     import fitz
     nos = sheets_of(cfg, [a for a in argv if not a.startswith('--')])
+    # 产物核对先于一切收尾：DWG 齐全；单张 PDF 恰 1 页、A3 横向；有成功的出图记录时都须晚于那次出图开始（旧文件不得混入）
+    rec = latest_record(cfg)
+    since = None
+    if rec and rec.get('state') == 'ok' and rec.get('started') and set(nos) <= set(rec.get('sheets', [])):
+        since = rec['started'] - 2
+    problems = verify_outputs(cfg, nos, since=since)
+    if rec and rec.get('state') in ('failed', 'interrupted', 'running'):
+        problems.insert(0, f"最近一次出图（{rec.get('run_id')}）状态为 {rec.get('state')}，不得收尾发布")
+    if problems:
+        for p in problems:
+            print('FAIL', p)
+        print('收尾中止：产物核对未通过，未合并图集、未备份')
+        return False
     png = cfg['work'] / '终审PNG'
     png.mkdir(exist_ok=True)
     for f in png.glob('*.png'):
@@ -231,9 +354,6 @@ def cmd_post(cfg, argv):
     dwgdir = cfg['prj'] / 'PID DWG'
     for n in nos:
         f = dwgdir / dwg_name(cfg, n)
-        if not f.exists():
-            print('WARN 缺少 DWG', f.name)
-            continue
         b = f.read_bytes()
         # 二进制里短词会碰巧出现，只扫 5 个字符以上的词
         hits = [w for w in bad if len(w) >= 5 and (w.encode('utf-8') in b or w.encode('utf-16le') in b)]
@@ -280,7 +400,9 @@ def main(argv):
     if sub == 'draw':
         return 0 if cmd_draw(cfg, rest) else 1
     if sub == 'status':
-        return 0 if show_status(cfg) else 1
+        return status_code(cfg)
+    if sub == '_runner':
+        return cmd_runner(cfg, rest[0])
     if sub == 'post':
         return 0 if cmd_post(cfg, rest) else 1
     print(__doc__)
