@@ -16,7 +16,7 @@ description: Use when drawing, revising or checking P&IDs (管道及仪表流程
 |---|---|
 | 任何出图 | 本文件；项目 `pipeline.json` 的 `profile`（`assets/profiles/`） |
 | 写/改模型 | `references/model_schema.md` |
-| 写/改版面 | `references/layout_rules.md`、`scripts/patterns.py`（气源支路、控制回路）、`assets/example/` |
+| 写/改版面 | `references/layout_rules.md`、`scripts/patterns.py`（气源支路、控制回路）、`assets/example/`（版面写法可参照；图注里的“暂定”“FAT 前确定”是旧写法，新图不要照抄） |
 | 多通道装置（每个通道逐一画、公用部分单独成图） | `references/multi_channel.md` |
 | 图面规则、标准依据 | `references/drawing-rules.md`、`references/standards-index.json`（按条款查原件，不整本读） |
 | 找/加符号 | `references/symbol_library.md`、`python scripts\symbol_atlas.py find <关键词>` |
