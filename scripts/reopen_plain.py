@@ -68,7 +68,7 @@ def check(info_text, spec_items, spec_layers, frame):
             key = norm(it['text'])[:12]
             if key and not any(t.startswith(key) or key.startswith(t[:12]) for t in texts):
                 fails.append(f'重开后找不到文字：{key}')
-    allowed = set(spec_layers) | {'未打印', '0'}
+    allowed = set(spec_layers) | {'未打印', '0'} | ({'表格'} if has_table else set())     # 表格对象由引擎放在“表格”层
     for lay in sorted({e['layer'] for e in ents} - allowed):
         fails.append(f'出现 spec 没有的图层：{lay}')
     x0, y0, x1, y1 = frame

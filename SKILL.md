@@ -17,6 +17,7 @@ description: Use when drawing, revising or checking P&IDs (管道及仪表流程
 | 任何出图 | 本文件；项目 `pipeline.json` 的 `profile`（`assets/profiles/`） |
 | 写/改模型 | `references/model_schema.md` |
 | 写/改版面 | `references/layout_rules.md`、`scripts/patterns.py`（气源支路、控制回路）、`assets/example/` |
+| 多通道装置（每个通道逐一画、公用部分单独成图） | `references/multi_channel.md` |
 | 图面规则、标准依据 | `references/drawing-rules.md`、`references/standards-index.json`（按条款查原件，不整本读） |
 | 找/加符号 | `references/symbol_library.md`、`python scripts\symbol_atlas.py find <关键词>` |
 | 符号是否符合标准 | `references/symbol_iso_compare.md`（ISO 10628-2 对照）；ISO 符号定义在 `scripts/iso_symbols.py` |
@@ -67,7 +68,7 @@ description: Use when drawing, revising or checking P&IDs (管道及仪表流程
 - 产出出新版本，不覆盖旧版本；本地 `_恢复备份\` 留上一版项目 zip。
 - 闪退：引擎自动校验检查点并重试 1 次；仍失败就保留 `<Backup>\_故障留证\` 交给用户，不无限重试，不直接改项目库文件（见 `references/recovery.md`）。
 - 引擎脚本用 `powershell.exe`（Windows PowerShell 5）；含中文的 `.ps1` 存 UTF-8 带 BOM；JSON 路径用正斜杠。本机已装 PowerShell 7，脚本语法解析通过，但未在 CAD 上实测，不迁移（出图时间主要在 AutoCAD，换壳层没有收益）。
-- 措辞：图面、属性、交付文件不体现 AI 参与，不写工具与过程、数据文件名、内部问题编号。
+- 措辞：图面、属性、交付文件不体现 AI 参与，不写工具与过程、数据文件名、内部问题编号。图注、图例注、标题栏和模型的 status、pending_note 只写图上的事实（共用关系、信号怎么接、编号规则、符号含义），不写“暂定值”“具体配置在详细设计阶段确定”“不作施工和制造依据”“不得用于……”这类防御性免责话，也不在管道等级说明后加“（暂定）”；管径和等级照常标注。需要提醒读者的事放进交付说明。可在 `pipeline.json` 的 `ban` 里列出这些字样，出图前由 `check_plain` 拦截。
 
 ## 已定的取舍
 - 不再建 Plant 智能对象；需要位号库、报表时用 `export_lists.py` 由模型导出。
