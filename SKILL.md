@@ -1,6 +1,8 @@
 ---
 name: plant3d-pid
 description: Use when drawing, revising or checking P&IDs (管道及仪表流程图) as standard, editable DWG sheets with the AutoCAD Plant 3D engine (plain CAD entities, no smart objects) for custom equipment or test-bench projects — a new P&ID set from a project folder (requirements, technical scheme, cost workbook), layout or connection fixes on existing sheets, interlock C&E or operating-mode tables, equipment/line/instrument lists — or when the drawing engine crashes (eNotOpenForWrite), hangs at startup, or sheets show unconnected lines, overlapping text or missing nozzles.
+metadata:
+  version: "1.0.0"
 ---
 
 # P&ID 出图（普通图元 DWG）
