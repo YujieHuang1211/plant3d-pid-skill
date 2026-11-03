@@ -146,7 +146,8 @@ def _bbox(paths):
 
 def build_native():
     from iso_symbols import ISO_DEFS      # ISO 10628-2 风格符号（块、带依据），晚导入避免循环
-    ALL = {**DEFS, **ISO_DEFS}
+    from isa_iso1219_symbols import DEFS_R3      # ISA-5.1 / ISO 1219 符号
+    ALL = {**DEFS, **ISO_DEFS, **DEFS_R3}
     out = {}
     for st, d in ALL.items():
         out[st] = {'paths': d['paths'], 'bbox': _bbox(d['paths']), 'ports': {k: list(v) for k, v in d.get('ports', {}).items()}}

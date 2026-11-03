@@ -311,7 +311,7 @@ class Conv:
     def asset(self, it, syms, texts):
         st = it['style']
         self.sym(st, it, syms)
-        tag = it['id']
+        tag = it.get('ref_of') or it['id']      # 引用表示（ref_of）显示被引用对象的位号
         an = it.get('anno')
         if st == 'Off Page Connector Style':
             self.opc_text(it, texts)
@@ -342,7 +342,7 @@ class Conv:
 
     def anno(self, an, it, texts):
         st, at = an['style'], an['at']
-        tag = it['id']
+        tag = it.get('ref_of') or it['id']
         if st == 'Oval Tag Style':
             w = text_w(tag, H_TAG) + 4.0
             texts.append({'k': 'poly', 'pts': [[round(x, 3), round(y, 3)] for x, y in stadium(at[0], at[1], w, 5.0)], 'closed': True, 'layer': LAYER_TAG})

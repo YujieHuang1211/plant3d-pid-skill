@@ -510,7 +510,11 @@ def cmd_post(cfg, argv):
     for f in ([atlas] if full else []) + [cfg['pdf'] / f'{n}.pdf' for n in nos]:
         m = fitz.open(f).metadata
         extra = [k for k in ('author', 'creator', 'producer', 'subject', 'keywords') if m.get(k)]
-        hits = scan_text(' '.join(str(v) for v in m.values()), bad)
+        mtxt = ' '.join(str(v) for v in m.values())
+        proj = (cfg['model'].get('meta') or {}).get('project')
+        if proj:
+            mtxt = mtxt.replace(proj, '')      # 正式项目名可能含“测试”，不是验证项目残留
+        hits = scan_text(mtxt, bad)
         if extra or hits:
             print(f'FAIL PDF 元数据 {Path(f).name}: {extra} {hits}')
             ok = False
