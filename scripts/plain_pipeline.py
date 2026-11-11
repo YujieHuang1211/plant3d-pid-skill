@@ -15,7 +15,7 @@
   reopen [图号 …]      在全新 AutoCAD 会话里重新打开已出的 DWG，核对数量、文字、图层、越框（不保存、不改图），约 4 分钟
   status               看最近一次出图记录（_出图日志/run_*.json）：退出码 0 完成 / 1 失败或无记录 / 2 运行中或已中断
   post                 出图后：PDF 转 PNG（<工作底稿>/终审PNG/）→ 清空 PDF 元数据 → 合并图集 → 扫描 PDF/DWG 里的
-                       禁用词和作者信息 → 打项目 zip 备份。先核对产物（DWG 齐全、单张 PDF 恰 1 页 A3、不早于本次出图），
+                       禁用词和作者信息 → 打项目 zip 备份。先核对产物（DWG 齐全、单张 PDF 恰 1 页且图幅与制图配置一致、不早于本次出图），
                        不通过即中止。结果打印；不复制到交付目录（由人确认后再复制）
 
 工作底稿目录里放 pipeline.json（new_project.py 生成），字段：
@@ -157,13 +157,15 @@ def write_run_script(cfg, nos, redraw, run_id=''):
     if not (cfg['prj'] / 'Project.xml').exists():
         pp = cfg.get('projprops') or str(cfg['work'] / 'projprops.json')
         cmd = f"& {ps_quote(sc / 'setup_project.ps1')} -Name {ps_quote(cfg['project'])} -Parent {ps_quote(cfg['parent'])} -ProjProps {ps_quote(pp)}"
+        import drawprofile
+        cmd += f" -Paper {drawprofile.sheet(drawprofile.load(cfg.get('profile')))['name']}"
         if cfg.get('stylecfg'):
             cmd += f" -StyleCfg {ps_quote(cfg['stylecfg'])}"
         if cfg.get('schema'):
             cmd += f" -Schema {ps_quote(cfg['schema'])}"
         lines.append(cmd)
     cmd = (f"& {ps_quote(sc / 'build_set.ps1')} -Project {ps_quote(cfg['prj'] / 'Project.xml')} -Specs {ps_quote(cfg['plain'])} "
-           f"-Pdf {ps_quote(cfg['pdf'])} -Backup {ps_quote(cfg['backup'])} -Sheets {ps_quote(sheets)} -Plain")
+           f"-Pdf {ps_quote(cfg['pdf'])} -Backup {ps_quote(cfg['backup'])} -Sheets {ps_quote(sheets)} -Plain -Profile {ps_quote(cfg.get('profile', 'legacy-2026-10'))}")
     if cfg.get('stylecfg'):
         cmd += f" -StyleCfg {ps_quote(cfg['stylecfg'])}"
     if redraw:
@@ -242,7 +244,7 @@ def decode_log(b):
 
 
 def verify_outputs(cfg, nos, since=None, need_dwg=True):
-    """目标图张的产物核对：DWG 在、单张 PDF 恰 1 页且为 A3 横向、都不早于本次出图开始。返回问题列表"""
+    """目标图张的产物核对：DWG 在、单张 PDF 恰 1 页且图幅与制图配置一致、都不早于本次出图开始。返回问题列表"""
     import fitz
     import drawprofile
     S = drawprofile.sheet(drawprofile.load(cfg.get('profile')))
@@ -480,7 +482,7 @@ def scan_text(blob, words):
 def cmd_post(cfg, argv):
     import fitz
     nos = sheets_of(cfg, [a for a in argv if not a.startswith('--')])
-    # 产物核对先于一切收尾：DWG 齐全；单张 PDF 恰 1 页、A3 横向；有成功的出图记录时都须晚于那次出图开始（旧文件不得混入）
+    # 产物核对先于一切收尾：DWG 齐全；单张 PDF 恰 1 页、图幅与制图配置一致；有成功的出图记录时都须晚于那次出图开始（旧文件不得混入）
     rec = latest_record(cfg)
     since = None
     if rec and rec.get('state') == 'ok' and rec.get('started') and set(nos) <= set(rec.get('sheets', [])):
@@ -497,7 +499,7 @@ def cmd_post(cfg, argv):
     png.mkdir(exist_ok=True)
     for f in png.glob('*.png'):
         f.unlink()
-    ok = step('PDF → PNG', run([PY, HERE / 'render_pdfs.py', cfg['pdf'], png]), 1)
+    ok = step('PDF → PNG', run([PY, HERE / 'render_pdfs.py', cfg['pdf'], png] + ([cfg['profile']] if cfg.get('profile') else [])), 1)
     ok &= step('清空 PDF 元数据', run([PY, HERE / 'clean_pdf_meta.py', cfg['work'] / 'pid_model.json', cfg['pdf']]), 1)
     atlas = cfg['stage'] / f"{cfg['project']}_P&ID图集_{cfg['model']['meta'].get('rev', 'R0')}.pdf"
     full = set(nos) >= {x['no'] for x in cfg['model']['sheets']}

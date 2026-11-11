@@ -1327,5 +1327,17 @@
   "cat": "调节阀与执行机构",
   "use": "下压气缸换向阀：口 4、2 在上，口 5、1、3 在下",
   "native": true
+ },
+ "ISA Pneumatic Piston Globe Valve Style": {
+  "zh": "气动角座阀（线性活塞执行机构）",
+  "cat": "调节阀与执行机构",
+  "use": "气动角座阀（直通式 Y 型活塞阀）：截止阀阀体加线性活塞执行机构方框；气动信号接方框顶部；失效位置在符号旁标 FC 或 FO",
+  "native": true
+ },
+ "ISA Pneumatic Piston Ball Valve Style": {
+  "zh": "气动球阀（旋转活塞执行机构）",
+  "cat": "调节阀与执行机构",
+  "use": "气动球阀：球阀阀体加旋转活塞执行机构三格方框；气动信号接方框顶部；失效位置在符号旁标 FC 或 FO",
+  "native": true
  }
 }

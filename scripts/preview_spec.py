@@ -34,8 +34,11 @@ def main(argv):
             i += 2; continue
         if argv[i] == '--profile':
             lint_specs.set_profile(argv[i + 1])
-            global FRAME, TB
+            global FRAME, TB, W, H
             FRAME, TB = lint_specs.FRAME, lint_specs.TB
+            import drawprofile
+            _sh = drawprofile.load(argv[i + 1])['sheet']
+            W, H = int(_sh['width']), int(_sh['height'])
             i += 2; continue
         if argv[i] == '--scale':
             k = float(argv[i + 1]); i += 2; continue

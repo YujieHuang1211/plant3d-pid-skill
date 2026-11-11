@@ -1354,6 +1354,56 @@
   "from_ang": 0,
   "native": true
  },
+ "ISA Pneumatic Piston Ball Valve Style": {
+  "bbox": [
+   -4.5,
+   -2.0,
+   4.5,
+   7.4
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    0,
+    7.4
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
+ "ISA Pneumatic Piston Globe Valve Style": {
+  "bbox": [
+   -4.0,
+   -2.0,
+   4.0,
+   7.8
+  ],
+  "att": [
+   [
+    -4,
+    0
+   ],
+   [
+    0,
+    7.8
+   ],
+   [
+    4,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
  "ISO Ball Valve Closed Style": {
   "bbox": [
    -4.0,

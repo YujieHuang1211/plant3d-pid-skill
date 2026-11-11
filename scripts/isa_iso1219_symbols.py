@@ -71,6 +71,21 @@ def _isa_diaphragm_body():
             P([(-0.7, -2), (0.7, -2), (0, -0.5), (-0.7, -2)], True, True)]
 
 
+def _isa_piston_globe():
+    """气动活塞式截止阀（角座阀）：ISO 10628-2 截止阀阀体（21.4）加 ISA-5.1 表12第4项线性活塞执行机构（方框，单作用弹簧对置或双作用）。
+    角座阀是直通式 Y 型座阀，管线不转向，所以阀体用直通截止阀，不用转角的角阀（21.5）。"""
+    from iso_symbols import ISO_DEFS
+    body = [dict(x) for x in ISO_DEFS['ISO Globe Valve Style']['paths']]
+    return body + [P([(0, 0.35), (0, 3.6)]), P(_rect(-2.6, 3.6, 2.6, 7.8), True)]
+
+
+def _isa_piston_ball():
+    """气动球阀：ISO 10628-2 球阀阀体（21.7）加 ISA-5.1 表12第6项旋转活塞执行机构（三格方框，单作用弹簧对置或双作用）。"""
+    from iso_symbols import ISO_DEFS
+    body = [dict(x) for x in ISO_DEFS['ISO Ball Valve Style']['paths']]
+    return body + [P([(0, 0.5), (0, 3.6)]), P(_rect(-4.5, 3.6, 4.5, 7.4), True), P([(-1.5, 3.6), (-1.5, 7.4)]), P([(1.5, 3.6), (1.5, 7.4)])]
+
+
 def _v32():
     """ISO 1219 先导电磁式 3/2 常闭阀，弹簧复位。两格 5×5：左格＝得电位（1→2 连通，3 封闭），右格＝常态位（1 封闭，2→3 排气）；
     口在右格上：2 在上（x=3.75），1 在下右（x=3.75），3 在下左（x=1.25）。操作器在左，弹簧在右。"""
@@ -125,6 +140,14 @@ DEFS_R3 = {
                                                 use='气动隔膜阀：隔膜阀阀体加弹簧薄膜执行机构（圆顶）；气动信号接圆顶顶部；失效位置在符号旁标 FC 或 FO',
                                                 block=True, ports={'in': (-4, 0), 'sig': (0, 8.6), 'out': (4, 0)}, paths=_isa_pneumatic_diaphragm(),
                                                 basis=_basis(ISA, '表11 第9项a + 表12 第1项', 45, '执行机构圆顶压在阀杆上；气动信号线由圆顶顶部接入')),
+    'ISA Pneumatic Piston Globe Valve Style': dict(zh='气动角座阀（线性活塞执行机构）', cat='调节阀与执行机构',
+                                                   use='气动角座阀（直通式 Y 型活塞阀）：截止阀阀体加线性活塞执行机构方框；气动信号接方框顶部；失效位置在符号旁标 FC 或 FO',
+                                                   block=True, ports={'in': (-4, 0), 'sig': (0, 7.8), 'out': (4, 0)}, paths=_isa_piston_globe(),
+                                                   basis=_basis(ISA, '表12 第4项（线性活塞执行机构）+ ISO 10628-2 表2 第21.4（截止阀）', 47, '阀体按 ISO 截止阀，执行机构按 ISA-5.1 线性活塞，单作用弹簧对置或双作用不加区分，失效位置另行标注')),
+    'ISA Pneumatic Piston Ball Valve Style': dict(zh='气动球阀（旋转活塞执行机构）', cat='调节阀与执行机构',
+                                                  use='气动球阀：球阀阀体加旋转活塞执行机构三格方框；气动信号接方框顶部；失效位置在符号旁标 FC 或 FO',
+                                                  block=True, ports={'in': (-4, 0), 'sig': (0, 7.4), 'out': (4, 0)}, paths=_isa_piston_ball(),
+                                                  basis=_basis(ISA, '表12 第6项（旋转活塞执行机构）+ ISO 10628-2 表2 第21.7（球阀）', 47, '单作用弹簧对置或双作用不加区分，失效位置另行标注')),
     'ISO1219 3-2 Pilot Solenoid NC Style': dict(zh='3/2 先导电磁阀（常闭，弹簧复位）', cat='调节阀与执行机构',
                                                 use='阀岛里的先导电磁阀：口 2（A）在上，口 1（P）下右，口 3（R）下左', block=True,
                                                 ports={'A': (3.75, 5.0), 'P': (3.75, -5.0), 'R': (1.25, -5.0)}, paths=_v32(),
