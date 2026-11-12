@@ -1404,6 +1404,27 @@
   "from_ang": 0,
   "native": true
  },
+ "ISA Rotameter Needle Valve Style": {
+  "bbox": [
+   -7.25,
+   -4.5,
+   7.25,
+   4.5
+  ],
+  "att": [
+   [
+    -7.25,
+    0
+   ],
+   [
+    7.25,
+    0
+   ]
+  ],
+  "scale": 1.0,
+  "from_ang": 0,
+  "native": true
+ },
  "ISO Ball Valve Closed Style": {
   "bbox": [
    -4.0,
