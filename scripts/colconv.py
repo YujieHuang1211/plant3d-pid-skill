@@ -6,7 +6,14 @@
 没写（或写成空表）时，按联锁和工况里实际出现的键生成，表头用键名；不再带入别的项目的列头。
 """
 
+import sys
+
 MODE_FIXED = ('id', 'name', 'permissive', 'exit')
+
+
+def _warn(what, keys):
+    if keys:
+        print(f'提示：模型没有写 conventions.{what}，列头暂用键名（{"、".join(map(str, keys))}）；要中文列头请在模型里写上。', file=sys.stderr)
 
 
 def _pairs(items, names, with_short):
@@ -33,6 +40,7 @@ def action_columns(model):
                 if k not in seen:
                     seen.append(k)
         items = seen
+        _warn('action_columns', [k for k in items if k not in conv.get('action_names', {})])
     return _pairs(items, conv.get('action_names', {}), True)
 
 
@@ -47,6 +55,7 @@ def mode_columns(model):
                 if k not in MODE_FIXED and k not in seen:
                     seen.append(k)
         items = seen
+        _warn('mode_columns', [k for k in items if k not in conv.get('mode_names', {})])
     cols = _pairs(items, conv.get('mode_names', {}), False)
     keys = [c[0] for c in cols]
     if model.get('modes') or 'permissive' in keys:

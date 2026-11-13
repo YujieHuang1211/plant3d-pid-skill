@@ -9,8 +9,9 @@ CAT = {lint_specs.BL_STYLE: {'bbox': [-10, -3, 10, 3], 'att': []}}
 BL = lint_specs.BL_STYLE
 
 
-def lint(items):
-    errs, warns = [], []
+def lint(items, warns=None):
+    errs = []
+    warns = [] if warns is None else warns
     lint_specs.lint_sheet('P&ID-101', items, CAT, {i['id'] for i in items if i.get('id')}, errs, warns)
     return errs
 
@@ -38,6 +39,11 @@ class BatteryLimit(unittest.TestCase):
 
     def test_inlet_flag_centred_on_line_start_is_error(self):
         self.assertTrue(lint(sheet([[100, 50], [150, 50]], [100, 50], 0, 'start')))
+
+    def test_small_offset_is_warning_not_error(self):
+        warns = []
+        self.assertEqual(lint(sheet([[100, 50], [150, 50]], [158, 50], 0, 'end'), warns), [])
+        self.assertTrue(any('W-BL-END' in w for w in warns), warns)
 
     def test_other_line_crossing_flag_is_error(self):
         other = [{'k': 'line', 'id': 'L2', 'pts': [[155, 40], [155, 60]]}]

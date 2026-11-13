@@ -7,12 +7,12 @@ ERROR（任一即 LINT FAIL）：
   - 文字/表格压标题栏+修订栏（x>235、y<91）或超出图框
   - 连接几何：端接（start/end）线端离目标符号外框 >0.5 mm（图面看似未连上）；
     在线（inline）符号插入点不在管线上；三通（tee）线端不在被接管线上；接管嘴的线端离管嘴 >0.5 mm
-  - 界区符号（QMZ Battery Limit Style）：进口旗尖应落在管线起点，出口旗的平边应贴在管线终点（旗中心压在管线端点上、管线伸进旗内即 ERROR）；其他管线不得穿过界区旗
+  - 界区符号（QMZ Battery Limit Style）：进口旗尖应落在管线起点，出口旗的平边应贴在管线终点（偏差超过 3 mm 即 ERROR，如旗中心压在管线端点上；0.5～3 mm 给警告 W-BL-END）；其他管线不得穿过界区旗
 WARN（不阻断；--strict 时也算失败）：
   - 线端落在符号外框内但不在连接点上
   - 文字与文字、文字与符号外框重叠
   - 目录中没有的样式（未检几何）
-警告带稳定编号 [W-…]：W-FRAME-BOTTOM、W-NO-STYLE、W-OFF-PORT、W-TEXT-TEXT、W-TEXT-SYM、W-SYM-SYM。
+警告带稳定编号 [W-…]：W-BL-END、W-FRAME-BOTTOM、W-NO-STYLE、W-OFF-PORT、W-TEXT-TEXT、W-TEXT-SYM、W-SYM-SYM。
   --block 编号,…   这些编号的警告若没被接受就算 ERROR（出图前必须处置）
   --accept 文件    已接受警告清单 JSON：[{"code": "W-TEXT-SYM", "match": "位号或图号片段", "reason": "理由", "sheet_sha": "该图 spec 的 sha256 前 12 位（可省）"}]；
                    图 spec 变了（sha 不符）清单即失效，需重新判断
@@ -112,6 +112,7 @@ REFS = {'connect': ('line', 'asset'), 'tee': ('line', 'to'), 'opc': ('a', 'b'), 
 
 BL_STYLE = 'QMZ Battery Limit Style'
 BL_HALF_L, BL_HALF_W = 10.0, 3.0    # 界区旗：长 20、高 6，插入点在中心，旗尖朝 +x
+BL_ERR_DEV = 3.0                    # 端点偏离应在位置超过此值算错，更小的偏差给警告
 
 
 def bl_frame(p, at, ang):
@@ -119,15 +120,23 @@ def bl_frame(p, at, ang):
     return rot(p[0] - at[0], p[1] - at[1], -ang)
 
 
-def bl_end_check(no, it, p, at, ang, errs):
+def bl_end_check(no, it, p, at, ang, errs, warns):
     """界区旗与管线端点的相对位置：进口旗尖对着管线起点，出口旗的平边贴着管线终点，旗整体在管线之外。
-    管线端点落在旗里面（旗中心压在管线终点上）会让管线伸进旗内，流向箭头落在旗体里。"""
+    管线端点落在旗里面（旗中心压在管线终点上）会让管线伸进旗内，流向箭头落在旗体里。
+    偏差超过 3 mm 算错（R1 的做法偏了 10 mm）；0.5～3 mm 是旧摆法留的小重叠，给警告 [W-BL-END]。"""
     u, v = bl_frame(p, at, ang)
-    want = BL_HALF_L if it.get('ctx') == 'start' else -BL_HALF_L
-    if abs(u - want) > TOL or abs(v) > TOL:
-        what = '进口旗尖应落在管线起点' if it.get('ctx') == 'start' else '出口旗的平边应贴在管线终点、旗在管线之外'
-        errs.append(f'{no} {it["asset"]} 界区符号与管线 {it["line"]} 的{"起点" if it.get("ctx") == "start" else "终点"}位置不对：'
-                    f'端点在旗内坐标 u={u:.1f}、v={v:.1f}（应为 u={want:+.0f}、v=0）；{what}')
+    start = it.get('ctx') == 'start'
+    want = BL_HALF_L if start else -BL_HALF_L
+    dev = math.hypot(u - want, v)
+    if dev <= TOL:
+        return
+    msg = (f'{no} {it["asset"]} 界区符号与管线 {it["line"]} 的{"起点" if start else "终点"}位置不对：'
+           f'端点在旗内坐标 u={u:.1f}、v={v:.1f}（应为 u={want:+.0f}、v=0）；'
+           + ('进口旗尖应落在管线起点' if start else '出口旗的平边应贴在管线终点、旗在管线之外'))
+    if dev > BL_ERR_DEV:
+        errs.append(msg)
+    else:
+        warns.append('[W-BL-END] ' + msg)
 
 
 def bl_cross_check(no, items, objs, lines, errs):
@@ -232,7 +241,7 @@ def lint_sheet(no, items, cat, all_ids, errs, warns):
                 continue
             p = pts[0] if ctx == 'start' else pts[-1]
             if st == BL_STYLE:
-                bl_end_check(no, it, p, at, rots[it['asset']], errs)
+                bl_end_check(no, it, p, at, rots[it['asset']], errs, warns)
             box, att = pl
             d_att = min((math.hypot(p[0] - a[0], p[1] - a[1]) for a in att), default=math.inf)
             d_box = dist_box(p, box)
