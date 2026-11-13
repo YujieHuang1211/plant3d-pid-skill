@@ -7,6 +7,7 @@ ERROR（任一即 LINT FAIL）：
   - 文字/表格压标题栏+修订栏（x>235、y<91）或超出图框
   - 连接几何：端接（start/end）线端离目标符号外框 >0.5 mm（图面看似未连上）；
     在线（inline）符号插入点不在管线上；三通（tee）线端不在被接管线上；接管嘴的线端离管嘴 >0.5 mm
+  - 界区符号（QMZ Battery Limit Style）：进口旗尖应落在管线起点，出口旗的平边应贴在管线终点（旗中心压在管线端点上、管线伸进旗内即 ERROR）；其他管线不得穿过界区旗
 WARN（不阻断；--strict 时也算失败）：
   - 线端落在符号外框内但不在连接点上
   - 文字与文字、文字与符号外框重叠
@@ -109,8 +110,64 @@ def overlap(a, b, pad=0.2):
 REFS = {'connect': ('line', 'asset'), 'tee': ('line', 'to'), 'opc': ('a', 'b'), 'nozzle': ('on',)}
 
 
+BL_STYLE = 'QMZ Battery Limit Style'
+BL_HALF_L, BL_HALF_W = 10.0, 3.0    # 界区旗：长 20、高 6，插入点在中心，旗尖朝 +x
+
+
+def bl_frame(p, at, ang):
+    """点 p 在界区旗局部坐标系里的 (u, v)：u 沿旗尖方向，原点在旗中心"""
+    return rot(p[0] - at[0], p[1] - at[1], -ang)
+
+
+def bl_end_check(no, it, p, at, ang, errs):
+    """界区旗与管线端点的相对位置：进口旗尖对着管线起点，出口旗的平边贴着管线终点，旗整体在管线之外。
+    管线端点落在旗里面（旗中心压在管线终点上）会让管线伸进旗内，流向箭头落在旗体里。"""
+    u, v = bl_frame(p, at, ang)
+    want = BL_HALF_L if it.get('ctx') == 'start' else -BL_HALF_L
+    if abs(u - want) > TOL or abs(v) > TOL:
+        what = '进口旗尖应落在管线起点' if it.get('ctx') == 'start' else '出口旗的平边应贴在管线终点、旗在管线之外'
+        errs.append(f'{no} {it["asset"]} 界区符号与管线 {it["line"]} 的{"起点" if it.get("ctx") == "start" else "终点"}位置不对：'
+                    f'端点在旗内坐标 u={u:.1f}、v={v:.1f}（应为 u={want:+.0f}、v=0）；{what}')
+
+
+def bl_cross_check(no, items, objs, lines, errs):
+    """其他管线不得穿过界区旗"""
+    for it in items:
+        if it['k'] != 'asset' or (it.get('style') or it.get('body')) != BL_STYLE:
+            continue
+        at, ang = it['at'], it.get('rot', 0)
+        own = {c['line'] for c in items if c['k'] == 'connect' and c['asset'] == it['id']}
+        for lid, pts in lines.items():
+            if lid in own:
+                continue
+            for a, b in zip(pts, pts[1:]):
+                ua, va = bl_frame(a, at, ang)
+                ub, vb = bl_frame(b, at, ang)
+                if seg_hits_box((ua, va), (ub, vb), BL_HALF_L - 0.3, BL_HALF_W - 0.3):
+                    errs.append(f'{no} 管线 {lid} 穿过界区符号 {it["id"]}')
+                    break
+
+
+def seg_hits_box(a, b, hx, hy):
+    """线段 ab 是否与以原点为中心、半宽 hx、半高 hy 的矩形相交（Liang–Barsky）"""
+    t0, t1 = 0.0, 1.0
+    dx, dy = b[0] - a[0], b[1] - a[1]
+    for d, lo, hi in ((dx, -hx - a[0], hx - a[0]), (dy, -hy - a[1], hy - a[1])):
+        if abs(d) < 1e-9:
+            if lo > 0 or hi < 0:
+                return False
+        else:
+            ta, tb = lo / d, hi / d
+            if ta > tb:
+                ta, tb = tb, ta
+            t0, t1 = max(t0, ta), min(t1, tb)
+            if t0 > t1:
+                return False
+    return True
+
+
 def lint_sheet(no, items, cat, all_ids, errs, warns):
-    here, objs, lines = set(), {}, {}
+    here, objs, lines, rots = set(), {}, {}, {}
     for n, it in enumerate(items):
         k = it['k']
         for key in REFS.get(k, ()):
@@ -153,6 +210,7 @@ def lint_sheet(no, items, cat, all_ids, errs, warns):
                 if pl is None:
                     warns.append(f'[W-NO-STYLE] {no} {it["id"]}：目录无样式“{st}”，未检几何')
                 objs[it['id']] = (st, it['at'], pl)
+                rots[it['id']] = it.get('rot', 0)
             elif k == 'nozzle':
                 p = tuple(it['at'])
                 objs[it['id']] = ('nozzle', p, ((p[0], p[1], p[0], p[1]), [p]))
@@ -173,6 +231,8 @@ def lint_sheet(no, items, cat, all_ids, errs, warns):
             if pl is None:
                 continue
             p = pts[0] if ctx == 'start' else pts[-1]
+            if st == BL_STYLE:
+                bl_end_check(no, it, p, at, rots[it['asset']], errs)
             box, att = pl
             d_att = min((math.hypot(p[0] - a[0], p[1] - a[1]) for a in att), default=math.inf)
             d_box = dist_box(p, box)
@@ -188,6 +248,8 @@ def lint_sheet(no, items, cat, all_ids, errs, warns):
             d = dist_poly(p, lines[it['to']])
             if d > TOL:
                 errs.append(f'{no} 三通 {it["line"]} 线端 ({p[0]:g},{p[1]:g}) 不在管线 {it["to"]} 上（偏 {d:.1f} mm）')
+
+    bl_cross_check(no, items, objs, lines, errs)
 
     # ---- 重叠（提示）
     texts = [(n, text_box(it)) for n, it in enumerate(items) if it['k'] == 'text']

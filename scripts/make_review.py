@@ -9,6 +9,9 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import colconv  # noqa: E402
+
 M = {}
 
 FONT = Font(name='宋体', size=10)
@@ -20,36 +23,10 @@ HEAD = PatternFill('solid', fgColor='D9D9D9')
 WRAP = Alignment(wrap_text=True, vertical='center')
 CENTER = Alignment(wrap_text=True, vertical='center', horizontal='center')
 
-# 对象类别—采用符号—来源（阶段 2 配置时按此落实；尺寸为 A3 实际打印尺寸）
-SYMBOLS = [
-    ('主工艺管线（316L Φ6）', 'PipeLines / Primary', 'Primary Style', 'PIP', '线宽 0.5 mm', '管线号 HG/T 20519 格式'),
-    ('驱动气管（PU Φ4）', 'PipeLines / Secondary', 'Secondary Style', 'PIP', '线宽 0.35 mm', ''),
-    ('电信号线', 'SignalLines / Electrical', 'Electrical Style', 'PIP（ISA-5.1 表达）', '0.25 mm 虚线', ''),
-    ('软件/通信链路', 'SignalLines / Software', 'Software Style', 'PIP（ISA-5.1 表达）', '0.25 mm', 'RS485/RS232/以太网'),
-    ('气动信号', 'SignalLines / Pneumatic', 'Pneumatic Style', 'PIP（ISA-5.1 表达）', '0.25 mm', '先导阀→执行机构'),
-    ('手动球阀', 'HandValves / BallValve', 'Ball Valve Style', 'PIP', '8×5 mm', ''),
-    ('针阀', 'HandValves / NeedleValve', 'Needle Valve Style', 'PIP', '8×4 mm', '限流'),
-    ('止回阀', 'HandValves / CheckValve', 'Check Valve Style', 'PIP', '8×4 mm', ''),
-    ('气动隔膜切断阀（带先导电磁阀）', 'ControlValve 阀体 + Diaphragm 执行机构', 'Diaphragm Valve Style + 自定义“隔膜执行机构+先导电磁阀”', 'PIP 阀体 + ISA 执行机构（项目补充）', '阀体 8×4 mm', 'FC/FO 标注；先导电磁阀 XY 作执行机构一部分'),
-    ('自力式减压阀', 'ControlValve 阀体 + PressureReducingRegulator', 'Control Valve Style + PressureReducingRegulator Style', 'PIP', '8×8 mm', '带压力表 PI'),
-    ('管道过滤器', 'PipingSpecialtyItems / FilterPipe', 'Filter Pipe Style', 'PIP', '8×8 mm', ''),
-    ('封堵帽', 'Fittings / Cap', 'Cap Style', 'PIP', '—', '备用口'),
-    ('质量流量控制器 MFC', 'MassFlowController（新增类）', '自定义“MFC 本体”', '项目自定义符号', '14×6 mm', '本体位号 FIC-xxx'),
-    ('流量开关', 'InlineInstruments / FlowSwitch', '自定义或 ISA 在线开关', 'ISA（项目补充）', '8×6 mm', 'FSL-201'),
-    ('现场仪表（PT/TT/PI/AIT/TE）', 'GeneralInstrumentSymbols / FieldMountedDiscreteInstrument', 'Field Mounted Discrete Instrument Style', 'PIP（ISA-5.1 圆）', 'Ø9 mm', '字母代号+回路号'),
-    ('PLC 功能（PI/TI/PAHH/TAHH 等）', 'GeneralInstrumentSymbols / PrimaryLocAccessiblePLC', 'Primary Loc Accessible PLC Style', 'PIP（ISA-5.1 方框内菱形）', '9×9 mm', ''),
-    ('硬件联锁', 'FieldMountedDiscreteHardwareInterlock', 'Field Mounted Discrete Hardware Interlock Style', 'PIP（ISA-5.1 菱形 I）', '9×9 mm', '安全继电器 UZ-401'),
-    ('气体探测器', 'GasDetector（新增类）', 'Field Mounted Discrete Instrument Style', 'PIP（ISA-5.1）', 'Ø9 mm', 'AIT-401~403'),
-    ('管式炉', 'Furnaces / Furnace', '自定义“开启式管式炉”', '项目自定义符号', '约 60×25 mm', '内含夹具'),
-    ('纽扣电池测试夹具', 'TestFixture（新增类）', '自定义“刚玉管夹具+纽扣电池”', '项目自定义符号', '约 50×10 mm', '阳极进/出管口'),
-    ('冷凝收集杯', 'Tanks / Vessel', '自定义“小收集杯”', '项目自定义符号', '约 10×16 mm', '底部排液'),
-    ('电子负载', 'ElectronicLoad（新增类）', '自定义“电子负载框”', '项目自定义符号', '约 30×16 mm', 'JL-301'),
-    ('跨图连接器', 'Connectors / OffPageConnector', 'Off Page Connector Style', 'PIP', '—', '两端配对'),
-    ('界区接口（甲方供/去向）', 'Connectors / OffPageConnector', 'Off Page Connector Style + 文字', 'PIP', '—', '注明甲方边界'),
-]
-
 
 def sheet(wb, name, headers, rows, widths, title=None):
+    if not rows:            # 没有内容的表不建（模板里的空表头页没有用）
+        return None
     ws = wb.create_sheet(name)
     r0 = 1
     if title:
@@ -79,6 +56,7 @@ def main(model, out):
     ws = wb.active
     ws.title = '说明'
     meta = M['meta']
+    CV = M.get('conventions', {})
     lines = [
         ('文件', 'P&ID 设计依据与连接关系表（供确认，确认后据此绘制 Plant 3D P&ID）'),
         ('项目', meta['project']),
@@ -86,13 +64,12 @@ def main(model, out):
         ('状态', meta['status']),
         ('设计依据', '\n'.join(meta['basis'])),
         ('依据类别代号', '；'.join(f'{k}={v}' for k, v in meta['source_codes'].items()) + '；src 中的 R 加数字为技术方案版次，其后为章节或表号'),
-        ('管线号规则', M['conventions']['line_number']),
-        ('仪表位号规则', M['conventions']['tags']['instrument']),
-        ('其他位号', '；'.join(f'{k}: {v}' for k, v in M['conventions']['tags'].items() if k != 'instrument')),
-        ('管道等级', '；'.join(f'{k}: {v}' for k, v in M['conventions']['pipe_class'].items())),
-        ('物料代号', '；'.join(f'{k}={v}' for k, v in M['conventions']['fluid_codes'].items())),
+        ('管线号规则', CV.get('line_number', '')),
+        ('仪表位号规则', CV.get('tags', {}).get('instrument', '')),
+        ('其他位号', '；'.join(f'{k}: {v}' for k, v in CV.get('tags', {}).items() if k != 'instrument')),
+        ('管道等级', '；'.join(f'{k}: {v}' for k, v in CV.get('pipe_class', {}).items())),
+        ('物料代号', '；'.join(f'{k}={v}' for k, v in CV.get('fluid_codes', {}).items())),
         ('图纸', '；'.join(f"{s['no']} {s['title']}" for s in M['sheets'])),
-        ('暂定值', '注“暂定”的设定值在 FAT 前确定。'),
     ]
     ws.cell(1, 1, meta['project'] + ' P&ID 设计依据与连接关系表').font = TITLE
     for i, (k, v) in enumerate(lines, 3):
@@ -132,34 +109,20 @@ def main(model, out):
     sheet(wb, '信号', ['起', '止', '类型', '说明'],
           [[s['from'], s['to'], typ.get(s['type'], s['type']), s.get('desc', '')] for s in M['signals']], [22, 30, 12, 60])
 
-    conv = M['conventions']
-    acols = conv.get('action_columns')
-    if acols:
-        # 新项目：动作列取自 conventions.action_columns，列名取自 action_names（缺省用键名）
-        anames = conv.get('action_names', {})
-        sheet(wb, '联锁因果表', ['编号', '原因', '检测', '设定值'] + [anames.get(k, k) for k in acols] + ['复位', '依据'],
-              [[i['id'], i['cause'], i['detect'], i['setpoint']] + [i['actions'].get(k, '') for k in acols] + [i['reset'], i['src']]
-               for i in M['interlocks']],
-              [7, 28, 20, 26] + [16] * len(acols) + [20, 18])
-        mcols = conv.get('mode_columns', [])
-        mnames = conv.get('mode_names', {})
-        sheet(wb, '运行工况', ['编号', '工况'] + [mnames.get(k, k) for k in mcols] + ['许可条件', '转出条件'],
-              [[m['id'], m['name']] + [m.get(k, '') for k in mcols] + [m.get('permissive', ''), m.get('exit', '')] for m in M['modes']],
-              [6, 24] + [22] * len(mcols) + [28, 26])
-    else:
-        acts = [('fuel_xv', '燃料切断阀 XV-101/103/104/105（含 XV-102）'), ('n2_bypass', 'N₂ 保护旁路 XV-201'),
-                ('heat', '炉加热 XY-301'), ('load', '负载 XY-304'), ('alarm', '报警 XA-401'), ('permissive', '启动许可')]
-        sheet(wb, '联锁因果表', ['编号', '原因', '检测', '设定值'] + [a[1] for a in acts] + ['复位', '依据'],
-              [[i['id'], i['cause'], i['detect'], i['setpoint']] + [i['actions'].get(k, '') for k, _ in acts] + [i['reset'], i['src']]
-               for i in M['interlocks']],
-              [7, 26, 20, 18, 18, 16, 10, 8, 14, 18, 22, 18])
-        sheet(wb, '运行工况', ['编号', '工况', '燃料切断阀', 'XV-102', 'N₂ 旁路 XV-201', 'N₂ 气源', 'MFC', '加热', '负载', '许可条件', '转出条件'],
-              [[m['id'], m['name'], m['fuel_xv'], m['xv102'], m['bypass'], m['n2_source'], m['mfc'], m['heat'], m['load'], m['permissive'], m['exit']]
-               for m in M['modes']],
-              [6, 22, 18, 10, 18, 16, 24, 18, 18, 30, 26])
+    acols = colconv.action_columns(M)
+    sheet(wb, '联锁因果表', ['编号', '原因', '检测', '设定值'] + [a[1] for a in acols] + ['复位', '依据'],
+          [[i['id'], i['cause'], i['detect'], i['setpoint']] + [i['actions'].get(a[0], '') for a in acols] + [i['reset'], i['src']]
+           for i in M['interlocks']],
+          [7, 28, 20, 26] + [16] * len(acols) + [20, 18])
+    mcols = colconv.mode_columns(M)
+    if M['modes']:
+        sheet(wb, '运行工况', ['编号', '工况'] + [c[1] for c in mcols],
+              [[m['id'], m['name']] + [m.get(c[0], '') for c in mcols] for m in M['modes']],
+              [6, 24] + [22] * len(mcols))
 
-    sheet(wb, '符号对应表', ['对象类别', 'Plant 类', '采用符号（样式）', '来源', 'A3 打印尺寸', '注'], [list(r) for r in M.get('symbols', SYMBOLS)],
-          [26, 34, 40, 26, 14, 30], title='对象类别—采用符号—来源（计划，阶段 2 配置后以项目符号库为准）')
+    if M.get('symbols'):
+        sheet(wb, '符号对应表', ['对象类别', 'Plant 类', '采用符号（样式）', '来源', 'A3 打印尺寸', '注'], [list(r) for r in M['symbols']],
+              [26, 34, 40, 26, 14, 30], title='对象类别—采用符号—来源')
 
     sheet(wb, '待确认', ['编号', '事项', '原因', '建议'],
           [[q['id'], q['item'], q['why'], q['proposal']] for q in M['open_points']], [7, 40, 50, 40])

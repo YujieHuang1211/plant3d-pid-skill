@@ -1,9 +1,10 @@
 """由 pid_model.json 生成《联锁因果表》xlsx 与《运行工况与联锁说明》docx（与图纸联锁矩阵、运行工况表同源）。
 用法: python make_ce_modes.py <pid_model.json> <输出目录>
-模型中可用的字段（缺省时用青木子项目的列定义）：
+模型中可用的字段：
   meta.project / rev / date / status / basis_doc[] / ce_notes[]（xlsx 说明页补充条）/ safety_rules[]（docx 安全态与优先规则）/ pending_note
-  conventions.action_columns  [[动作键, 表头, 简称], …]        联锁 actions 的列
+  conventions.action_columns  [[动作键, 表头, 简称], …]        联锁 actions 的列（也可只写键，表头取 action_names）
   conventions.mode_columns    [[工况键, 表头], …]              modes 的列（permissive/exit 放最后）
+  两列都没写时按联锁、工况里实际出现的键生成，列格式见 colconv.py
   conventions.effect_columns  [动作列名, …] 与每条联锁的 effects[]：因果矩阵（推荐写明）
 文字措辞：不写数据文件名、工具与过程；类别写“设计确认 / 设计依据 / 工程假设”。
 依赖：openpyxl、python-docx；docx 版式用 docx-plain-technical-layout 技能的 plain_docx_builder.py。
@@ -23,6 +24,7 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import colconv  # noqa: E402
 import pidlib  # noqa: E402
 
 PLAIN = Path(r'C:\Users\yujie\.codex\skills\docx-plain-technical-layout\scripts\plain_docx_builder.py')
@@ -34,15 +36,8 @@ M = pidlib.M
 SUB = {'₂': '2', '₄': '4'}
 SUP = {'²': '2', '³': '3'}
 SCRIPT_RE = re.compile('([₂₄²³])')
-ACT_DEFAULT = [['fuel_xv', '燃料切断阀 XV-101~105', '燃料阀'], ['n2_bypass', 'N₂ 旁路 XV-201', 'N₂ 旁路'],
-               ['heat', '炉加热', '加热'], ['load', '电子负载', '负载'], ['alarm', '报警', '报警'], ['permissive', '运行许可', '许可']]
-MODE_DEFAULT = [['fuel_xv', '燃料切断阀'], ['xv102', 'XV-102'], ['bypass', 'N₂ 旁路 XV-201'], ['n2_source', 'N₂ 气源 HV-102'],
-                ['mfc', 'MFC'], ['heat', '加热'], ['load', '负载'], ['permissive', '许可条件'], ['exit', '转出条件']]
-
-
 def cols():
-    conv = M.get('conventions', {})
-    return conv.get('action_columns') or ACT_DEFAULT, conv.get('mode_columns') or MODE_DEFAULT
+    return colconv.action_columns(M), colconv.mode_columns(M)
 
 
 def basis(src):
@@ -133,7 +128,6 @@ def build_xlsx(out):
              ('设计依据：' + '；'.join(meta.get('basis_doc', [])) + '。', FONT),
              ('依据类别：设计确认＝已确认的设计决定；设计依据＝技术方案、成本核算等已有文件中的内容；工程假设＝本阶段提出、FAT 前验证的内容。', FONT)]
     notes += [(t, FONT) for t in meta.get('ce_notes', [])]
-    notes.append(('注“暂定/暂值”的设定值在 FAT 前确定。', FONT))
     for r, (t, f) in enumerate(notes, 1):
         c = ws.cell(r, 1, rich(t, f is TITLE))
         c.font, c.alignment = f, Alignment(wrap_text=True, vertical='top')
@@ -149,11 +143,12 @@ def build_xlsx(out):
           ['编号', '原因', '检测/执行', '设定值'] + [h for _, h, _ in act] + ['复位', '依据类别', '依据出处'],
           rows, [8, 30, 26, 16] + [22] * len(act) + [28, 18, 34], center_cols=(1,))
 
-    ecols = list(pidlib.ce_matrix(M['interlocks'][0]).keys())
-    rows = [[i['id'], i['cause']] + list(pidlib.ce_matrix(i).values()) for i in M['interlocks']]
-    ws = sheet(wb, '因果矩阵', '因果矩阵（X＝该原因触发该动作）', ['编号', '原因'] + ecols, rows,
-               [8, 34] + [11] * len(ecols), center_cols=tuple(range(3, 3 + len(ecols))) + (1,))
-    ws.row_dimensions[3].height = 45
+    if M['interlocks']:
+        ecols = list(pidlib.ce_matrix(M['interlocks'][0]).keys())
+        rows = [[i['id'], i['cause']] + list(pidlib.ce_matrix(i).values()) for i in M['interlocks']]
+        ws = sheet(wb, '因果矩阵', '因果矩阵（X＝该原因触发该动作）', ['编号', '原因'] + ecols, rows,
+                   [8, 34] + [11] * len(ecols), center_cols=tuple(range(3, 3 + len(ecols))) + (1,))
+        ws.row_dimensions[3].height = 45
 
     rows = [[m['id'], m['name']] + [m.get(k, '') for k, _ in mode] for m in M['modes']]
     sheet(wb, '运行工况', '运行工况表（各工况阀位、流量、加热、负载、许可与转出条件）',
@@ -240,7 +235,7 @@ def build_docx(out):
     plain.body(doc, meta.get('scope_text', f'本说明给出{name}的联锁因果关系和运行工况；P&ID 中的联锁矩阵与运行工况表为本说明的简表。'))
     plain.body(doc, '设计依据：' + '；'.join(meta.get('basis_doc', [])) + '。')
     plain.body(doc, '依据类别分三类标注：“设计确认”为已确认的设计决定；“设计依据”为技术方案、成本核算等已有文件中的内容；'
-                    '“工程假设”为本阶段提出，须在 FAT 前验证或冻结的内容。标“暂定”或“暂值”的设定值均属后者。')
+                    '“工程假设”为本阶段提出，须在 FAT 前验证或冻结的内容。')
     if meta.get('safety_rules'):
         plain.heading(doc, '安全态与优先规则', 1, num)
         for s in meta['safety_rules']:

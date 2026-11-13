@@ -11,7 +11,7 @@
 | 字段 | 内容 |
 |---|---|
 | `meta` | project, doc, rev, date, status, basis[]（内部依据，可含路径）, basis_doc[]（对外依据，只写文件名称）, source_codes；可选 ce_notes[], safety_rules[], scope_text, pending_note |
-| `conventions` | 物料代号、管道等级；可选 action_columns, mode_columns, effect_columns（联锁/工况表的列） |
+| `conventions` | 物料代号、管道等级；可选 action_columns, mode_columns, effect_columns（联锁/工况表的列）。`action_columns` 写 `[[键, 表头, 简称], …]`（`[[键, 表头], …]` 或只写键也行，只写键时表头取 `action_names[键]`）；`mode_columns` 写 `[[键, 表头], …]` 或只写键（表头取 `mode_names`）；没写时按联锁、工况里实际出现的键生成。设计依据表和联锁因果表由同一个转换函数（`scripts/colconv.py`）读取，两处格式一致 |
 | `boundary[]` | id(BL-xx), dir(in/out), desc, cond, by(甲方/我方), src：界区接口 |
 | `equipment[]` | tag(F-301…), class, symbol, name, spec, by, src |
 | `inline[]` | tag, type(ball_valve/needle_valve/check_valve/filter/regulator/on_off_valve/mfc/cap/flow_switch), desc, spec, src；可选 normally:"NC", fail:"FC"/"FO" |

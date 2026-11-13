@@ -36,7 +36,7 @@ metadata:
 7. `python scripts\plain_pipeline.py <_工作底稿> prep`：版面 → lint → 转换 → 普通版 lint → check_plain → check_numbering → validate_views（模型对象与连接都画进图了没有）→ 预览。全部 OK 才能出图；逐张看 `预览/`。输出只列失败项，完整输出才在失败时展开。
 8. `plain_pipeline.py <…> draw --wait`；改了之后只画输入有变化的图：`draw --changed --wait`（都没变不启动 AutoCAD）；指定重画：`draw P&ID-103 --redraw`；中断后：`resume --wait`。
 9. `plain_pipeline.py <…> reopen`（已变更的图，新会话重开 DWG 核对数量、文字、图层、越框，约 4 分钟）；`plain_pipeline.py <…> post`，逐张看 `终审PNG/`（截断、压框、重叠、线是否落在符号上、管嘴、标题栏字段）。有问题回第 6 步。
-10. ★ 版次递增（R0→R1）：不覆盖旧版，交付目录另放 `R1\`；`meta.rev`、`meta.rev_note` 同步。项目在云盘时先本地生成自查，完成后一次复制进去。
+10. ★ 版次递增（R0→R1）：不覆盖旧版，交付目录另放 `R1\`；`meta.rev`、`meta.rev_note` 同步。复制上一版工作区时要替换里面的旧路径，做法见 `references/pitfalls.md` 的“出新版次”。项目在云盘时先本地生成自查，完成后一次复制进去。
 11. ★ 列出对上游文件（技术方案、成本表等）的影响，只列不改。
 
 并行可做：`make_ce_modes.py`（联锁表、工况说明）、`export_lists.py`（清单）。
