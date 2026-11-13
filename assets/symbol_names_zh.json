@@ -1341,7 +1341,7 @@
   "native": true
  },
  "ISA Rotameter Needle Valve Style": {
-  "zh": "转子流量计带针阀（ISA-5.1 表 5.4.3 b 方案）",
+  "zh": "转子流量计带针阀（ISA-5.1-2024 表 6 第 29 项 b + ISO 10628-2 针阀）",
   "cat": "流量与测量元件",
   "use": "转子流量计：竖矩形内画上宽下窄小梯形，进口侧串针阀；左进右出；位号 FI",
   "native": true
